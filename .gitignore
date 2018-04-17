@@ -1,10 +1,6 @@
-#
-*-lock.json
-
 # Logs
 logs
 *.log
-npm-debug.log*
 
 # Runtime data
 pids
@@ -17,9 +13,6 @@ lib-cov
 # Coverage directory used by tools like istanbul
 coverage
 
-# nyc test coverage
-.nyc_output
-
 # Grunt intermediate storage (http://gruntjs.com/creating-plugins#storing-task-files)
 .grunt
 
@@ -29,12 +22,24 @@ coverage
 # Compiled binary addons (http://nodejs.org/api/addons.html)
 build/Release
 
-# Dependency directories
+# Dependency directory
+# https://www.npmjs.org/doc/misc/npm-faq.html#should-i-check-my-node_modules-folder-into-git
 node_modules
-jspm_packages
+app/node_modules
 
-# Optional npm cache directory
-.npm
+# OSX
+.DS_Store
 
-# Optional REPL history
-.node_repl_history
+# App packaged
+release
+app/main.js
+app/main.js.map
+app/bundle.js
+app/bundle.js.map
+app/style.css
+app/style.css.map
+dist
+main.js
+main.js.map
+
+.idea
