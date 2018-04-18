@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import XML_Sorter from "../api/XML_Sorter";
+import XMLSorter from "../api/XML_Sorter";
 
 export default class SortButton extends Component {
   constructor(props) {
@@ -16,7 +16,7 @@ export default class SortButton extends Component {
 
   onClick(e) {
     e.preventDefault();
-    const sorter = new XML_Sorter(this.props.filepath, this.props.handleSorter, true);
+    const sorter = new XMLSorter(this.props.filepath, this.props.handleSorter, true);
     sorter.process();
   }
 

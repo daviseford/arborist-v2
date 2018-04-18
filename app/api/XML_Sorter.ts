@@ -3,31 +3,11 @@ import * as fs from 'fs-extra';
 import * as moment from 'moment';
 import * as path from 'path';
 import { convertFilenameToXML, parseXMLObj } from '../api/Sony_XML';
+import { ICopyList } from '../definitions/copylist';
 import { createDir, getDirectories_sync, getMP4Files } from './FileUtil';
 import Types from './Types';
 
-interface ICopyList {
-  copying?: boolean;
-  created_date?: string;
-  dest_xml?: string;
-  dest?: string;
-  device_manufacturer: string;
-  dir: string;
-  duration_mins: number;
-  done_xml: boolean;
-  done?: boolean;
-  end_time: moment.Moment;
-  filepath: string;
-  filename: string;
-  filesize_gb: number;
-  fps: number;
-  model_name: string;
-  start_time: moment.Moment;
-  xml_filename: string;
-  xml_filepath: string;
-}
-
-export default class XML_Sorter {
+export default class XMLSorter {
   private copy_list: ICopyList[];
   private enable_copy: boolean;
   private scene_index: number;
