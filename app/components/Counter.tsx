@@ -2,18 +2,18 @@ import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import { Link } from 'react-router-dom';
 
-let styles = require('./Counter.scss');
+const styles = require('./Counter.scss');
 
 export interface IProps extends RouteComponentProps<any> {
-  increment(): void,
-  incrementIfOdd(): void,
-  incrementAsync(): void,
-  decrement(): void,
-  counter: number
+  counter: number;
+  increment(): void;
+  incrementIfOdd(): void;
+  incrementAsync(): void;
+  decrement(): void;
 }
 
 export class Counter extends React.Component<IProps> {
-  render() {
+  public render() {
     const { increment, incrementIfOdd, incrementAsync, decrement, counter } = this.props;
     return (
       <div>

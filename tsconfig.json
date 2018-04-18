@@ -12,9 +12,10 @@
     ],
     "types": [],
 
+    "allowJs": true,
     "alwaysStrict": true,
     "strictNullChecks": true,
-    "noImplicitAny": true,
+    "noImplicitAny": false,
     "noImplicitReturns": true,
     "noImplicitThis": true,
     "noUnusedLocals": true,

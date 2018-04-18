@@ -1,14 +1,18 @@
 import * as React from 'react';
-import { Switch, Route } from 'react-router';
+import { Route, Switch } from 'react-router';
+import AboutPage from './containers/AboutPage';
 import App from './containers/App';
+import ArboristMainPage from './containers/ArboristMainPage';
+import FAQPage from './containers/FAQPage';
 import HomePage from './containers/HomePage';
-import CounterPage from './containers/CounterPage';
 
 export default () => (
   <App>
     <Switch>
-      <Route path="/counter" component={CounterPage} />
       <Route path="/" component={HomePage} />
+      <Route path="/about" component={AboutPage}/>
+      <Route path="/arborist" component={ArboristMainPage}/>
+      <Route path="/faq" component={FAQPage}/>
     </Switch>
   </App>
 );
