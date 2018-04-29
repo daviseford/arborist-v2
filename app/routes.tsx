@@ -10,9 +10,9 @@ export default () => (
   <App>
     <Switch>
       <Route path="/" component={HomePage} />
-      <Route path="/about" component={AboutPage}/>
-      <Route path="/arborist" component={ArboristMainPage}/>
-      <Route path="/faq" component={FAQPage}/>
+      <Route path="/about" component={AboutPage} />
+      <Route path="/arborist" component={ArboristMainPage} />
+      <Route path="/faq" component={FAQPage} />
     </Switch>
   </App>
 );
