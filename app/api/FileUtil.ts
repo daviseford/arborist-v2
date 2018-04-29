@@ -58,6 +58,4 @@ const isGoodDirName = (dirname: string): boolean => {
   return !hasBadChar(dirname) && isOneChar;
 };
 
-const hasBadChar = (name: string) => {
-  return ['.', '_', '~'].some(x => x === name.split('')[0]);
-};
+const hasBadChar = (name: string) => ['.', '_', '~'].some(x => x === name.split('')[0]);
