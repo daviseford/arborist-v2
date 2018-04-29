@@ -22,7 +22,7 @@ export default class Home extends React.Component {
 
           <div className="row">
             <div className="col-xs-8 col-xs-offset-2 text-center">
-              <ButtonLinkTo to={'arborist'} btn_class={'btn btn-lg btn-success'} btn_text={'Get Started'} />
+              <ButtonLinkTo to={'/arborist'} btn_class={'btn btn-lg btn-success'} btn_text={'Get Started'} />
             </div>
           </div>
 

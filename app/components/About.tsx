@@ -1,8 +1,7 @@
 import * as React from 'react';
-// import { Link } from 'react-router';
 import ButtonLinkTo from '../ui/ButtonLinkTo';
 import ButtonOpenExternal from '../ui/ButtonOpenExternal';
-// import braum_src from './../img/braum.jpg';
+
 export default class About extends React.Component<{}, {}> {
   public render() {
     return (
@@ -56,8 +55,7 @@ class Braum extends React.Component<{}, IBraumState> {
             style={this.state.style}
             onMouseEnter={this.asherTilt}
             onMouseLeave={this.asherTilt}
-            src={''}
-            // src={braum_src}
+            src={'./../app/img/braum.jpg'}
           />
           <h3>CEO</h3>
         </div>
