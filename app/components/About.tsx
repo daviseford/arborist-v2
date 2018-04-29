@@ -1,9 +1,9 @@
 import * as React from 'react';
-import braum_src from '../img/braum.jpg';
+// import { Link } from 'react-router';
 import ButtonLinkTo from '../ui/ButtonLinkTo';
 import ButtonOpenExternal from '../ui/ButtonOpenExternal';
-
-export default class About extends React.Component<{}> {
+// import braum_src from './../img/braum.jpg';
+export default class About extends React.Component<{}, {}> {
   public render() {
     return (
       <div className="container" style={{ marginTop: '9%' }}>
@@ -13,50 +13,51 @@ export default class About extends React.Component<{}> {
     );
   }
 }
-
-class Braum extends React.Component {
-  constructor(props: any) {
+interface IBraumState {
+  style: { transform?: string };
+}
+class Braum extends React.Component<{}, IBraumState> {
+  constructor(props) {
     super(props);
-    this.setState({ style: {} });
+    this.state = { style: {} };
     this.asherTilt = this.asherTilt.bind(this);
   }
-
   /**
    * Asher Katz's original code on sweetpeas.com, translated for usage here
    *
    * $('#gallery img').mouseenter(function(){
-   *    var degree = -10+20*(Math.random());
-   *    $(this).rotate({animateTo:degree, duration:50});
+   *   var degree = -10+20*(Math.random());
+   *   $(this).rotate({animateTo:degree, duration:50});
    * });
    *
    * $('#gallery img').mouseleave(function(){
-   *    var degree = -10+20*(Math.random());
-   *    $(this).rotate({animateTo:degree, duration:50});
+   *   var degree = -10+20*(Math.random());
+   *   $(this).rotate({animateTo:degree, duration:50});
    * });
    *
    * @returns {{transform: string}}
    */
   public getRotation() {
-    const degree = -10 + 20 * (Math.random());
+    const degree = -10 + 20 * Math.random();
     const rotation = `rotate(${degree}deg)`;
     return { transform: rotation };
   }
-
   public asherTilt() {
     // In honor of Asher Katz. RIP
     this.setState({ style: this.getRotation() });
   }
-
   public render() {
     return (
       <div className="row">
         <div className="col-xs-12 text-center">
           <h1>Braum Katz</h1>
-          <img className="img-responsive img-circle center-block smooth-rotate"
+          <img
+            className="img-responsive img-circle center-block smooth-rotate"
             style={this.state.style}
             onMouseEnter={this.asherTilt}
             onMouseLeave={this.asherTilt}
-            src={braum_src}
+            src={''}
+            // src={braum_src}
           />
           <h3>CEO</h3>
         </div>
@@ -64,8 +65,7 @@ class Braum extends React.Component {
     );
   }
 }
-
-class Buttons extends React.Component<{}> {
+class Buttons extends React.Component<{}, {}> {
   public render() {
     return (
       <div className="row">
