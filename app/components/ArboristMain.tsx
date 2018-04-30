@@ -162,7 +162,7 @@ export default class ArboristMain extends React.Component<{}, IArboristMainState
               <ButtonLinkTo to={'about'} btn_text={'About'} />
               <ButtonLinkTo to={'faq'} btn_text={'FAQ'} />
               <ButtonOpenExternal
-                btn_link={'https://github.com/daviseford/arborist-electron/issues/new'}
+                btn_link={'https://github.com/daviseford/arborist-v2/issues'}
                 btn_text={'Create Issue'}
               />
             </div>

@@ -98,7 +98,7 @@ class Buttons extends React.Component<{}, {}> {
       <div className="row">
         <div className="col-xs-12 text-center">
           <div className="form-group">
-            <ButtonOpenExternal btn_link={'http://360bonsai.com'} btn_text={'360bonsai.com'} />
+            <ButtonOpenExternal btn_link={'http://360bonsai.com'} btn_text={'360bonsai.com'} btn_class={'btn btn-md btn-info'} />
             <ButtonLinkTo to={'arborist'} btn_text={'Back to Arborist'} />
           </div>
         </div>
