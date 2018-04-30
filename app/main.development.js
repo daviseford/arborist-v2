@@ -159,7 +159,7 @@ app.on('ready', () =>
               shell.openExternal('http://www.360bonsai.com/shop?utm_source=arboristv2');
             }
           }, {
-            label: 'Search Issues',
+            label: 'Submit a Bug',
             click() {
               shell.openExternal('https://github.com/daviseford/arborist-v2/issues');
             }
@@ -221,7 +221,7 @@ app.on('ready', () =>
               shell.openExternal('http://www.360bonsai.com/shop?utm_source=arboristv2');
             }
           }, {
-            label: 'Search Issues',
+            label: 'Submit a Bug',
             click() {
               shell.openExternal('https://github.com/daviseford/arborist-v2/issues');
             }
