@@ -74,7 +74,7 @@ app.on('ready', () =>
         template = [{
           label: 'Electron',
           submenu: [{
-            label: 'About ElectronReact',
+            label: 'About Arborist',
             selector: 'orderFrontStandardAboutPanel:'
           }, {
             type: 'separator'
@@ -84,7 +84,7 @@ app.on('ready', () =>
           }, {
             type: 'separator'
           }, {
-            label: 'Hide ElectronReact',
+            label: 'Hide Arborist',
             accelerator: 'Command+H',
             selector: 'hide:'
           }, {
@@ -180,7 +180,7 @@ app.on('ready', () =>
           submenu: [{
             label: 'Learn More',
             click() {
-              shell.openExternal('http://electron.atom.io');
+              shell.openExternal('http://360bonsai.com');
             }
           }, {
             label: 'Documentation',
@@ -188,14 +188,9 @@ app.on('ready', () =>
               shell.openExternal('https://github.com/atom/electron/tree/master/docs#readme');
             }
           }, {
-            label: 'Community Discussions',
-            click() {
-              shell.openExternal('https://discuss.atom.io/c/electron');
-            }
-          }, {
             label: 'Search Issues',
             click() {
-              shell.openExternal('https://github.com/atom/electron/issues');
+              shell.openExternal('https://github.com/daviseford/arborist-v2/issues');
             }
           }]
         }];
@@ -247,7 +242,7 @@ app.on('ready', () =>
           submenu: [{
             label: 'Learn More',
             click() {
-              shell.openExternal('http://electron.atom.io');
+              shell.openExternal('http://360bonsai.com');
             }
           }, {
             label: 'Documentation',
@@ -255,14 +250,9 @@ app.on('ready', () =>
               shell.openExternal('https://github.com/atom/electron/tree/master/docs#readme');
             }
           }, {
-            label: 'Community Discussions',
-            click() {
-              shell.openExternal('https://discuss.atom.io/c/electron');
-            }
-          }, {
             label: 'Search Issues',
             click() {
-              shell.openExternal('https://github.com/atom/electron/issues');
+              shell.openExternal('https://github.com/daviseford/arborist-v2/issues');
             }
           }]
         }];
