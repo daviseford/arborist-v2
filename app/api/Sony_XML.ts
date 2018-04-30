@@ -1,6 +1,7 @@
 import * as async from 'async';
 import * as fs from 'fs';
 import * as xml2js from 'xml2js';
+import { IParsedSonyXMLObject, ISonyXMLObj } from '../definitions/sony_xml';
 import { getFilesizeInGigabytes } from './FileUtil';
 
 /**
@@ -45,9 +46,9 @@ export const parseXMLObj = (xml_obj: any, callback: any) => {
       },
 
       (merged_xml_obj: any, cb: any) => {
-        getFilesizeInGigabytes(merged_xml_obj.filepath, (err: null, filesize: number) => {
+        getFilesizeInGigabytes(merged_xml_obj.filepath, (err: null, filesize_gb: number) => {
           if (err) { return cb(err); }
-          const obj = Object.assign({}, merged_xml_obj, { filesize_gb: filesize });
+          const obj = Object.assign({}, merged_xml_obj, { filesize_gb });
           cb(null, obj);
         });
       },
@@ -59,19 +60,15 @@ export const parseXMLObj = (xml_obj: any, callback: any) => {
   );
 };
 
-// export interface IXMLObject {
-
-// }
-
-const parseXMLObject = (xml_object: any) => {
-  console.log(xml_object);
-  const duration = xml_object.NonRealTimeMeta.Duration[0].$.value;
-  const fps = xml_object.NonRealTimeMeta.LtcChangeTable[0].$.tcFps;
+const parseXMLObject = (xml_object: ISonyXMLObj): IParsedSonyXMLObject => {
+  console.log('parsing xml_object', xml_object);
+  const duration = parseInt(xml_object.NonRealTimeMeta.Duration[0].$.value, 10);
+  const fps = parseInt(xml_object.NonRealTimeMeta.LtcChangeTable[0].$.tcFps, 10);
   let created_date = xml_object.NonRealTimeMeta.CreationDate[0].$.value;
   created_date = created_date.split('').slice(0, created_date.length - 6).join('');  // Remove the timezone
   const device_manufacturer = xml_object.NonRealTimeMeta.Device[0].$.manufacturer;
   const model_name = xml_object.NonRealTimeMeta.Device[0].$.modelName;
-  const duration_mins = (duration / fps / 60).toFixed(2);
+  const duration_mins = parseFloat((duration / fps / 60).toFixed(2));
   return {
     created_date,
     device_manufacturer,

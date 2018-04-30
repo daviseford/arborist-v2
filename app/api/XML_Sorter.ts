@@ -209,13 +209,13 @@ export default class XMLSorter {
     const dir_filepath = path.join(this.working_filepath, dir);
     getMP4Files(dir_filepath, (err, files) => {
       async.map(files, (filename: string, mCallback) => {
-        const obj: {[key: string]: string} = {
+        const obj: { [key: string]: string } = {
           dir,
           filename,
           filepath: path.join(dir_filepath, filename),
         };
         const xml_filepath = this.getAssociatedSonyXMLSync(filename, dir);
-        if (!!xml_filepath) {
+        if (xml_filepath) {
           obj.xml_filename = convertFilenameToXML(filename);
           obj.filepath = path.join(this.working_filepath, dir, filename);
           obj.xml_filepath = xml_filepath;
@@ -229,17 +229,17 @@ export default class XMLSorter {
     });
   }
 
-  public getAssociatedSonyXMLSync(filename, dir) {
+  public getAssociatedSonyXMLSync(filename: string, dir: string): string | null {
     const name = convertFilenameToXML(filename);
     const xml_filepath = path.join(this.working_filepath, dir, name);
     if (fs.existsSync(xml_filepath)) {
       return xml_filepath;
-    } else {
-      return false;
     }
+    return null;
   }
 
-  public updateCopyListFileStatus(src, dest, copying = false, done = false, start = false, end = false) {
+  // tslint:disable-next-line:max-line-length
+  public updateCopyListFileStatus(src: string, dest: string, copying = false, done = false, start = false, end = false) {
     // Find the index of the matching copy_list entry (entries have unique filepath + dest combinations)
     const i = this.copy_list.findIndex((x) => x.filepath === src && x.dest === dest);
     // And update the status accordingly
