@@ -37,9 +37,9 @@ class Braum extends React.Component<{}, IBraumState> {
    * @returns {{transform: string}}
    */
   public getRotation() {
-    const degree = -10 + 20 * Math.random();
-    const rotation = `rotate(${degree}deg)`;
-    return { transform: rotation };
+    const degree = -10 + (20 * Math.random());
+    const transform = `rotate(${degree}deg)`;
+    return { transform };
   }
   public asherTilt() {
     // In honor of Asher Katz. RIP
@@ -55,7 +55,7 @@ class Braum extends React.Component<{}, IBraumState> {
             style={this.state.style}
             onMouseEnter={this.asherTilt}
             onMouseLeave={this.asherTilt}
-            src={'./../app/img/braum.jpg'}
+            src={'./../resources/img/braum.jpg'}
           />
           <h3>CEO</h3>
         </div>
