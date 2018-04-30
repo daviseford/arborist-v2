@@ -3,7 +3,7 @@ import { shell } from 'electron';
 import * as React from 'react';
 import ButtonLinkTo from '../ui/ButtonLinkTo';
 import ButtonOpenExternal from '../ui/ButtonOpenExternal';
-import { kAppName, kBonsaiLink } from '../utils/config';
+import { kAppName, kBonsaiLink, kRoutes } from '../utils/config';
 
 export default class About extends React.Component<{}, {}> {
   public render() {
@@ -100,7 +100,7 @@ class Buttons extends React.Component<{}, {}> {
         <div className="col-xs-12 text-center">
           <div className="form-group">
             <ButtonOpenExternal btn_link={kBonsaiLink} btn_text={'360bonsai.com'} btn_class={'btn btn-md btn-info'} />
-            <ButtonLinkTo to={'/arborist'} btn_text={`Back to ${kAppName}`} />
+            <ButtonLinkTo to={kRoutes.ARBORIST} btn_text={`Back to ${kAppName}`} />
           </div>
         </div>
       </div>

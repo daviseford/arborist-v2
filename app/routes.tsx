@@ -5,14 +5,15 @@ import App from './containers/App';
 import ArboristMainPage from './containers/ArboristMainPage';
 import FAQPage from './containers/FAQPage';
 import HomePage from './containers/HomePage';
+import { kRoutes } from './utils/config';
 
 export default () => (
   <App>
     <Switch>
-      <Route path="/about" component={AboutPage} />
-      <Route path="/arborist" component={ArboristMainPage} />
-      <Route path="/faq" component={FAQPage} />
-      <Route path="/" component={HomePage} />
+      <Route path={kRoutes.ABOUT} component={AboutPage} />
+      <Route path={kRoutes.ARBORIST}component={ArboristMainPage} />
+      <Route path={kRoutes.FAQ} component={FAQPage} />
+      <Route path={kRoutes.ROOT} component={HomePage} />
 
       {
         // Fallback route in case our router gets messed up

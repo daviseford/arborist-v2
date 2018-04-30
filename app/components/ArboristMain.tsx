@@ -12,7 +12,7 @@ import FilepathDisplay from '../ui/FilepathDisplay';
 import OpenDirectoryDialogButton from '../ui/OpenDirectoryDialogButton';
 import ProgressBar from '../ui/ProgressBar';
 import SortButton from '../ui/SortButton';
-import { kAppName, kVersion } from '../utils/config';
+import { kAppName, kGitHubLink, kRoutes, kVersion } from '../utils/config';
 
 interface IArboristMainState {
   console_output: string;
@@ -160,10 +160,10 @@ export default class ArboristMain extends React.Component<{}, IArboristMainState
         <div className="row" style={{ marginTop: '2%' }}>
           <div className="col-xs-12 text-center">
             <div className="form-group">
-              <ButtonLinkTo to={'about'} btn_text={'About'} />
-              <ButtonLinkTo to={'faq'} btn_text={'FAQ'} />
+              <ButtonLinkTo to={kRoutes.ABOUT} btn_text={'About'} />
+              <ButtonLinkTo to={kRoutes.FAQ} btn_text={'FAQ'} />
               <ButtonOpenExternal
-                btn_link={'https://github.com/daviseford/arborist-v2/issues'}
+                btn_link={`${kGitHubLink}issues`}
                 btn_text={'Create Issue'}
               />
             </div>
