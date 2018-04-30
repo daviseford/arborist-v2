@@ -180,7 +180,7 @@ app.on('ready', () =>
           submenu: [{
             label: 'Learn More',
             click() {
-              shell.openExternal('http://360bonsai.com');
+              shell.openExternal('http://360bonsai.com/?utm_source=arboristv2');
             }
           }, {
             label: 'Documentation',
@@ -242,7 +242,7 @@ app.on('ready', () =>
           submenu: [{
             label: 'Learn More',
             click() {
-              shell.openExternal('http://360bonsai.com');
+              shell.openExternal('http://360bonsai.com/?utm_source=arboristv2');
             }
           }, {
             label: 'Documentation',
