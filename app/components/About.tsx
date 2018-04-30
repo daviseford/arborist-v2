@@ -51,11 +51,10 @@ class Braum extends React.Component<{}, IBraumState> {
         <div className="col-xs-12 text-center">
           <h1>Braum Katz</h1>
           <img
-            className="img-responsive img-circle center-block smooth-rotate"
+            className="img-responsive img-circle center-block smooth-rotate braumFace"
             style={this.state.style}
             onMouseEnter={this.asherTilt}
             onMouseLeave={this.asherTilt}
-            src={'./../resources/img/braum.jpg'}
           />
           <h3>CEO</h3>
         </div>
