@@ -12,7 +12,12 @@ export default () => (
       <Route path="/about" component={AboutPage} />
       <Route path="/arborist" component={ArboristMainPage} />
       <Route path="/faq" component={FAQPage} />
-      <Route exact path="/" component={HomePage} />
+      <Route path="/" component={HomePage} />
+
+      {
+        // Fallback route in case our router gets messed up
+      }
+      <Route path="*" component={HomePage} />
     </Switch>
   </App>
 );
