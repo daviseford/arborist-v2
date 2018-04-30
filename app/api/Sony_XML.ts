@@ -1,7 +1,7 @@
 import * as async from 'async';
 import * as fs from 'fs';
 import * as xml2js from 'xml2js';
-import { IParsedSonyXMLObject, ISonyXMLObj } from '../definitions/sony_xml';
+import { IBasicSorterEntry, IParsedSonyXMLObject, ISonyXMLObj, ISorterEntry } from '../definitions/sony_xml';
 import { getFilesizeInGigabytes } from './FileUtil';
 
 /**
@@ -24,7 +24,7 @@ import { getFilesizeInGigabytes } from './FileUtil';
  * xml_filename
  * xml_filepath
  */
-export const parseXMLObj = (xml_obj: any, callback: any) => {
+export const parseXMLObj = (xml_obj: IBasicSorterEntry, callback: (err: any, data?: any) => ISorterEntry | void) => {
   // Add any XML transformations here
   async.waterfall(
     [
@@ -55,13 +55,14 @@ export const parseXMLObj = (xml_obj: any, callback: any) => {
     ], (err, new_xml_obj) => {
       // Return our results to the callback
       if (err) { return callback(err); }
+      console.log('new', new_xml_obj);
       callback(null, new_xml_obj);
     },
   );
 };
 
 const parseXMLObject = (xml_object: ISonyXMLObj): IParsedSonyXMLObject => {
-  console.log('parsing xml_object', xml_object);
+  // console.log('parsing xml_object', xml_object);
   const duration = parseInt(xml_object.NonRealTimeMeta.Duration[0].$.value, 10);
   const fps = parseInt(xml_object.NonRealTimeMeta.LtcChangeTable[0].$.tcFps, 10);
   let created_date = xml_object.NonRealTimeMeta.CreationDate[0].$.value;

@@ -2,13 +2,13 @@ import * as async from 'async';
 import * as fs from 'fs-extra';
 import * as path from 'path';
 
-export const getDirectories_sync = (filepath: string) => {
+export const getDirectories_sync = (filepath: string): string[] => {
   return fs.readdirSync(filepath).filter(dir => {
     return fs.statSync(path.join(filepath, dir)).isDirectory() && isGoodDirName(dir);
   });
 };
 
-export const getMP4FilesSync = (filepath: string) => {
+export const getMP4FilesSync = (filepath: string): string[] => {
   return fs.readdirSync(filepath).filter(file => {
     return fs.statSync(path.join(filepath, file)).isFile() && file.toUpperCase().includes('.MP4') && !hasBadChar(file);
   });
@@ -22,7 +22,7 @@ export const getMP4Files = (filepath: string, callback: any) => {
         fs.stat(path.join(filepath, file), (err1: any, stats) => {
           if (err1) { return cb(err1); }
           const check = stats.isFile() && file.toUpperCase().includes('.MP4') && !hasBadChar(file);
-          cb(undefined, check);
+          cb(null, check);
         });
       },
       (err2: any, files: any) => {
@@ -33,17 +33,17 @@ export const getMP4Files = (filepath: string, callback: any) => {
   });
 };
 
-export const createDir = (dirpath: string, new_dir_name: string) => {
+export const createDir = (dirpath: string, new_dir_name: string): void => {
   const dir = path.join(dirpath, new_dir_name);
   if (!fs.existsSync(dir)) {
     fs.mkdirSync(dir);
   }
 };
 
-export const getFilesizeInGigabytes = (filepath: string, callback: any) => {
+export const getFilesizeInGigabytes = (filepath: string, callback: (err: any, gb?: number) => number) => {
   fs.stat(filepath, (err, stats) => {
     if (err) { return callback(err); }
-    callback(null, bytes_to_gb(stats.size));
+    return callback(null, bytes_to_gb(stats.size));
   });
 };
 
@@ -58,4 +58,4 @@ const isGoodDirName = (dirname: string): boolean => {
   return !hasBadChar(dirname) && isOneChar;
 };
 
-const hasBadChar = (name: string) => ['.', '_', '~'].some(x => x === name.split('')[0]);
+const hasBadChar = (name: string): boolean => ['.', '_', '~'].some(x => x === name.split('')[0]);
