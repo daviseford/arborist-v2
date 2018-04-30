@@ -1,3 +1,4 @@
+import { TStatusType } from '../definitions/status_types';
 
 export const kAppName = 'Arborist';
 export const kCompanyName = 'Bonsai';
@@ -33,7 +34,7 @@ export const kPeople = {
     },
 };
 
-export const kStatusTypes = {
+export const kStatusTypes: {[P in TStatusType]: TStatusType} = {
     analysis: 'analysis',
     copy_file_done: 'copy_file_done',
     copy_file_start: 'copy_file_start',
