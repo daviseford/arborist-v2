@@ -4,14 +4,14 @@
 import { expect } from 'chai';
 import * as fs from 'fs-extra';
 import * as path from 'path';
-import Types from '../../app/api/Types';
 import XML_Sorter from '../../app/api/XML_Sorter';
+import { kStatusTypes } from '../../app/utils/config';
 
 describe('XML Sorter - Should sort test directory correctly', () => {
   const test_dir = path.join(__dirname, '../xml_tests');
   it('Should return an analysis Type with the correct copy_list', function(done) {
     const sorter = new XML_Sorter(test_dir, (type, data) => {
-      expect(type).to.equal(Types.analysis);
+      expect(type).to.equal(kStatusTypes.analysis);
       expect(data.length).to.equal(4);
       const firstSrc = data[0].filepath.split(path.sep);
       const firstDest = data[0].dest.split(path.sep);
@@ -30,7 +30,7 @@ describe('XML Sorter - Should sort test directory correctly', () => {
     fs.removeSync(path.join(test_dir, 'Scenes'));
 
     const sorter = new XML_Sorter(test_dir, (type, data) => {
-      if (type === Types.copy_files_done) {
+      if (type === kStatusTypes.copy_files_done) {
         expect(data.every((x) => x.done)).to.equal(true);
         expect(data.every((x) => x.done_xml)).to.equal(true);
         // Check files
@@ -51,7 +51,7 @@ describe('XML Sorter - Should sort test directory correctly', () => {
     fs.removeSync(path.join(test_dir, 'Scenes'));
 
     const sorter = new XML_Sorter(test_dir, (type, data) => {
-      if (type === Types.copy_files_done) {
+      if (type === kStatusTypes.copy_files_done) {
 
         // Check files
         expect(fs.existsSync(path.join(test_dir, 'Scenes', 'Scene_1', 'A_C0001.MP4'))).to.equal(true);
@@ -74,7 +74,7 @@ describe('XML Sorter - Should sort test directory correctly', () => {
     fs.removeSync(path.join(test_dir, 'Scenes'));
 
     const sorter = new XML_Sorter(test_dir, (type, data) => {
-      if (type === Types.xml_copy_done) {
+      if (type === kStatusTypes.xml_copy_done) {
         // Check files
         expect(fs.existsSync(path.join(test_dir, 'Scenes', 'Scene_1', 'A_C0001M01.XML'))).to.equal(true);
         expect(fs.existsSync(path.join(test_dir, 'Scenes', 'Scene_1', 'C_C0001M01.XML'))).to.equal(true);

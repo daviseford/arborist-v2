@@ -4,8 +4,8 @@ import * as moment from 'moment';
 import * as path from 'path';
 import { convertFilenameToXML, parseXMLObj } from '../api/Sony_XML';
 import { ICopyList } from '../definitions/copylist';
+import { kStatusTypes } from '../utils/config';
 import { createDir, getDirectories_sync, getMP4Files } from './FileUtil';
-import Types from './Types';
 
 export default class XMLSorter {
   private copy_list: ICopyList[];
@@ -43,7 +43,7 @@ export default class XMLSorter {
     async.waterfall(
       [this.getXMLObjs, this.parseAllXML],
       (err1, result) => {
-        if (err1) { return this.subscription(Types.error, err1); }
+        if (err1) { return this.subscription(kStatusTypes.error, err1); }
         // Now we're cooking - let's start comparing values
         // This will add matches to the copy list
         this.processUpdatedXMLArray(result);
@@ -51,7 +51,7 @@ export default class XMLSorter {
         // Just return the proposed copy list and exit this process
         // If we haven't enabled the copy feature
         if (!this.enable_copy) {
-          this.subscription(Types.analysis, this.copy_list);
+          this.subscription(kStatusTypes.analysis, this.copy_list);
           return;
         }
 
@@ -59,7 +59,7 @@ export default class XMLSorter {
         if (this.copy_list.length > 0) {
           this.createSceneDirsByIndex();
 
-          this.subscription(Types.copy_files_start, this.copy_list);
+          this.subscription(kStatusTypes.copy_files_start, this.copy_list);
 
           // Copy the associated XML files first, then start on the big stuff
           async.series([
@@ -67,12 +67,12 @@ export default class XMLSorter {
             this.copyMP4Files,
           ],
             (err2, results) => {
-              if (err2) { return this.subscription(Types.error, err2); }
-              this.subscription(Types.copy_files_done, this.copy_list);
+              if (err2) { return this.subscription(kStatusTypes.error, err2); }
+              this.subscription(kStatusTypes.copy_files_done, this.copy_list);
             });
 
         } else {
-          this.subscription(Types.error, 'No matches were found using the XML sorter.');
+          this.subscription(kStatusTypes.error, 'No matches were found using the XML sorter.');
         }
       },
     );
@@ -81,15 +81,15 @@ export default class XMLSorter {
 
   public copyXMLFiles(callback) {
     const that = this;
-    this.subscription(Types.xml_copy_start, true);
+    this.subscription(kStatusTypes.xml_copy_start, true);
     async.eachLimit(this.copy_list.filter(x => x.xml_filepath && x.dest_xml), 10,
       this.copyXMLFile,
       (err) => {
         if (err) {
-          that.subscription(Types.error, err);
+          that.subscription(kStatusTypes.error, err);
           callback(err);
         } else {
-          that.subscription(Types.xml_copy_done, true);
+          that.subscription(kStatusTypes.xml_copy_done, true);
           callback();
         }
       });
@@ -109,7 +109,7 @@ export default class XMLSorter {
     async.eachLimit(this.copy_list, 5, this.copyMP4File,
       (err) => {
         if (err) {
-          that.subscription(Types.error, err);
+          that.subscription(kStatusTypes.error, err);
           callback(err);
         } else {
           callback(null, that.copy_list);
@@ -123,7 +123,7 @@ export default class XMLSorter {
 
     fs.copy(obj.filepath, obj.dest, (err) => {
       if (err) { return cb(err); }
-      that.subscription(Types.copy_file_done, obj);
+      that.subscription(kStatusTypes.copy_file_done, obj);
       that.updateCopyListFileStatus(obj.filepath, obj.dest, false, true, false, true);
       cb();
     });
@@ -133,7 +133,7 @@ export default class XMLSorter {
     for (let i = 1; i <= this.scene_index; i++) {
       createDir(path.join(this.working_filepath, 'Scenes'), `Scene_${i}`);
     }
-    this.subscription(Types.general, `Created ${this.scene_index} Scene folders`);
+    this.subscription(kStatusTypes.general, `Created ${this.scene_index} Scene folders`);
   }
 
   public processUpdatedXMLArray(updated_xml_array) {
@@ -253,7 +253,7 @@ export default class XMLSorter {
       this.copy_list[i].end_time = moment();
     }
 
-    this.subscription(Types.copy_list_update, this.copy_list);
+    this.subscription(kStatusTypes.copy_list_update, this.copy_list);
   }
 
   public addToCopyList(obj) {

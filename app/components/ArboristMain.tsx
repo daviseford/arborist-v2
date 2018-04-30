@@ -1,6 +1,5 @@
 import * as path from 'path';
 import * as React from 'react';
-import Types from '../api/Types';
 import { ICopyList } from '../definitions/copylist';
 import AnalyzeButton from '../ui/AnalyzeButton';
 import ButtonLinkTo from '../ui/ButtonLinkTo';
@@ -12,6 +11,7 @@ import FilepathDisplay from '../ui/FilepathDisplay';
 import OpenDirectoryDialogButton from '../ui/OpenDirectoryDialogButton';
 import ProgressBar from '../ui/ProgressBar';
 import SortButton from '../ui/SortButton';
+import { kStatusTypes } from '../utils/config';
 import { kAppName, kGitHubLink, kRoutes, kVersion } from '../utils/config';
 
 interface IArboristMainState {
@@ -68,21 +68,21 @@ export default class ArboristMain extends React.Component<{}, IArboristMainState
     // Check that our component is still mounted
     // We don't need any of these updates if we've moved on
     if (!this._isMounted) { return; }
-    if (Types.general === type) {
+    if (kStatusTypes.general === type) {
       this.updateConsoleOutput(data);
-    } else if (Types.copy_file_done === type) {
+    } else if (kStatusTypes.copy_file_done === type) {
       this.handleFileDone(data);
-    } else if (Types.copy_files_done === type) {
+    } else if (kStatusTypes.copy_files_done === type) {
       this.handleAllFilesDone(data);
-    } else if (Types.copy_files_start === type) {
+    } else if (kStatusTypes.copy_files_start === type) {
       this.handleFilesStart(data);
-    } else if (Types.copy_list_update === type) {
+    } else if (kStatusTypes.copy_list_update === type) {
       this.handleCopyListUpdate(data);
-    } else if (Types.error === type) {
+    } else if (kStatusTypes.error === type) {
       this.updateConsoleOutput(`ERROR: ${data}`);
-    } else if (Types.analysis === type) {
+    } else if (kStatusTypes.analysis === type) {
       this.handleAnalysis(data);
-    } else if (Types.xml_copy_done === type) {
+    } else if (kStatusTypes.xml_copy_done === type) {
       this.updateConsoleOutput('Associated XML files copied');
     }
   }
