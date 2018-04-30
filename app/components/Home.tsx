@@ -10,7 +10,7 @@ export default class Home extends React.Component {
 
           <div className="row">
             <div className="col-xs-12 col-sm-10 col-sm-offset-1 col-lg-8 col-lg-offset-2 text-center">
-              <h1 className="animated slideInLeft">Welcome to <span className="text-success">Arborist</span></h1>
+              <h1 className="animated slideInLeft">Welcome to <span className="text-success">Arborist v2.0</span></h1>
             </div>
           </div>
 
