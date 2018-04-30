@@ -72,7 +72,7 @@ app.on('ready', () =>
 
       if (process.platform === 'darwin') {
         template = [{
-          label: 'Electron',
+          label: 'Arborist',
           submenu: [{
             label: 'About Arborist',
             selector: 'orderFrontStandardAboutPanel:'
@@ -102,35 +102,6 @@ app.on('ready', () =>
             click() {
               app.quit();
             }
-          }]
-        }, {
-          label: 'Edit',
-          submenu: [{
-            label: 'Undo',
-            accelerator: 'Command+Z',
-            selector: 'undo:'
-          }, {
-            label: 'Redo',
-            accelerator: 'Shift+Command+Z',
-            selector: 'redo:'
-          }, {
-            type: 'separator'
-          }, {
-            label: 'Cut',
-            accelerator: 'Command+X',
-            selector: 'cut:'
-          }, {
-            label: 'Copy',
-            accelerator: 'Command+C',
-            selector: 'copy:'
-          }, {
-            label: 'Paste',
-            accelerator: 'Command+V',
-            selector: 'paste:'
-          }, {
-            label: 'Select All',
-            accelerator: 'Command+A',
-            selector: 'selectAll:'
           }]
         }, {
           label: 'View',
@@ -183,9 +154,9 @@ app.on('ready', () =>
               shell.openExternal('http://360bonsai.com/?utm_source=arboristv2');
             }
           }, {
-            label: 'Documentation',
+            label: 'Shop Bonsai',
             click() {
-              shell.openExternal('https://github.com/atom/electron/tree/master/docs#readme');
+              shell.openExternal('http://www.360bonsai.com/shop?utm_source=arboristv2');
             }
           }, {
             label: 'Search Issues',
@@ -245,9 +216,9 @@ app.on('ready', () =>
               shell.openExternal('http://360bonsai.com/?utm_source=arboristv2');
             }
           }, {
-            label: 'Documentation',
+            label: 'Shop Bonsai',
             click() {
-              shell.openExternal('https://github.com/atom/electron/tree/master/docs#readme');
+              shell.openExternal('http://www.360bonsai.com/shop?utm_source=arboristv2');
             }
           }, {
             label: 'Search Issues',
