@@ -12,6 +12,7 @@ import FilepathDisplay from '../ui/FilepathDisplay';
 import OpenDirectoryDialogButton from '../ui/OpenDirectoryDialogButton';
 import ProgressBar from '../ui/ProgressBar';
 import SortButton from '../ui/SortButton';
+import { kAppName, kVersion } from '../utils/config';
 
 interface IArboristMainState {
   console_output: string;
@@ -27,7 +28,7 @@ export default class ArboristMain extends React.Component<{}, IArboristMainState
     super(props);
     this.state = {
       // tslint:disable-next-line:max-line-length
-      console_output: 'Welcome to Arborist\nSelect the directory that contains your camera uploads in folders A, B, C, etc...',
+      console_output: `Welcome to ${kAppName} v${kVersion} \nSelect the directory that contains your camera uploads in folders A, B, C, D, etc...`,
       copy_list: [],
       dirs: [],
       filepath: '',

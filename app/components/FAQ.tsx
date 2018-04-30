@@ -1,5 +1,6 @@
 import * as React from 'react';
 import ButtonLinkTo from '../ui/ButtonLinkTo';
+import { kAppName } from '../utils/config';
 
 export default class FAQ extends React.Component {
   public render() {
@@ -15,7 +16,7 @@ export default class FAQ extends React.Component {
 
           <div className="row">
             <div className="col-xs-12 text-center">
-              <ButtonLinkTo to={'arborist'} btn_text={'Back to Arborist'} />
+              <ButtonLinkTo to={'/arborist'} btn_text={`Back to ${kAppName}`} />
             </div>
           </div>
 

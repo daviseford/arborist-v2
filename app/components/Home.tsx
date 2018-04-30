@@ -1,5 +1,7 @@
+// tslint:disable:max-line-length
 import * as React from 'react';
 import ButtonLinkTo from '../ui/ButtonLinkTo';
+import { kAppName, kVersion } from '../utils/config';
 // import icon_src from "./../img/arborist.png";
 
 export default class Home extends React.Component {
@@ -10,7 +12,7 @@ export default class Home extends React.Component {
 
           <div className="row">
             <div className="col-xs-12 col-sm-10 col-sm-offset-1 col-lg-8 col-lg-offset-2 text-center">
-              <h1 className="animated slideInLeft">Welcome to <span className="text-success">Arborist v2.0</span></h1>
+              <h1 className="animated slideInLeft">Welcome to <span className="text-success">{kAppName} v${kVersion}</span></h1>
             </div>
           </div>
 
