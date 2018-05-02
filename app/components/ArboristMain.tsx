@@ -1,5 +1,6 @@
 import * as path from 'path';
 import * as React from 'react';
+import { IArboristMainProps } from '../containers/ArboristMainPage';
 import { ICopyList } from '../definitions/copylist';
 import AnalyzeButton from '../ui/AnalyzeButton';
 import ButtonLinkTo from '../ui/ButtonLinkTo';
@@ -22,8 +23,10 @@ interface IArboristMainState {
   isSorted: boolean;
   isSorting: boolean;
 }
-export default class ArboristMain extends React.Component<{}, IArboristMainState> {
+// tslint:disable-next-line:max-line-length
+export default class ArboristMain extends React.Component<IArboristMainProps, IArboristMainState> {
   public _isMounted: boolean;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -43,13 +46,18 @@ export default class ArboristMain extends React.Component<{}, IArboristMainState
     this.handleSorterUpdates = this.handleSorterUpdates.bind(this);
     this.updateConsoleOutput = this.updateConsoleOutput.bind(this);
     this.updateFilepath = this.updateFilepath.bind(this);
+    this.handleAddCopyList = this.handleAddCopyList.bind(this);
   }
+
   public componentDidMount() {
     this._isMounted = true;
+    console.log('props', this.props);
   }
+
   public componentWillUnmount() {
     this._isMounted = false;
   }
+
   public updateFilepath(filepath: string, dirs: string[]) {
     this.setState({
       copy_list: [],
@@ -59,11 +67,13 @@ export default class ArboristMain extends React.Component<{}, IArboristMainState
       isSorting: false,
     });
   }
+
   public updateConsoleOutput(text) {
     const oldText = this.state.console_output;
     const newText = `${oldText}\n${text}`;
     this.setState({ console_output: newText });
   }
+
   public handleSorterUpdates(type, data) {
     // Check that our component is still mounted
     // We don't need any of these updates if we've moved on
@@ -86,23 +96,29 @@ export default class ArboristMain extends React.Component<{}, IArboristMainState
       this.updateConsoleOutput('Associated XML files copied');
     }
   }
-  public handleCopyListUpdate(data) {
+
+  public handleCopyListUpdate(data: ICopyList[]) {
     this.setState({ copy_list: data });
   }
-  public handleAnalysis(data) {
+
+  public handleAnalysis(data: ICopyList[]) {
     this.updateConsoleOutput(`Analysis complete. Check below for results.`);
     this.setState({ copy_list: data });
   }
-  public handleFilesStart(data) {
+
+  public handleFilesStart(data: ICopyList[]) {
     const total_transfer_size_gb = data.reduce((a, b) => b.filesize_gb + a, 0);
     this.updateConsoleOutput(`Now copying ${data.length} files... ${total_transfer_size_gb.toFixed(3)}gb`);
     this.setState({ isSorted: false, isSorting: true });
   }
-  public handleAllFilesDone(data) {
+
+  public handleAllFilesDone(data: ICopyList[]) {
     this.updateConsoleOutput('All done :) Enjoy!');
     this.setState({ isSorted: true, isSorting: false, copy_list: data });
   }
+
   public handleFileDone(data) {
+    console.log('make types for this', data);
     const filepath = data.filepath
       .split(path.sep)
       .slice(data.filepath.split(path.sep).length - 2)
@@ -113,6 +129,14 @@ export default class ArboristMain extends React.Component<{}, IArboristMainState
       .join(path.sep);
     this.updateConsoleOutput(`${filepath} --> ${dest}: Done!`);
   }
+
+  public handleAddCopyList(e) {
+    e.preventDefault(); // todo expand on this
+    // this.props.clearCopyList();
+    // this.props.updateCopyList([{a: 'b'}]);
+    // console.log(this.props.copy_list);
+  }
+
   public render() {
     return (
       <div className="col-xs-8 col-xs-offset-2" style={{ marginTop: '9%' }}>
@@ -160,6 +184,7 @@ export default class ArboristMain extends React.Component<{}, IArboristMainState
         <div className="row" style={{ marginTop: '2%' }}>
           <div className="col-xs-12 text-center">
             <div className="form-group">
+              <button onClick={this.handleAddCopyList}>susususu</button>
               <ButtonLinkTo to={kRoutes.ABOUT} btn_text={'About'} />
               <ButtonLinkTo to={kRoutes.FAQ} btn_text={'FAQ'} />
               <ButtonOpenExternal

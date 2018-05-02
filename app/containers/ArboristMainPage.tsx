@@ -1,27 +1,29 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-// import { bindActionCreators } from 'redux';
+import { bindActionCreators, Dispatch } from 'redux';
+import * as CopyListActions from '../actions/copy_list';
 import ArboristMain from '../components/ArboristMain';
 import { ICopyList } from '../definitions/copylist';
 import { IState } from '../reducers';
 
-interface IProps {
-  console_output: string;
+export interface IArboristMainProps {
+  addCopyList: (obj: ICopyList) => void;
+  updateCopyList: (obj: ICopyList[]) => void;
+  clearCopyList: () => void;
   copy_list: ICopyList[];
-  dirs: string[];
-  filepath: string;
-  isSorted: boolean;
-  isSorting: boolean;
+  counter: number;
 }
 
-const mapStateToProps = (state: IState): Partial<IProps> => {
+const mapStateToProps = (state: IState): Partial<IArboristMainProps> => {
   return {
-    // counter: state.counter,
+    copy_list: state.copy_list,
+    counter: state.counter,
   };
 };
 
-// const mapDispatchToProps = (dispatch: Dispatch<IState>): Partial<IProps> => {
-//   return bindActionCreators(CounterActions as any, dispatch);
-// };
+const mapDispatchToProps = (dispatch: Dispatch<IState>): Partial<IArboristMainProps> => {
+  return bindActionCreators(CopyListActions as any, dispatch);
+};
 
-export default (connect(mapStateToProps)(ArboristMain) as any as React.StatelessComponent<IProps>);
+// tslint:disable-next-line:max-line-length
+export default (connect(mapStateToProps, mapDispatchToProps)(ArboristMain) as any as React.StatelessComponent<IArboristMainProps>);
