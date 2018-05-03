@@ -8,7 +8,7 @@ import { IState } from '../reducers';
 
 export interface IArboristMainProps {
   addCopyList: (obj: ICopyList) => void;
-  updateCopyList: (obj: ICopyList[]) => void;
+  batchUpdateCopyList: (obj: ICopyList[]) => void;
   clearCopyList: () => void;
   copy_list: ICopyList[];
   counter: number;

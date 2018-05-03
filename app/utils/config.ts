@@ -1,3 +1,4 @@
+import { TPrimaryDirectory, TSecondaryDirectory } from '../definitions/directory';
 import { TStatusType } from '../definitions/status_types';
 
 export const kAppName = 'Arborist';
@@ -46,3 +47,6 @@ export const kStatusTypes: {[P in TStatusType]: TStatusType} = {
     xml_copy_done: 'xml_copy_done',
     xml_copy_start: 'xml_copy_start',
 };
+
+export const kDirectoryPrimary: TPrimaryDirectory = 'dir-primary';
+export const kDirectorySeconday: TSecondaryDirectory = 'dir-secondary';

@@ -5,9 +5,9 @@ export const addCopyList = (obj: ICopyList) => ({
   type: CopyActions.ADD_COPYLIST,
 });
 
-export const updateCopyList = (obj: ICopyList[]) => ({
+export const batchUpdateCopyList = (obj: ICopyList[]) => ({
   obj,
-  type: CopyActions.UPDATE_COPYLIST,
+  type: CopyActions.BATCH_UPDATE_COPYLIST,
 });
 
 export const clearCopyList = () => ({
@@ -16,8 +16,8 @@ export const clearCopyList = () => ({
 
 export const CopyActions = {
   ADD_COPYLIST: 'ADD_COPYLIST',
+  BATCH_UPDATE_COPYLIST: 'BATCH_UPDATE_COPYLIST',
   CLEAR_COPYLIST: 'CLEAR_COPYLIST',
-  UPDATE_COPYLIST: 'UPDATE_COPYLIST',
 };
 
 // export const setVisibilityFilter = filter => ({

@@ -7,7 +7,7 @@ const copy_lists = (state = [], action) => {
                 ...state,
                 action.obj,
             ];
-        case CopyActions.UPDATE_COPYLIST:   // Replaces the contents of copy_list
+        case CopyActions.BATCH_UPDATE_COPYLIST:   // Replaces the contents of copy_list
             return action.obj;
         case CopyActions.CLEAR_COPYLIST:    // Replaces copy_list with an empty array
             return [];
