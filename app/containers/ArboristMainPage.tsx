@@ -6,7 +6,6 @@ import { IApplicationState } from '../reducers/index';
 
 export interface IArboristMainProps {
   copy_list: ICopyList[];
-  counter: number;
   camera: { camera: string | null };
   dispatch: Function;
 }

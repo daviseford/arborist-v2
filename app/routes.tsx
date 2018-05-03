@@ -4,7 +4,7 @@ import AboutPage from './containers/AboutPage';
 import App from './containers/App';
 import ArboristMainPage from './containers/ArboristMainPage';
 import FAQPage from './containers/FAQPage';
-import HomePage from './containers/HomePage';
+import HomePage from './containers/HomePageNew';
 import { kRoutes } from './utils/config';
 
 export default () => (
