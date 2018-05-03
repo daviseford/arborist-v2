@@ -1,9 +1,19 @@
 // tslint:disable:max-line-length
 import * as React from 'react';
-
+import { addCamera } from '../actions/camera_actions';
+import { IHomeProps } from '../containers/HomePageNew';
 import { kAppName, kVersion } from '../utils/config';
 
-export default class Home extends React.Component {
+export default class Home extends React.Component<IHomeProps, {}> {
+  constructor(props) {
+    super(props);
+    this.handleCameraUpdate = this.handleCameraUpdate.bind(this);
+  }
+
+  public handleCameraUpdate(camera: string) {
+    this.props.dispatch(addCamera(camera));
+    console.log(this.props);
+  }
   public render() {
     return (
       <div className="container">
@@ -21,7 +31,10 @@ export default class Home extends React.Component {
 
           <div className="row">
             <div className="col-xs-8 col-xs-offset-2 text-center">
-
+              <NumCameraInput
+                handleCameraUpdate={this.handleCameraUpdate}
+                camera={this.props.camera.camera}
+              />
             </div>
           </div>
 
@@ -31,7 +44,19 @@ export default class Home extends React.Component {
   }
 }
 
-class NumCameraInput extends React.Component {
+interface INumCameraInputProps {
+  handleCameraUpdate: (camera: string) => void;
+  camera: string | null;
+}
+class NumCameraInput extends React.Component<INumCameraInputProps, {}> {
+  constructor(pProps) {
+    super(pProps);
+
+  }
+  public handleChange(e) {
+    const val = e.target.value || null;
+    this.props.handleCameraUpdate(val);
+  }
   public render() {
     return (
       <div className="form-group">
@@ -44,7 +69,7 @@ class NumCameraInput extends React.Component {
               className="form-control"
               id="dirNumInput"
               onChange={this.handleChange}
-              value={this.state.dirNum}
+              value={this.props.camera || ''}
             />
           </div>
         </div>

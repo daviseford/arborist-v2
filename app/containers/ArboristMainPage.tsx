@@ -1,29 +1,26 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { bindActionCreators, Dispatch } from 'redux';
-import * as CopyListActions from '../actions/copy_list';
 import ArboristMain from '../components/ArboristMain';
 import { ICopyList } from '../definitions/copylist';
-import { IState } from '../reducers';
+import { IApplicationState } from '../reducers/index';
 
 export interface IArboristMainProps {
-  addCopyList: (obj: ICopyList) => void;
-  batchUpdateCopyList: (obj: ICopyList[]) => void;
-  clearCopyList: () => void;
   copy_list: ICopyList[];
   counter: number;
+  camera: { camera: string | null };
+  dispatch: Function;
 }
 
-const mapStateToProps = (state: IState): Partial<IArboristMainProps> => {
+const mapStateToProps = (state: IApplicationState): Partial<IArboristMainProps> => {
   return {
+    camera: state.camera,
     copy_list: state.copy_list,
-    counter: state.counter,
   };
 };
 
-const mapDispatchToProps = (dispatch: Dispatch<IState>): Partial<IArboristMainProps> => {
-  return bindActionCreators(CopyListActions as any, dispatch);
-};
+// const mapDispatchToProps = (dispatch: Dispatch<IState>): Partial<IArboristMainProps> => {
+//   return bindActionCreators(CopyListActions as any, dispatch);
+// };
 
 // tslint:disable-next-line:max-line-length
-export default (connect(mapStateToProps, mapDispatchToProps)(ArboristMain) as any as React.StatelessComponent<IArboristMainProps>);
+export default (connect(mapStateToProps)(ArboristMain) as any as React.StatelessComponent<IArboristMainProps>);

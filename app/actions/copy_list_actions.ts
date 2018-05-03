@@ -2,19 +2,19 @@ import { ICopyList } from '../definitions/copylist';
 
 export const addCopyList = (obj: ICopyList) => ({
   obj,
-  type: CopyActions.ADD_COPYLIST,
+  type: CopyListActions.ADD_COPYLIST,
 });
 
 export const batchUpdateCopyList = (obj: ICopyList[]) => ({
   obj,
-  type: CopyActions.BATCH_UPDATE_COPYLIST,
+  type: CopyListActions.BATCH_UPDATE_COPYLIST,
 });
 
 export const clearCopyList = () => ({
-  type: CopyActions.CLEAR_COPYLIST,
+  type: CopyListActions.CLEAR_COPYLIST,
 });
 
-export const CopyActions = {
+export const CopyListActions = {
   ADD_COPYLIST: 'ADD_COPYLIST',
   BATCH_UPDATE_COPYLIST: 'BATCH_UPDATE_COPYLIST',
   CLEAR_COPYLIST: 'CLEAR_COPYLIST',
