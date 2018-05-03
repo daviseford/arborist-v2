@@ -1,11 +1,12 @@
 import { ManufacturerActions } from '../actions/manufacturer_actions';
 
-const defaultState = [{ manufacturer: null }];
+const defaultState = '';
+export type TManufacturerState = string;
 
-const manufacturerReducer = (state = defaultState, action) => {
+const manufacturerReducer = (state: TManufacturerState = defaultState, action) => {
     switch (action.type) {
         case ManufacturerActions.ADD_MANUFACTURER:
-            return [{ manufacturer: action.manufacturer }];
+            return action.manufacturer;
         case ManufacturerActions.REMOVE_MANUFACTURER:
             return defaultState;
         default:

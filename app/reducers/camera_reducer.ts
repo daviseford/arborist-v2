@@ -1,12 +1,13 @@
 import { CameraActions } from '../actions/camera_actions';
 
-const defaultState = [{ camera: null }];
-export interface ICameraState { camera: string | null; }
+const defaultState = '';
 
-const cameraReducer = (state: ICameraState[] = defaultState, action) => {
+export type TCameraState = string;
+
+const cameraReducer = (state: TCameraState = '', action) => {
     switch (action.type) {
         case CameraActions.ADD_CAMERA:
-            return [{ camera: action.camera }];
+            return action.camera;
         case CameraActions.REMOVE_CAMERA:
             return defaultState;
         default:

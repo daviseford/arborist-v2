@@ -2,10 +2,10 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import Home from '../components/HomeNew';
 import { IApplicationState } from '../reducers';
-import { ICameraState } from '../reducers/camera_reducer';
+import { TCameraState } from '../reducers/camera_reducer';
 
 export interface IHomeProps {
-  camera: ICameraState;
+  camera: TCameraState;
   dispatch: Function;
 }
 

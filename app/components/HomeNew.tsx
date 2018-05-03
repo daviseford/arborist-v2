@@ -2,6 +2,7 @@
 import * as React from 'react';
 import { addCamera } from '../actions/camera_actions';
 import { IHomeProps } from '../containers/HomePageNew';
+import { TCameraState } from '../reducers/camera_reducer';
 import { kAppName, kVersion } from '../utils/config';
 
 export default class Home extends React.Component<IHomeProps, {}> {
@@ -15,6 +16,7 @@ export default class Home extends React.Component<IHomeProps, {}> {
     console.log(this.props);
   }
   public render() {
+    console.log(this.props);
     return (
       <div className="container">
         <div className="row" style={{ marginTop: '7%' }}>
@@ -33,7 +35,7 @@ export default class Home extends React.Component<IHomeProps, {}> {
             <div className="col-xs-8 col-xs-offset-2 text-center">
               <NumCameraInput
                 handleCameraUpdate={this.handleCameraUpdate}
-                camera={this.props.camera.camera}
+                camera={this.props.camera}
               />
             </div>
           </div>
@@ -46,18 +48,18 @@ export default class Home extends React.Component<IHomeProps, {}> {
 
 interface INumCameraInputProps {
   handleCameraUpdate: (camera: string) => void;
-  camera: string | null;
+  camera: TCameraState;
 }
 class NumCameraInput extends React.Component<INumCameraInputProps, {}> {
   constructor(pProps) {
     super(pProps);
-
+    this.handleChange = this.handleChange.bind(this);
   }
   public handleChange(e) {
-    const val = e.target.value || null;
-    this.props.handleCameraUpdate(val);
+    this.props.handleCameraUpdate(e.target.value || '');
   }
   public render() {
+    console.log(this.props.camera);
     return (
       <div className="form-group">
         <div className="row">
@@ -69,7 +71,7 @@ class NumCameraInput extends React.Component<INumCameraInputProps, {}> {
               className="form-control"
               id="dirNumInput"
               onChange={this.handleChange}
-              value={this.props.camera || ''}
+              value={this.props.camera}
             />
           </div>
         </div>
