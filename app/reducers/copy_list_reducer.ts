@@ -1,4 +1,4 @@
-import { CopyActions } from '../actions/copy_list';
+import { CopyActions } from '../actions/copy_list_actions';
 
 const copy_lists = (state = [], action) => {
     switch (action.type) {

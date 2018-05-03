@@ -1,4 +1,4 @@
-import { decrement, increment } from '../actions/counter';
+import { decrement, increment } from '../actions/counter_actions';
 import { IAction } from '../actions/helpers';
 
 export type TState = number;

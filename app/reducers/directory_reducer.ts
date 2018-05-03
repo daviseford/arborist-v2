@@ -2,7 +2,7 @@ import { DirectoryOptions } from '../actions/directory_actions';
 import { TPrimaryDirectory, TSecondaryDirectory } from '../definitions/directory';
 import { kDirectoryPrimary, kDirectorySeconday } from '../utils/config';
 
-interface IDirState { type: TPrimaryDirectory | TSecondaryDirectory; dir: string; }
+export interface IDirState { type: TPrimaryDirectory | TSecondaryDirectory; dir: string; }
 
 const directoryReducer = (state: IDirState[] = [], action) => {
     switch (action.type) {
