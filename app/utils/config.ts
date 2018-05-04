@@ -56,8 +56,8 @@ export const kDefaultCameraNumber = 4;
 export const kMaxCameraNumber = 10;
 
 export const kCameraManufacturers: IManufacturerConfig = {
-    SAMSUNG_FAKE: {
-        name: 'Samsung (Fake)',
+    SAMSUNG_MOCK: {
+        name: 'Samsung (Mock)',
         supported_models: ['FAKE_MODEL'],
     },
     SONY: {

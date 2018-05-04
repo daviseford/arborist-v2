@@ -1,19 +1,25 @@
 // tslint:disable:max-line-length
 import * as React from 'react';
-import { addCameraNumber } from '../actions/camera_actions';
+import { addCameraManufacturer, addCameraNumber } from '../actions/camera_actions';
 import { IHomeProps } from '../containers/HomePage';
 import { ICameraState } from '../reducers/camera_reducer';
-import { kAppName, kDefaultCameraNumber, kMaxCameraNumber, kVersion } from '../utils/config';
+import { kAppName, kCameraManufacturers, kDefaultCameraNumber, kMaxCameraNumber, kVersion } from '../utils/config';
 
 export default class Home extends React.Component<IHomeProps, {}> {
   constructor(props) {
     super(props);
-    this.handleCameraUpdate = this.handleCameraUpdate.bind(this);
+    this.handleCameraNumberUpdate = this.handleCameraNumberUpdate.bind(this);
+    this.handleCameraManufacturerUpdate = this.handleCameraManufacturerUpdate.bind(this);
   }
 
-  public handleCameraUpdate(number: number) {
+  public handleCameraNumberUpdate(number: number) {
     this.props.dispatch(addCameraNumber(number));
   }
+
+  public handleCameraManufacturerUpdate(manufacturer: string) {
+    this.props.dispatch(addCameraManufacturer(manufacturer));
+  }
+
   public render() {
     console.log(this.props);
     return (
@@ -29,8 +35,12 @@ export default class Home extends React.Component<IHomeProps, {}> {
 
           <div className="col-6 offset-3 align-self-center">
             <NumCameraInput
-              handleCameraUpdate={this.handleCameraUpdate}
+              updateCameraNumber={this.handleCameraNumberUpdate}
               number={this.props.camera.number}
+            />
+            <CameraManufacturerInput
+              updateCameraManufacturer={this.handleCameraManufacturerUpdate}
+              manufacturer={this.props.camera.manufacturer}
             />
           </div>
 
@@ -41,7 +51,7 @@ export default class Home extends React.Component<IHomeProps, {}> {
 }
 
 interface INumCameraInputProps {
-  handleCameraUpdate: (number: number | null) => void;
+  updateCameraNumber: (number: number | null) => void;
   number: ICameraState['number'];
 }
 class NumCameraInput extends React.Component<INumCameraInputProps, {}> {
@@ -54,7 +64,7 @@ class NumCameraInput extends React.Component<INumCameraInputProps, {}> {
     if (val && val > kMaxCameraNumber) {
       val = kMaxCameraNumber;
     }
-    this.props.handleCameraUpdate(val);
+    this.props.updateCameraNumber(val);
   }
   public render() {
     return (
@@ -82,6 +92,44 @@ class NumCameraInput extends React.Component<INumCameraInputProps, {}> {
               value={this.props.number || ''}
             />
           </div>
+        </div>
+      </div>
+    );
+  }
+}
+
+interface IManufacturerProps {
+  updateCameraManufacturer: Function;
+  manufacturer: ICameraState['manufacturer'];
+}
+class CameraManufacturerInput extends React.Component<IManufacturerProps, {}> {
+  constructor(pProps) {
+    super(pProps);
+    this.handleChange = this.handleChange.bind(this);
+  }
+  public handleChange(e) {
+    this.props.updateCameraManufacturer(e.target.value);
+  }
+  public render() {
+    return (
+      <div className="form-group row">
+        <label htmlFor="manufacturer" className="col-6 col-form-label small text-right">
+          Manufacturer
+          </label>
+        <div className="col-6">
+          <select
+            className="custom-select d-block w-100"
+            id="manufacturer"
+            onChange={this.handleChange}
+            required
+          >
+            {
+              Object.keys(kCameraManufacturers).map((m, i) => (
+                <option key={i} value={m}>{kCameraManufacturers[m].name}</option>
+              ))
+            }
+          </select>
+
         </div>
       </div>
     );
