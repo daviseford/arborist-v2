@@ -1,9 +1,10 @@
 // tslint:disable:max-line-length
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 import { addCameraManufacturer, addCameraNumber } from '../actions/camera_actions';
 import { IHomeProps } from '../containers/HomePage';
 import { ICameraState } from '../reducers/camera_reducer';
-import { kAppName, kCameraManufacturers, kDefaultCameraNumber, kMaxCameraNumber, kVersion } from '../utils/config';
+import { kAppName, kCameraManufacturers, kMaxCameraNumber, kRoutes, kVersion } from '../utils/config';
 
 export default class Home extends React.Component<IHomeProps, {}> {
   constructor(props) {
@@ -25,25 +26,43 @@ export default class Home extends React.Component<IHomeProps, {}> {
     return (
       <div className="container">
 
-        <div className="row mt-5">
-          <div className="col-12 text-center">
-            <h4 className="animated slideInLeft">
-              Hey, welcome to <span className="text-success">{kAppName} v{kVersion}</span>
-            </h4>
-            <p>To get started, let's find out what you're working with. </p>
-          </div>
+        <Header />
 
-          <div className="col-6 offset-3 align-self-center">
-            <NumCameraInput
-              updateCameraNumber={this.handleCameraNumberUpdate}
-              number={this.props.camera.number}
-            />
-            <CameraManufacturerInput
-              updateCameraManufacturer={this.handleCameraManufacturerUpdate}
-              manufacturer={this.props.camera.manufacturer}
-            />
+        <div className="row mt-3">
+          <div className="col-8 offset-3 align-self-center">
+            <NumCameraInput updateCameraNumber={this.handleCameraNumberUpdate} number={this.props.camera.number} />
+            <CameraManufacturerInput updateCameraManufacturer={this.handleCameraManufacturerUpdate} manufacturer={this.props.camera.manufacturer} />
           </div>
+        </div>
 
+        <NextButton {...this.props.camera} />
+
+      </div>
+    );
+  }
+}
+
+class NextButton extends React.Component<ICameraState, {}> {
+  public render() {
+    return (
+      <div className="row justify-content-center" hidden={!this.props.number || !this.props.manufacturer}>
+        <Link className="btn btn-success m-2" to={kRoutes.ARBORIST}>
+          Next <i className="fa fa-pagelines" aria-hidden="true"></i>
+        </Link>
+      </div>
+    );
+  }
+}
+
+class Header extends React.PureComponent {
+  public render() {
+    return (
+      <div className="row mt-5">
+        <div className="col-12 text-center">
+          <h4 className="animated slideInLeft">
+            Hey, welcome to <span className="text-success">{kAppName} v{kVersion}</span>
+          </h4>
+          <p>To get started, let's find out what you're working with. </p>
         </div>
       </div>
     );
@@ -69,10 +88,10 @@ class NumCameraInput extends React.Component<INumCameraInputProps, {}> {
   public render() {
     return (
       <div className="form-group row">
-        <label htmlFor="cameras" className="col-6 col-form-label small text-right">
-          # of Cameras
+        <label htmlFor="cameras" className="col-3 col-form-label text-right">
+          Cameras:
           </label>
-        <div className="col-4">
+        <div className="col-6">
           <div className="input-group">
 
             <div className="input-group-prepend">
@@ -84,10 +103,9 @@ class NumCameraInput extends React.Component<INumCameraInputProps, {}> {
             <input
               id="cameras"
               name="cameras"
-              placeholder={`${kDefaultCameraNumber}`}
               type="number"
+              placeholder="Number of cameras"
               className="form-control here"
-              required
               onChange={this.handleChange}
               value={this.props.number || ''}
             />
@@ -107,31 +125,52 @@ class CameraManufacturerInput extends React.Component<IManufacturerProps, {}> {
     super(pProps);
     this.handleChange = this.handleChange.bind(this);
   }
+
+  public componentDidMount() {
+    const m = Object.keys(kCameraManufacturers)[0];
+    this.props.updateCameraManufacturer(m);
+  }
   public handleChange(e) {
     this.props.updateCameraManufacturer(e.target.value);
   }
   public render() {
     return (
       <div className="form-group row">
-        <label htmlFor="manufacturer" className="col-6 col-form-label small text-right">
-          Manufacturer
+        <label htmlFor="manufacturer" className="col-3 col-form-label text-right">
+          Manufacturer:
           </label>
         <div className="col-6">
           <select
             className="custom-select d-block w-100"
             id="manufacturer"
             onChange={this.handleChange}
-            required
           >
             {
-              Object.keys(kCameraManufacturers).map((m, i) => (
-                <option key={i} value={m}>{kCameraManufacturers[m].name}</option>
-              ))
+              Object.keys(kCameraManufacturers).map((m, i) => {
+                return (<option key={i} value={m}>{kCameraManufacturers[m].name}</option>);
+              })
             }
           </select>
 
         </div>
+        <div className="col-12 text-center">
+          <SupportedModels manufacturer={this.props.manufacturer} />
+        </div>
       </div>
+    );
+  }
+}
+
+class SupportedModels extends React.Component<{ manufacturer: ICameraState['manufacturer']; }, {}> {
+  public render() {
+    return (
+      <small className="text-muted">
+        {
+          this.props.manufacturer ?
+            `Supported models: ${kCameraManufacturers[this.props.manufacturer].supported_models.join(', ')}`
+            : null
+        }
+      </small>
     );
   }
 }
