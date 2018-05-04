@@ -1,32 +1,87 @@
 // tslint:disable:max-line-length
 import * as React from 'react';
-import ButtonLinkTo from '../ui/ButtonLinkTo';
-import { kAppName, kRoutes, kVersion } from '../utils/config';
+import { addCameraNumber } from '../actions/camera_actions';
+import { IHomeProps } from '../containers/HomePage';
+import { ICameraState } from '../reducers/camera_reducer';
+import { kAppName, kDefaultCameraNumber, kMaxCameraNumber, kVersion } from '../utils/config';
 
-export default class Home extends React.Component {
+export default class Home extends React.Component<IHomeProps, {}> {
+  constructor(props) {
+    super(props);
+    this.handleCameraUpdate = this.handleCameraUpdate.bind(this);
+  }
+
+  public handleCameraUpdate(number: number) {
+    this.props.dispatch(addCameraNumber(number));
+  }
   public render() {
+    console.log(this.props);
     return (
       <div className="container">
-        <div className="row" style={{ marginTop: '7%' }}>
 
-          <div className="row">
-            <div className="col-xs-12 col-sm-10 col-sm-offset-1 col-lg-8 col-lg-offset-2 text-center">
-              <h1 className="animated slideInLeft">Welcome to <span className="text-success">{kAppName} v{kVersion}</span></h1>
-            </div>
+        <div className="row mt-5">
+          <div className="col-12 text-center">
+            <h4 className="animated slideInLeft">
+              Hey, welcome to <span className="text-success">{kAppName} v{kVersion}</span>
+            </h4>
+            <p>To get started, let's find out what you're working with. </p>
           </div>
 
-          <div className="row">
-            <div className="col-xs-8 col-xs-offset-2 animated zoomIn">
-              <img className="img-responsive center-block iconPic" />
-            </div>
+          <div className="col-6 offset-3 align-self-center">
+            <NumCameraInput
+              handleCameraUpdate={this.handleCameraUpdate}
+              number={this.props.camera.number}
+            />
           </div>
 
-          <div className="row">
-            <div className="col-xs-8 col-xs-offset-2 text-center">
-              <ButtonLinkTo to={kRoutes.ARBORIST} btn_class={'btn btn-lg btn-success'} btn_text={'Get Started'} />
-            </div>
-          </div>
+        </div>
+      </div>
+    );
+  }
+}
 
+interface INumCameraInputProps {
+  handleCameraUpdate: (number: number | null) => void;
+  number: ICameraState['number'];
+}
+class NumCameraInput extends React.Component<INumCameraInputProps, {}> {
+  constructor(pProps) {
+    super(pProps);
+    this.handleChange = this.handleChange.bind(this);
+  }
+  public handleChange(e) {
+    let val = e.target.value ? parseInt(e.target.value, 10) : null;
+    if (val && val > kMaxCameraNumber) {
+      val = kMaxCameraNumber;
+    }
+    this.props.handleCameraUpdate(val);
+  }
+  public render() {
+    return (
+      <div className="form-group row">
+        <label htmlFor="cameras" className="col-6 col-form-label small text-right">
+          # of Cameras
+          </label>
+        <div className="col-4">
+          <div className="input-group">
+
+            <div className="input-group-prepend">
+              <span className="input-group-text">
+                <i className="fa fa-camera-retro"></i>
+              </span>
+            </div>
+
+            <input
+              id="cameras"
+              name="cameras"
+              placeholder={`${kDefaultCameraNumber}`}
+              type="number"
+              className="form-control here"
+              required
+              onChange={this.handleChange}
+              value={this.props.number || ''}
+            />
+          </div>
         </div>
       </div>
     );

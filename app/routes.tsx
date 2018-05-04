@@ -4,7 +4,7 @@ import AboutPage from './containers/AboutPage';
 import App from './containers/App';
 import ArboristMainPage from './containers/ArboristMainPage';
 import FAQPage from './containers/FAQPage';
-import HomePage from './containers/HomePageNew';
+import HomePage from './containers/HomePage';
 import { kRoutes } from './utils/config';
 
 export default () => (
@@ -18,7 +18,7 @@ export default () => (
       {
         // Fallback route in case our router gets messed up
       }
-      <Route path="*" component={HomePage} />
+      <Route path={kRoutes.WILDCARD} component={HomePage} />
     </Switch>
   </App>
 );

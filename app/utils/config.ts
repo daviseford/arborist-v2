@@ -1,3 +1,4 @@
+import { IManufacturerConfig, IPeopleConfig } from '../definitions/config';
 import { TPrimaryDirectory, TSecondaryDirectory } from '../definitions/directory';
 import { TStatusType } from '../definitions/status_types';
 
@@ -12,9 +13,10 @@ export const kRoutes = {
     ARBORIST: '/arborist',
     FAQ: '/faq',
     ROOT: '/',
+    WILDCARD: '*',
 };
 
-export const kPeople = {
+export const kPeople: IPeopleConfig = {
     BRAUM: {
         first_name: 'Braum',
         full_name: 'Braum Katz',
@@ -35,7 +37,7 @@ export const kPeople = {
     },
 };
 
-export const kStatusTypes: {[P in TStatusType]: TStatusType} = {
+export const kStatusTypes: { [P in TStatusType]: TStatusType } = {
     analysis: 'analysis',
     copy_file_done: 'copy_file_done',
     copy_file_start: 'copy_file_start',
@@ -52,3 +54,14 @@ export const kDirectoryPrimary: TPrimaryDirectory = 'dir-primary';
 export const kDirectorySeconday: TSecondaryDirectory = 'dir-secondary';
 export const kDefaultCameraNumber = 4;
 export const kMaxCameraNumber = 10;
+
+export const kCameraManufacturers: IManufacturerConfig = {
+    SAMSUNG_FAKE: {
+        name: 'Samsung (Fake)',
+        supported_models: ['FAKE_MODEL'],
+    },
+    SONY: {
+        name: 'Sony',
+        supported_models: ['ILCE-7SM2'],
+    },
+};
