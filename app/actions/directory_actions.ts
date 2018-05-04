@@ -1,16 +1,16 @@
 
-export const addPrimaryDirectory = (dir: string) => ({
-  dir,
+export const addPrimaryDirectory = (index: number) => ({
+  index,
   type: DirectoryActions.ADD_PRIMARY_DIRECTORY,
 });
 
-export const addSecondaryDirectory = (dir: string) => ({
-  dir,
+export const addSecondaryDirectory = (index: number) => ({
+  index,
   type: DirectoryActions.ADD_SECONDARY_DIRECTORY,
 });
 
-export const removeDirectory = (dir: string) => ({
-  dir,
+export const removeDirectory = (index: number) => ({
+  index,
   type: DirectoryActions.REMOVE_DIRECTORY,
 });
 

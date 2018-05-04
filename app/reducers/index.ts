@@ -3,19 +3,19 @@ import { combineReducers, Reducer } from 'redux';
 import { ICopyList } from '../definitions/copylist';
 import camera, { ICameraState } from './camera_reducer';
 import copy_list from './copy_list_reducer';
-import directory, { IDirState } from './directory_reducer';
+import directories, { IDirState } from './directory_reducer';
 
 const rootReducer = combineReducers({
   camera,
   copy_list,
-  directory,
+  directories,
   routing: routing as Reducer<any>,
 });
 
 export interface IApplicationState {
   camera: ICameraState;
   copy_list: ICopyList[];
-  directory: IDirState[];
+  directories: IDirState[];
 }
 
 export default rootReducer;

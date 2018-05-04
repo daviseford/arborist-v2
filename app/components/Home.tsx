@@ -2,6 +2,7 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { addCameraManufacturer, addCameraNumber } from '../actions/camera_actions';
+import { addPrimaryDirectory, addSecondaryDirectory } from '../actions/directory_actions';
 import { IHomeProps } from '../containers/HomePage';
 import { ICameraState } from '../reducers/camera_reducer';
 import { kAppName, kCameraManufacturers, kMaxCameraNumber, kRoutes, kVersion } from '../utils/config';
@@ -11,6 +12,7 @@ export default class Home extends React.Component<IHomeProps, {}> {
     super(props);
     this.handleCameraNumberUpdate = this.handleCameraNumberUpdate.bind(this);
     this.handleCameraManufacturerUpdate = this.handleCameraManufacturerUpdate.bind(this);
+    this.handleDirectoryInitialization = this.handleDirectoryInitialization.bind(this);
   }
 
   public handleCameraNumberUpdate(number: number) {
@@ -19,6 +21,15 @@ export default class Home extends React.Component<IHomeProps, {}> {
 
   public handleCameraManufacturerUpdate(manufacturer: string) {
     this.props.dispatch(addCameraManufacturer(manufacturer));
+  }
+
+  public handleDirectoryInitialization() {
+    if (this.props.camera.number) {
+      for (let i = 0; i < this.props.camera.number; i++) {
+        const fn = i === 0 ? addPrimaryDirectory : addSecondaryDirectory;
+        this.props.dispatch(fn(i));
+      }
+    }
   }
 
   public render() {
@@ -35,18 +46,24 @@ export default class Home extends React.Component<IHomeProps, {}> {
           </div>
         </div>
 
-        <NextButton {...this.props.camera} />
+        <NextButton {...this.props.camera} initializeDirectories={this.handleDirectoryInitialization} />
 
       </div>
     );
   }
 }
 
-class NextButton extends React.Component<ICameraState, {}> {
+interface INextButtonProps {
+  manufacturer: string;
+  model: string;
+  number: number | null;
+  initializeDirectories: Function;
+}
+class NextButton extends React.Component<INextButtonProps, {}> {
   public render() {
     return (
       <div className="row justify-content-center" hidden={!this.props.number || !this.props.manufacturer}>
-        <Link className="btn btn-success m-2" to={kRoutes.ARBORIST}>
+        <Link className="btn btn-success m-2" to={kRoutes.DIRECTORIES} onClick={() => this.props.initializeDirectories()}>
           Next <i className="fa fa-pagelines" aria-hidden="true"></i>
         </Link>
       </div>

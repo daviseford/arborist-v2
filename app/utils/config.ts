@@ -11,6 +11,7 @@ export const kVersion = require('./../package.json').version;
 export const kRoutes = {
     ABOUT: '/about',
     ARBORIST: '/arborist',
+    DIRECTORIES: '/directories',
     FAQ: '/faq',
     ROOT: '/',
     WILDCARD: '*',
