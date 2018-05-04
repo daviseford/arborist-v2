@@ -2,7 +2,7 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { addCameraManufacturer, addCameraNumber } from '../actions/camera_actions';
-import { addPrimaryDirectory, addSecondaryDirectory } from '../actions/directory_actions';
+import { addPrimaryDirectory, addSecondaryDirectory, clearDirectories } from '../actions/directory_actions';
 import { IHomeProps } from '../containers/HomePage';
 import { ICameraState } from '../reducers/camera_reducer';
 import { kAppName, kCameraManufacturers, kMaxCameraNumber, kRoutes, kVersion } from '../utils/config';
@@ -25,6 +25,7 @@ export default class Home extends React.Component<IHomeProps, {}> {
 
   public handleDirectoryInitialization() {
     if (this.props.camera.number) {
+      this.props.dispatch(clearDirectories());
       for (let i = 0; i < this.props.camera.number; i++) {
         const fn = i === 0 ? addPrimaryDirectory : addSecondaryDirectory;
         this.props.dispatch(fn(i));
