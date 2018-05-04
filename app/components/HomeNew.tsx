@@ -62,11 +62,11 @@ class NumCameraInput extends React.Component<INumCameraInputProps, {}> {
     console.log(this.props.camera);
     return (
       <div className="form-group">
-        <div className="row">
-          <div className="col-xs-8 col-sm-3">
-            <label htmlFor="dirNumInput" className="small"> How many cameras? </label>
+        <div className="row text-center">
+          <div className="col-xs-3">
+            <label htmlFor="dirNumInput" className="small">How many cameras?</label>
           </div>
-          <div className="col-xs-4 col-sm-4">
+          <div className="col-xs-4">
             <input
               className="form-control"
               id="dirNumInput"
