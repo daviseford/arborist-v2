@@ -1,11 +1,6 @@
-import { DirectoryActions } from '../actions/directory_actions';
-import { TPrimaryDirectory, TSecondaryDirectory } from '../definitions/directory';
 import { kDirectoryPrimary, kDirectorySeconday } from '../utils/config';
-
-export interface IDirState {
-    type: TPrimaryDirectory | TSecondaryDirectory;
-     index: number;
-    }
+import { DirectoryActions } from './../actions/directory_actions';
+import { IDirState } from './../definitions/state';
 
 const directoryReducer = (state: IDirState[] = [], action) => {
     switch (action.type) {
@@ -21,6 +16,14 @@ const directoryReducer = (state: IDirState[] = [], action) => {
             return [
                 ...secondary_filter,
                 { type: kDirectorySeconday, index: action.index },
+            ];
+        case DirectoryActions.UPDATE_DIRECTORY:
+            const update_dir = state.filter(x => x.index === action.directory.index)[0];
+            const others = state.filter(x => x.index !== action.index);
+            console.log({ ...update_dir, ...action.directory });
+            return [
+                ...others,
+                { ...update_dir, ...action.directory },
             ];
         case DirectoryActions.REMOVE_DIRECTORY:
             const remove_filter = state.filter(x => x.index !== action.index);

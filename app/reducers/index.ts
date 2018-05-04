@@ -1,9 +1,10 @@
 import { routerReducer as routing } from 'react-router-redux';
 import { combineReducers, Reducer } from 'redux';
 import { ICopyList } from '../definitions/copylist';
-import camera, { ICameraState } from './camera_reducer';
+import { ICameraState, IDirState } from '../definitions/state';
+import camera from './camera_reducer';
 import copy_list from './copy_list_reducer';
-import directories, { IDirState } from './directory_reducer';
+import directories from './directory_reducer';
 
 const rootReducer = combineReducers({
   camera,

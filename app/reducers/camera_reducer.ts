@@ -1,12 +1,7 @@
 import { CameraActions } from '../actions/camera_actions';
+import { ICameraState } from './../definitions/state';
 
 const defaultState = { model: '', number: null, manufacturer: '' };
-
-export interface ICameraState {
-    manufacturer: string;
-    model: string;
-    number: number | null;
-}
 
 const cameraReducer = (state: ICameraState = defaultState, action) => {
     switch (action.type) {

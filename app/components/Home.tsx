@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { addCameraManufacturer, addCameraNumber } from '../actions/camera_actions';
 import { addPrimaryDirectory, addSecondaryDirectory, clearDirectories } from '../actions/directory_actions';
 import { IHomeProps } from '../containers/HomePage';
-import { ICameraState } from '../reducers/camera_reducer';
+import { ICameraState } from '../definitions/state';
 import { kAppName, kCameraManufacturers, kMaxCameraNumber, kRoutes, kVersion } from '../utils/config';
 
 export default class Home extends React.Component<IHomeProps, {}> {

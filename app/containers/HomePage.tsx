@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import Home from '../components/Home';
+import { ICameraState } from '../definitions/state';
 import { IApplicationState } from '../reducers';
-import { ICameraState } from '../reducers/camera_reducer';
 
 export interface IHomeProps {
   camera: ICameraState;

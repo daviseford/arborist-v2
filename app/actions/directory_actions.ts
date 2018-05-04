@@ -1,3 +1,4 @@
+import { IDirState } from '../definitions/state';
 
 export const addPrimaryDirectory = (index: number) => ({
   index,
@@ -7,6 +8,11 @@ export const addPrimaryDirectory = (index: number) => ({
 export const addSecondaryDirectory = (index: number) => ({
   index,
   type: DirectoryActions.ADD_SECONDARY_DIRECTORY,
+});
+
+export const updateDirectory = (directory: IDirState) => ({
+  directory,
+  type: DirectoryActions.UPDATE_DIRECTORY,
 });
 
 export const removeDirectory = (index: number) => ({
@@ -23,4 +29,5 @@ export const DirectoryActions = {
   ADD_SECONDARY_DIRECTORY: 'ADD_SECONDARY_DIRECTORY',
   CLEAR_DIRECTORIES: 'CLEAR_DIRECTORIES',
   REMOVE_DIRECTORY: 'REMOVE_DIRECTORY',
+  UPDATE_DIRECTORY: 'UPDATE_DIRECTORY',
 };

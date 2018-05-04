@@ -2,7 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import ArboristMain from '../components/ArboristMain';
 import { ICopyList } from '../definitions/copylist';
-import { ICameraState } from '../reducers/camera_reducer';
+import { ICameraState } from '../definitions/state';
 import { IApplicationState } from '../reducers/index';
 
 export interface IArboristMainProps {
