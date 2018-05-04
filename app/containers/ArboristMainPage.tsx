@@ -2,12 +2,12 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import ArboristMain from '../components/ArboristMain';
 import { ICopyList } from '../definitions/copylist';
-import { TCameraState } from '../reducers/camera_reducer';
+import { ICameraState } from '../reducers/camera_reducer';
 import { IApplicationState } from '../reducers/index';
 
 export interface IArboristMainProps {
   copy_list: ICopyList[];
-  camera: TCameraState;
+  camera: ICameraState;
   dispatch: Function;
 }
 

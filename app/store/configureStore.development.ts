@@ -7,7 +7,6 @@ import rootReducer from '../reducers';
 import { CameraActions } from './../actions/camera_actions';
 import { CopyListActions } from './../actions/copy_list_actions';
 import { DirectoryActions } from './../actions/directory_actions';
-import { ManufacturerActions } from './../actions/manufacturer_actions';
 
 declare const window: Window & {
   __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?(a: any): void;
@@ -20,7 +19,6 @@ declare const module: NodeModule & {
 };
 
 const actionCreators = Object.assign({},
-  ManufacturerActions,
   DirectoryActions,
   CopyListActions,
   CameraActions,
