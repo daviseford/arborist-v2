@@ -18,13 +18,10 @@ const directoryReducer = (state: IDirState[] = [], action) => {
                 { type: kDirectorySeconday, index: action.index },
             ];
         case DirectoryActions.UPDATE_DIRECTORY:
-            const update_dir = state.filter(x => x.index === action.directory.index)[0];
-            const others = state.filter(x => x.index !== action.index);
-            console.log({ ...update_dir, ...action.directory });
-            return [
-                ...others,
-                { ...update_dir, ...action.directory },
-            ];
+            const dir_index = state.findIndex(x => x.index === action.directory.index);
+            const new_state = [...state];
+            new_state[dir_index] = action.directory;
+            return new_state;
         case DirectoryActions.REMOVE_DIRECTORY:
             const remove_filter = state.filter(x => x.index !== action.index);
             return [

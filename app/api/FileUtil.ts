@@ -4,7 +4,7 @@ import * as path from 'path';
 
 export const getDirectories_sync = (filepath: string): string[] => {
   return fs.readdirSync(filepath).filter(dir => {
-    return fs.statSync(path.join(filepath, dir)).isDirectory() && isGoodDirName(dir);
+    return fs.statSync(path.join(filepath, dir)).isDirectory();
   });
 };
 
@@ -51,11 +51,6 @@ const bytes_to_gb = (size_in_bytes: number): number => {
   const fileSizeInMegabytes = size_in_bytes / 1000000.0;
   const fileSizeInGigabytes = fileSizeInMegabytes / 1000;
   return fileSizeInGigabytes;
-};
-
-const isGoodDirName = (dirname: string): boolean => {
-  const isOneChar = dirname.length === 1;
-  return !hasBadChar(dirname) && isOneChar;
 };
 
 const hasBadChar = (name: string): boolean => ['.', '_', '~'].some(x => x === name.split('')[0]);
