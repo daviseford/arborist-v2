@@ -8,9 +8,8 @@ export interface IFileInfo {
 export interface IDirState {
     type: TPrimaryDirectory | TSecondaryDirectory;
     index: number;
-    path?: string;
-    files?: IFileInfo[];
-
+    path: string;
+    files: IFileInfo[];
 }
 
 export interface ICameraState {

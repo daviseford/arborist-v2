@@ -8,6 +8,14 @@ export const getDirectories_sync = (filepath: string): string[] => {
   });
 };
 
+export const getMixedFilesSync = (filepath: string): string[] => {
+  return fs.readdirSync(filepath).filter(file => {
+    const check1 = fs.statSync(path.join(filepath, file)).isFile();
+    const check2 = (file.toUpperCase().endsWith('.MP4') || file.toUpperCase().endsWith('.XML'));
+    return check1 && check2 && !hasBadChar(file);
+  });
+};
+
 export const getMP4FilesSync = (filepath: string): string[] => {
   return fs.readdirSync(filepath).filter(file => {
     return fs.statSync(path.join(filepath, file)).isFile() && file.toUpperCase().includes('.MP4') && !hasBadChar(file);
@@ -47,10 +55,15 @@ export const getFilesizeInGigabytes = (filepath: string, callback: (err: any, gb
   });
 };
 
-const bytes_to_gb = (size_in_bytes: number): number => {
+export const bytes_to_gb = (size_in_bytes: number): number => {
   const fileSizeInMegabytes = size_in_bytes / 1000000.0;
   const fileSizeInGigabytes = fileSizeInMegabytes / 1000;
   return fileSizeInGigabytes;
 };
 
 const hasBadChar = (name: string): boolean => ['.', '_', '~'].some(x => x === name.split('')[0]);
+
+export const getDirNameFromFilepath = (filepath: string): string => {
+  const p = filepath.split(path.sep);
+  return p[p.length - 1];
+};

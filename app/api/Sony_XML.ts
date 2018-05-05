@@ -2,6 +2,7 @@ import * as async from 'async';
 import * as fs from 'fs';
 import * as xml2js from 'xml2js';
 import { IBasicSorterEntry, IParsedSonyXMLObject, ISonyXMLObj, ISorterEntry } from '../definitions/sony_xml';
+import { IFileInfo } from '../definitions/state';
 import { getFilesizeInGigabytes } from './FileUtil';
 
 /**
@@ -85,4 +86,9 @@ export const convertFilenameToXML = (filename: string): string => {
     file = file.split('.')[0];
   }
   return `${file}M01.XML`;
+};
+
+export const getAssociatedXMLFile = (mp4_filename: string, files: IFileInfo[]): IFileInfo | null => {
+  const match = files.find(x => convertFilenameToXML(mp4_filename) === x.filename);
+  return match ? match : null;
 };
