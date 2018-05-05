@@ -36,13 +36,13 @@ export default class Directories extends React.Component<IDirectoriesProps, {}> 
 
 const SecondaryDirText = () => (
     <p className="card-text">
-        This is a <strong>secondary</strong> directory.
+        This is a <strong>secondary</strong> camera folder.
     </p>
 );
 
 const PrimaryDirText = () => (
     <p className="card-text">
-        This is your <strong>primary</strong> directory. It is the source of truth for matching files.
+        This is your <strong>primary</strong> camera folder.
     </p>
 );
 
@@ -58,24 +58,25 @@ class DirectoryCard extends React.PureComponent<IDirectoryCardProps, any> {
 
     public render() {
         console.log(this.props);
+        const dir_path = this.props.directory.path;
         return (
             <div className="card col-5 mx-2 mt-2">
                 <div className="card-body">
                     <h5 className="card-title">
-                        {this.props.directory.path ?
-                            getDirNameFromFilepath(this.props.directory.path)
-                            : this.props.directory.index
-                        }&nbsp;
-                        <span className="small text-muted">- {this.props.directory.type}</span>
+                        {dir_path ? getDirNameFromFilepath(dir_path) : this.props.directory.index}&nbsp;
+                        <span className="small text-muted">-&nbsp;
+                        {this.props.directory.type === kDirectoryPrimary ? 'Primary' : 'Secondary'}
+                        </span>
                     </h5>
-                    <h6 className="card-subtitle mb-2 text-muted">{this.props.directory.type}</h6>
+
+                    {dir_path ? <h6 className="card-subtitle mb-2 text-muted small">{dir_path}</h6> : null}
+
                     {this.props.directory.type === kDirectoryPrimary ? PrimaryDirText() : SecondaryDirText()}
 
                     <ChooseDirectory updateDir={this.props.updateDir} directory={this.props.directory} />
 
-                    <a href="#" className="card-link">Card link</a>
-                    {this.props.directory.path ? <FileTable files={this.props.directory.files} /> : null}
-                    <a href="#" className="card-link">Another link</a>
+                    {dir_path ? <FileTable files={this.props.directory.files} /> : null}
+
                 </div>
             </div >
         );
@@ -83,51 +84,52 @@ class DirectoryCard extends React.PureComponent<IDirectoryCardProps, any> {
 }
 
 class FileTable extends React.PureComponent<{ files: IDirState['files'] }, any> {
-
     public render() {
-        const files = this.props.files || [];
-        const mp4_files = files.filter(x => x.filename.toUpperCase().endsWith('.MP4'));
-        const xml_files = files.filter(x => x.filename.toUpperCase().endsWith('.XML'));
-
         return (
-            <table className="table">
-                <thead>
-                    <tr>
-                        <th scope="col">MP4</th>
-                        <th scope="col">XML</th>
-                        {/* <th scope="col">Handle</th> */}
-                    </tr>
-                </thead>
-
-                <tbody>
-                    {mp4_files.length === 0 ?
-                        <tr className="table-danger">
-                            <th scope="row">None</th>
-                            <td><i className="fa fa-times text-danger"></i></td>
-                        </tr>
-                        :
-                        mp4_files.map((file, i) => {
-                            const xml = getAssociatedXMLFile(file.filename, xml_files);
-                            return (
-                                <tr key={i} className={xml ? '' : 'table-danger'}>
-                                    <th scope="row">{file.filename}</th>
-                                    <td>
-                                        {
-                                            xml ?
-                                                <i className="fa fa-check text-success"></i>
-                                                : <i className="fa fa-times text-danger"></i>
-                                        }
-                                    </td>
-                                </tr>
-                            );
-                        })}
-
-                </tbody>
-
-            </table>
+            <div className="row my-3">
+                <div className="col">
+                    <table className="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">MP4</th>
+                                <th scope="col">XML</th>
+                            </tr>
+                        </thead>
+                        <FileTableTBody files={this.props.files} />
+                    </table>
+                </div>
+            </div>
         );
     }
 
+}
+
+class FileTableTBody extends React.PureComponent<{ files: IDirState['files'] }, any> {
+    public render() {
+        const cross = 'fa fa-times text-danger';
+        const check = 'fa fa-check text-success';
+        const mp4_files = this.props.files.filter(x => x.filename.toUpperCase().endsWith('.MP4'));
+        const xml_files = this.props.files.filter(x => x.filename.toUpperCase().endsWith('.XML'));
+        return (
+            <tbody>
+                {mp4_files.length === 0 ?
+                    <tr className="table-danger">
+                        <th scope="row">None</th>
+                        <td><i className={cross}></i></td>
+                    </tr>
+                    :
+                    mp4_files.map((file, i) => {
+                        const xml = getAssociatedXMLFile(file.filename, xml_files);
+                        return (
+                            <tr key={i} className={xml ? '' : 'table-danger'}>
+                                <th scope="row">{file.filename}</th>
+                                <td><i className={xml ? check : cross}></i></td>
+                            </tr>
+                        );
+                    })}
+            </tbody>
+        );
+    }
 }
 
 interface IChooseDirectoryProps {
@@ -162,7 +164,7 @@ class ChooseDirectory extends React.Component<IChooseDirectoryProps, {}> {
         return (
             <div className="row justify-content-center">
                 <div className="col text-center">
-                    <button className={this.props.directory.path ? 'btn-warning' : 'btn-light'}
+                    <button className={`btn btn-${this.props.directory.path ? 'sm btn-dark' : 'lg btn-light'}`}
                         onClick={this.handleClick} >
                         {this.props.directory.path ? 'Change Directory' : 'Choose Directory'}
                     </button>
