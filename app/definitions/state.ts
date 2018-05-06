@@ -1,5 +1,8 @@
 import { TPrimaryDirectory, TSecondaryDirectory } from './directory';
 
+export interface IDestinationState {
+    path: string;
+}
 export interface IFileInfo {
     filepath: string;
     filename: string;
