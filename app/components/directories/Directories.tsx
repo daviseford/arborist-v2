@@ -35,7 +35,7 @@ export default class Directories extends React.Component<IDirectoriesProps, {}> 
                     <div className="btn-group" role="group" aria-label="Basic example">
                         <BackButton />
                         <NextButton directories={this.props.directories}
-                        dispatch={this.props.dispatch} destination={this.props.destination}/>
+                            dispatch={this.props.dispatch} destination={this.props.destination} />
                     </div>
                 </div>
 
@@ -51,27 +51,13 @@ interface INextButtonProps {
 }
 
 class NextButton extends React.PureComponent<INextButtonProps, {}> {
-
-    constructor(pProps) {
-        super(pProps);
-        this.runSorter = this.runSorter.bind(this);
-    }
-
-    // Send to XML Sorter
-    public runSorter(e) {
-        e.preventDefault();
-        // const a = new XMLSorterNew(this.props.directories, this.props.dispatch, true);
-        // a.process();
-
-    }
-
     public render() {
         const checkFiles = this.props.directories.every(x => x.files && x.files.length > 0);
         const showButton = checkFiles && this.props.destination.path;
         console.log(this.props.directories, showButton);
         return (
             showButton ?
-                <Link className="btn btn-success m-2" to={kRoutes.ARBORIST} onClick={this.runSorter} >
+                <Link className="btn btn-success m-2" to={kRoutes.COPY_LIST} >
                     Next <i className="fa fa-pagelines" aria-hidden="true"></i>
                 </Link>
                 : null
