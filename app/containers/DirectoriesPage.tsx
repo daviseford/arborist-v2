@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import Directories from '../components/Directories';
+import Directories from '../components/directories/Directories';
 import { IApplicationState } from '../reducers';
 
 export interface IDirectoriesProps {

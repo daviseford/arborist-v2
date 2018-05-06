@@ -67,3 +67,8 @@ export const getDirNameFromFilepath = (filepath: string): string => {
   const p = filepath.split(path.sep);
   return p[p.length - 1];
 };
+
+export const getShortDirPath = (filepath: string): string => {
+  const p = filepath.split(path.sep);
+  return path.join(p[p.length - 2], p[p.length - 1]);
+};
