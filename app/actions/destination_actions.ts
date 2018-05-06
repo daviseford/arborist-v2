@@ -1,5 +1,3 @@
-import { IDirState } from '../definitions/state';
-
 export const addDestination = (path: string) => ({
   path,
   type: DestinationActions.ADD_DESTINATION_PATH,
