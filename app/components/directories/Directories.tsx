@@ -53,7 +53,7 @@ interface INextButtonProps {
 class NextButton extends React.PureComponent<INextButtonProps, {}> {
     public render() {
         const checkFiles = this.props.directories.every(x => x.files && x.files.length > 0);
-        const showButton = checkFiles && this.props.destination.path;
+        const showButton = !!(checkFiles && this.props.destination.path);
         console.log(this.props.directories, showButton);
         return (
             showButton ?

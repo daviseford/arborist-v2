@@ -39,18 +39,16 @@ export const parseBasicSorterEntries = (xml_array: IBasicSorterEntry[]): ISorter
     return xml_array.map(parseXMLObjNew);
 };
 
-export const parseXMLObjNew = (x: IBasicSorterEntry): ISorterEntry => {
+export const parseXMLObjNew = (entry: IBasicSorterEntry): ISorterEntry => {
     try {
-        const f = fs.readFileSync(x.xml_filepath, 'utf8');
-        console.log('f', f);
+        const f = fs.readFileSync(entry.xml_filepath, 'utf8');
         const jsonObj = XMLParser.parse(f);
-        console.log('j', jsonObj);
         const a = {
-            ...x,
+            ...entry,
             ...parseXMLObject_Sony(jsonObj),
-            ...getFilesizeInGigabytes_Sync(x.filepath),
+            ...getFilesizeInGigabytes_Sync(entry.filepath),
         };
-        console.log('a', a);
+        console.log('parseXMLObjNew', a);
         return a;
     } catch (e) {
         console.log(e);
