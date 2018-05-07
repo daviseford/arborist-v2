@@ -5,12 +5,13 @@ import { batchUpdateCopyList } from '../../actions/copy_list_actions';
 import { ICopyListPageProps } from '../../containers/CopyListPage';
 import { IBasicSorterEntry } from '../../definitions/sony_xml';
 import { kRoutes } from '../../utils/config';
+import CopyListDisplay from './CopyListDisplay';
 import { getBasicSorterEntries_Sony, parseBasicSorterEntries, processUpdatedXMLArray } from './helpers/sony';
 
 export default class CopyList extends React.Component<ICopyListPageProps, {}> {
     constructor(pProps) {
         super(pProps);
-        this.getSonyXMLObjs = this.getSonyXMLObjs.bind(this);
+        this.initializeCopyList = this.initializeCopyList.bind(this);
     }
 
     // public parseAllXML(xml_array, callback) {
@@ -21,10 +22,10 @@ export default class CopyList extends React.Component<ICopyListPageProps, {}> {
     //   }
 
     public componentDidMount() {
-        this.getSonyXMLObjs();
+        this.initializeCopyList();
     }
 
-    public async getSonyXMLObjs() {
+    public initializeCopyList() {
         const basicSorterEntries = this.props.directories.reduce((accum: IBasicSorterEntry[], dir) => {
             const entries = getBasicSorterEntries_Sony(dir);
             entries.forEach(e => accum.push(e));
@@ -36,7 +37,6 @@ export default class CopyList extends React.Component<ICopyListPageProps, {}> {
         const copy_list = processUpdatedXMLArray(sorterEntries, this.props.directories, this.props.destination);
         console.log('copy_list', copy_list);
         this.props.dispatch(batchUpdateCopyList(copy_list));
-
     }
 
     public render() {
@@ -44,7 +44,7 @@ export default class CopyList extends React.Component<ICopyListPageProps, {}> {
         return (
             <div className="container">
                 <div className="row justify-content-center">
-
+                    <CopyListDisplay copy_list={this.props.copy_list} />
                 </div>
 
                 <div className="row justify-content-center">
@@ -76,7 +76,7 @@ export default class CopyList extends React.Component<ICopyListPageProps, {}> {
 //     }
 // }
 
-class BackButton extends React.PureComponent<{}, {}> {
+class BackButton extends React.PureComponent {
     public render() {
         return (
             <Link className="btn btn-light m-2" to={kRoutes.DIRECTORIES} >
