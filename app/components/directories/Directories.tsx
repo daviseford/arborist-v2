@@ -32,7 +32,7 @@ export default class Directories extends React.Component<IDirectoriesProps, {}> 
                 <DestinationPicker dispatch={this.props.dispatch} destination={this.props.destination} />
 
                 <div className="row justify-content-center">
-                    <div className="btn-group" role="group" aria-label="Basic example">
+                    <div className="btn-group" role="group" aria-label="button group">
                         <BackButton />
                         <NextButton directories={this.props.directories}
                             dispatch={this.props.dispatch} destination={this.props.destination} />

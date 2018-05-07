@@ -2,7 +2,7 @@ import * as async from 'async';
 import * as fs from 'fs-extra';
 import * as moment from 'moment';
 import * as path from 'path';
-import { convertFilenameToXML, parseXMLObj } from '../api/Sony_XML';
+import { convertFileNametoXML_Sony, parseXMLObj } from '../api/Sony_XML';
 import { ICopyList } from '../definitions/copylist';
 import { kStatusTypes } from '../utils/config';
 import { createDir, getDirectories_sync, getMP4Files } from './FileUtil';
@@ -216,7 +216,7 @@ export default class XMLSorter {
         };
         const xml_filepath = this.getAssociatedSonyXMLSync(filename, dir);
         if (xml_filepath) {
-          obj.xml_filename = convertFilenameToXML(filename);
+          obj.xml_filename = convertFileNametoXML_Sony(filename);
           obj.filepath = path.join(this.working_filepath, dir, filename);
           obj.xml_filepath = xml_filepath;
         }
@@ -230,7 +230,7 @@ export default class XMLSorter {
   }
 
   public getAssociatedSonyXMLSync(filename: string, dir: string): string | null {
-    const name = convertFilenameToXML(filename);
+    const name = convertFileNametoXML_Sony(filename);
     const xml_filepath = path.join(this.working_filepath, dir, name);
     if (fs.existsSync(xml_filepath)) {
       return xml_filepath;

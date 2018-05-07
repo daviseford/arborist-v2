@@ -64,12 +64,12 @@ export const parseXMLObj = (xml_obj: IBasicSorterEntry, callback: (err: any, dat
 
 const parseXMLObject = (xml_object: ISonyXMLObj): IParsedSonyXMLObject => {
   // console.log('parsing xml_object', xml_object);
-  const duration = parseInt(xml_object.NonRealTimeMeta.Duration[0].$.value, 10);
-  const fps = parseInt(xml_object.NonRealTimeMeta.LtcChangeTable[0].$.tcFps, 10);
-  let created_date = xml_object.NonRealTimeMeta.CreationDate[0].$.value;
+  const duration = parseInt(xml_object.Duration.value, 10);
+  const fps = parseInt(xml_object.LtcChangeTable.tcFps, 10);
+  let created_date = xml_object.CreationDate.value;
   created_date = created_date.split('').slice(0, created_date.length - 6).join('');  // Remove the timezone
-  const device_manufacturer = xml_object.NonRealTimeMeta.Device[0].$.manufacturer;
-  const model_name = xml_object.NonRealTimeMeta.Device[0].$.modelName;
+  const device_manufacturer = xml_object.Device.manufacturer;
+  const model_name = xml_object.Device.modelName;
   const duration_mins = parseFloat((duration / fps / 60).toFixed(2));
   return {
     created_date,
@@ -80,7 +80,7 @@ const parseXMLObject = (xml_object: ISonyXMLObj): IParsedSonyXMLObject => {
   };
 };
 
-export const convertFilenameToXML = (filename: string): string => {
+export const convertFileNametoXML_Sony = (filename: string): string => {
   let file = filename;
   if (file.toUpperCase().includes('.MP4')) {
     file = file.split('.')[0];
@@ -89,6 +89,6 @@ export const convertFilenameToXML = (filename: string): string => {
 };
 
 export const getAssociatedXMLFile = (mp4_filename: string, files: IFileInfo[]): IFileInfo | null => {
-  const match = files.find(x => convertFilenameToXML(mp4_filename) === x.filename);
+  const match = files.find(x => convertFileNametoXML_Sony(mp4_filename) === x.filename);
   return match ? match : null;
 };

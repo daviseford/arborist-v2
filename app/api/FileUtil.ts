@@ -48,6 +48,11 @@ export const createDir = (dirpath: string, new_dir_name: string): void => {
   }
 };
 
+export const getFilesizeInGigabytes_Sync = (filepath: string): { filesize_gb: number } => {
+  const stats = fs.statSync(filepath);
+  return { filesize_gb: bytes_to_gb(stats.size) };
+};
+
 export const getFilesizeInGigabytes = (filepath: string, callback: (err: any, gb?: number) => number) => {
   fs.stat(filepath, (err, stats) => {
     if (err) { return callback(err); }
@@ -71,4 +76,12 @@ export const getDirNameFromFilepath = (filepath: string): string => {
 export const getShortDirPath = (filepath: string): string => {
   const p = filepath.split(path.sep);
   return path.join(p[p.length - 2], p[p.length - 1]);
+};
+
+export const isMP4 = (filename: string): boolean => {
+  return !!filename && filename.toUpperCase().endsWith('.MP4');
+};
+
+export const isXML = (filename: string): boolean => {
+  return !!filename && filename.toUpperCase().endsWith('.XML');
 };
