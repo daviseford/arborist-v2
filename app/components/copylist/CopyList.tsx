@@ -1,10 +1,11 @@
 
 import * as React from 'react';
 import { Link } from 'react-router-dom';
+import { batchUpdateCopyList } from '../../actions/copy_list_actions';
 import { ICopyListPageProps } from '../../containers/CopyListPage';
 import { IBasicSorterEntry } from '../../definitions/sony_xml';
 import { kRoutes } from '../../utils/config';
-import { getBasicSorterEntries_Sony, parseBasicSorterEntries } from './helpers/sony';
+import { getBasicSorterEntries_Sony, parseBasicSorterEntries, processUpdatedXMLArray } from './helpers/sony';
 
 export default class CopyList extends React.Component<ICopyListPageProps, {}> {
     constructor(pProps) {
@@ -24,36 +25,37 @@ export default class CopyList extends React.Component<ICopyListPageProps, {}> {
     }
 
     public async getSonyXMLObjs() {
-        const res = this.props.directories.reduce((a: IBasicSorterEntry[], b) => {
-            const entries = getBasicSorterEntries_Sony(b);
-            entries.forEach(e => a.push(e));
-            return a;
+        const basicSorterEntries = this.props.directories.reduce((accum: IBasicSorterEntry[], dir) => {
+            const entries = getBasicSorterEntries_Sony(dir);
+            entries.forEach(e => accum.push(e));
+            return accum;
         }, []);
-
-        console.log('res', res);
-
-        const a = parseBasicSorterEntries(res);
-        console.log('a',a);
+        const sorterEntries = parseBasicSorterEntries(basicSorterEntries);
+        // At this point, we've got the XML objects for the copy list
+        // push them out to state/copylist
+        const copy_list = processUpdatedXMLArray(sorterEntries, this.props.directories, this.props.destination);
+        console.log('copy_list', copy_list);
+        this.props.dispatch(batchUpdateCopyList(copy_list));
 
     }
 
     public render() {
-    console.log(this.props);
-    return (
-        <div className="container">
-            <div className="row justify-content-center">
+        console.log(this.props);
+        return (
+            <div className="container">
+                <div className="row justify-content-center">
 
-            </div>
-
-            <div className="row justify-content-center">
-                <div className="btn-group" role="group" aria-label="back button">
-                    <BackButton />
                 </div>
-            </div>
 
-        </div>
-    );
-}
+                <div className="row justify-content-center">
+                    <div className="btn-group" role="group" aria-label="back button">
+                        <BackButton />
+                    </div>
+                </div>
+
+            </div>
+        );
+    }
 }
 
 // interface INextButtonProps {

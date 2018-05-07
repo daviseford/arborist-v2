@@ -42,7 +42,8 @@ export default class ProgressBar extends React.Component<IProps> {
     const copy_list_done = this.props.copy_list.filter(x => x.start_time && x.end_time);
     if (copy_list_done.length === 0) { return 0; }
     const num_done = copy_list_done.map((x) => {
-      const duration = moment.duration(x.end_time.diff(x.start_time));
+      const end = x.end_time || moment();
+      const duration = moment.duration(end.diff(x.start_time));
       const seconds = duration.asSeconds();
       return seconds / x.filesize_gb;
     });

@@ -1,16 +1,20 @@
 import * as fs from 'fs';
+import * as moment from 'moment';
 import * as path from 'path';
 import * as XMLParser from 'pixl-xml';
 import { getFilesizeInGigabytes_Sync } from '../../../api/FileUtil';
 import { convertFileNametoXML_Sony } from '../../../api/Sony_XML';
+import { ICopyList } from '../../../definitions/copylist';
 import { IBasicSorterEntry, IParsedSonyXMLObject, ISonyXMLObj, ISorterEntry } from '../../../definitions/sony_xml';
-import { IDirState } from '../../../definitions/state';
+import { IDestinationState, IDirState } from '../../../definitions/state';
 import { isMP4 } from './../../../api/FileUtil';
 import { IFileInfo } from './../../../definitions/state';
+import { kDirectoryPrimary } from './../../../utils/config';
 
-// todo remove xml2js dependcenyd
+// todo remove xml2js dependency
 
 interface IGetAssociatedSonyXMLSync { xml_filepath: string; xml_filename: string; }
+
 export const getAssociatedSonyXMLSync = (filename: string, dir: string): IGetAssociatedSonyXMLSync => {
     const xml_filename = convertFileNametoXML_Sony(filename);
     const xml_filepath = path.join(dir, xml_filename);
@@ -28,7 +32,8 @@ export const getBasicSorterEntries_Sony = (dir: IDirState): IBasicSorterEntry[] 
             type: dir.type,
             ...getAssociatedSonyXMLSync(file.filename, dir.path),
         };
-        if (isMP4(obj.filename)) {
+        // removing any files without xml_filepaths here
+        if (isMP4(obj.filename) && obj.xml_filepath) {
             a.push(obj);
         }
         return a;
@@ -36,27 +41,27 @@ export const getBasicSorterEntries_Sony = (dir: IDirState): IBasicSorterEntry[] 
 };
 
 export const parseBasicSorterEntries = (xml_array: IBasicSorterEntry[]): ISorterEntry[] => {
-    return xml_array.map(parseXMLObjNew);
+    return xml_array.map(getXMLFileDetails);
 };
 
-export const parseXMLObjNew = (entry: IBasicSorterEntry): ISorterEntry => {
+export const getXMLFileDetails = (entry: IBasicSorterEntry): ISorterEntry => {
     try {
         const f = fs.readFileSync(entry.xml_filepath, 'utf8');
         const jsonObj = XMLParser.parse(f);
-        const a = {
+        const parsedXMLObj = {
             ...entry,
-            ...parseXMLObject_Sony(jsonObj),
+            ...parseXmlJson_Sony(jsonObj),
             ...getFilesizeInGigabytes_Sync(entry.filepath),
         };
-        console.log('parseXMLObjNew', a);
-        return a;
+        console.log('parseXMLObjNew', parsedXMLObj);
+        return parsedXMLObj;
     } catch (e) {
         console.log(e);
         throw e;
     }
 };
 
-const parseXMLObject_Sony = (xml_object: ISonyXMLObj): IParsedSonyXMLObject => {
+const parseXmlJson_Sony = (xml_object: ISonyXMLObj): IParsedSonyXMLObject => {
     // console.log('parsing xml_object', xml_object);
     const duration = parseInt(xml_object.Duration.value, 10);
     const fps = parseInt(xml_object.LtcChangeTable.tcFps, 10);
@@ -66,11 +71,86 @@ const parseXMLObject_Sony = (xml_object: ISonyXMLObj): IParsedSonyXMLObject => {
     const model_name = xml_object.Device.modelName;
     const duration_mins = parseFloat((duration / fps / 60).toFixed(2));
     return {
-      created_date,
-      device_manufacturer,
-      duration_mins,
-      fps,
-      model_name,
+        created_date,
+        device_manufacturer,
+        duration_mins,
+        fps,
+        model_name,
     };
-  };
-  
+};
+
+// add this to component next
+// tslint:disable-next-line:max-line-length
+export const processUpdatedXMLArray = (entries: ISorterEntry[], dirs: IDirState[], dest: IDestinationState): ICopyList[] => {
+    // The assumption here is that the target_directory is the source of truth for the # of Scenes
+    // to be created. This may need to change in the future to allow user-targeting
+    // of a specific target directory
+    const t_dir = dirs.filter(x => x.type === kDirectoryPrimary)[0].path;
+    const target_dir_xml_array = entries.filter(x => x.dir === t_dir);
+    const other_dirs_xml_array = entries.filter(x => x.dir !== t_dir);
+    const copy_list: ICopyList[] = [];
+    target_dir_xml_array.forEach((obj1, index) => {
+        const scene_index = index + 1;
+        other_dirs_xml_array.forEach(obj2 => {
+            copy_list.push(...compareXMLObjs(obj1, obj2, scene_index, dest, copy_list));
+        });
+    });
+    return copy_list;
+};
+
+// tslint:disable-next-line:max-line-length
+export const compareXMLObjs = (obj1: ISorterEntry, obj2: ISorterEntry, scene_index: number, dest: IDestinationState, copy_list: ICopyList[]): ICopyList[] => {
+    if (obj1.dir === obj2.dir) { return []; }
+    const res: ICopyList[] = [];
+    const copy1 = getCopyList(obj1, scene_index, dest, copy_list);
+    // Always add the target directory's file to a Scene
+    if (copy1) { res.push(copy1); }
+    if (hasOverlap(obj1, obj2)) {
+        const copy2 = getCopyList(obj2, scene_index, dest, copy_list);
+        if (copy2) { res.push(copy2); }
+    }
+    return res;
+};
+
+// tslint:disable-next-line:max-line-length
+const getCopyList = (obj: ISorterEntry, scene_index: number, dest: IDestinationState, copy_list: ICopyList[]): ICopyList | null => {
+    console.log('asdasd', obj);
+    // Don't push duplicates
+    // tslint:disable-next-line:max-line-length
+    if (!copy_list.some((x) => x.filepath === obj.filepath && x.dest === getSceneCopyFilepath(obj.filepath, scene_index, dest))) {
+        const copy_list_stats = {
+            copying: false,
+            dest: getSceneCopyFilepath(obj.filepath, scene_index, dest),
+            dest_xml: getSceneCopyFilepath(obj.xml_filepath, scene_index, dest),
+            done: false,
+            done_xml: false,
+        };
+        const entry = { ...obj, ...copy_list_stats };
+        return entry;
+    }
+    return null;
+};
+
+const getSceneCopyFilepath = (filepath: string, scene_index: number, dest: IDestinationState): string => {
+    const filename = path.basename(filepath);
+    const dirname = filepath.split(path.sep)[filepath.split(path.sep).length - 2];
+    return path.join(dest.path, 'Scenes', `Scene_${scene_index}`, `${dirname}_${filename}`);
+};
+
+const hasOverlap = (obj1, obj2) => {
+    const format = 'YYYY-MM-DDTHH:mm:ss';
+
+    const start1 = moment(obj1.created_date, format);
+    const start2 = moment(obj2.created_date, format);
+    const end1 = moment(obj1.created_date, format).add(obj1.duration_mins, 'm');
+    const end2 = moment(obj2.created_date, format).add(obj2.duration_mins, 'm');
+
+    if (start2.isBetween(start1, end1) || end2.isBetween(start1, end1)) {
+        return true;
+    }
+    if (start1.isBetween(start2, end2) || end1.isBetween(start2, end2)) {
+        return true;
+    }
+    return false;
+
+};
