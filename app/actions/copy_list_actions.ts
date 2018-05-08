@@ -1,4 +1,4 @@
-import { ICopyList } from '../definitions/copylist';
+import { ICopyList, ICopyListUpdate } from '../definitions/copylist';
 
 export const addCopyList = (obj: ICopyList) => ({
   obj,
@@ -10,6 +10,11 @@ export const batchUpdateCopyList = (obj: ICopyList[]) => ({
   type: CopyListActions.BATCH_UPDATE_COPYLIST,
 });
 
+export const updateCopyList = (obj: ICopyListUpdate) => ({
+  obj,
+  type: CopyListActions.UPDATE_COPYLIST,
+});
+
 export const clearCopyList = () => ({
   type: CopyListActions.CLEAR_COPYLIST,
 });
@@ -18,6 +23,7 @@ export const CopyListActions = {
   ADD_COPYLIST: 'ADD_COPYLIST',
   BATCH_UPDATE_COPYLIST: 'BATCH_UPDATE_COPYLIST',
   CLEAR_COPYLIST: 'CLEAR_COPYLIST',
+  UPDATE_COPYLIST: 'UPDATE_COPYLIST',
 };
 
 // export const setVisibilityFilter = filter => ({

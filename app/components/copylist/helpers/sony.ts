@@ -3,6 +3,7 @@ import * as moment from 'moment';
 import * as path from 'path';
 import * as XMLParser from 'pixl-xml';
 import * as rimraf from 'rimraf';
+import { updateCopyList } from '../../../actions/copy_list_actions';
 import { createDir, getFilesizeInGigabytes_Sync } from '../../../api/FileUtil';
 import { convertFileNametoXML_Sony } from '../../../api/Sony_XML';
 import { IBasicSorterEntry, IParsedSonyXMLObject, ISonyXMLObj, ISorterEntry } from '../../../definitions/sony_xml';
@@ -181,13 +182,18 @@ export const createDestinationDirs = (copy_list: ICopyList[], dest: IDestination
 };
 
 export const copySingleCopyListEntry = async (copy_list: ICopyList, dispatch: Function): Promise<void> => {
+    const filepath = copy_list.filepath;
     try {
+        dispatch(updateCopyList({ filepath, copying: true, start_time: moment() }));
+
         // copy XML file (small)
         await fs.copy(copy_list.xml_filepath, copy_list.dest_xml);
-        // todo dispatch update for done_xml
+        dispatch(updateCopyList({ filepath, done_xml: true }));
+
         // then copy the MP4
         await fs.copy(copy_list.filepath, copy_list.dest);
-        // todo dispatch update for done
+        dispatch(updateCopyList({ filepath, done: true, copying: false, end_time: moment() }));
+
         console.log('done');
     } catch (e) {
         // todo dispatch error
