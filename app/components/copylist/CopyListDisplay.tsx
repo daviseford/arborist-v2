@@ -42,7 +42,7 @@ class CopyRow extends React.Component<{ copy_obj: ICopyList }> {
 
   public render() {
     // tslint:disable-next-line:max-line-length
-    const statusIcon = this.props.copy_obj.copying ? 'fa fa-refresh fa-spin' : this.props.copy_obj.done ? 'fa fa-check text-success' : 'fa fa-times text-danger';
+    const statusIcon = this.props.copy_obj.copying ? 'fa fa-refresh icon-spin' : this.props.copy_obj.done ? 'fa fa-check text-success' : 'fa fa-times text-danger';
     return (
       <tr className="text-center">
         <td>{this.getFilepath(this.props.copy_obj.filepath)}</td>
