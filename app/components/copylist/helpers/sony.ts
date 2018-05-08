@@ -205,14 +205,38 @@ export const copySingleCopyListEntry = async (copy_list: ICopyList, dispatch: Fu
 // tslint:disable-next-line:max-line-length
 export const runCopyFile = async (copy_list: ICopyList[], dest: IDestinationState, dispatch: Function): Promise<void> => {
     try {
-        // asd
-        const filePromises = copy_list.map(x => copySingleCopyListEntry(x, dispatch));
-        await Promise.all(filePromises);
+        await queue(copy_list, 4, dispatch);
         console.log('all done!');
         // todo dispatch overall done
     } catch (e) {
         // todo dispatch done w/ errors
         console.log(e);
+        throw e;
+    }
+};
+
+const queue = async (copy_list: ICopyList[], max_concurrent: number = 3, dispatch: Function): Promise<void> => {
+    try {
+        const amount = copy_list.length > max_concurrent ? max_concurrent : copy_list.length;
+        const queued = copy_list.slice(0, amount);
+
+        if (queued.length > 0) {
+            await run(queued, dispatch); // Run concurrently
+            const next = copy_list.slice(amount, copy_list.length);
+            return next.length > 0 ? queue(next, max_concurrent, dispatch) : undefined;
+        }
+
+    } catch (e) {
+        console.error('Error in queue', e);
+        throw e;
+    }
+};
+
+const run = async (opts: ICopyList[], dispatch: Function): Promise<void> => {
+    try {
+        await Promise.all(opts.map(x => copySingleCopyListEntry(x, dispatch)));
+    } catch (e) {
+        console.error(e);
         throw e;
     }
 };
