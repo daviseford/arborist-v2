@@ -58,6 +58,7 @@ export default class CopyList extends React.Component<ICopyListPageProps, {}> {
                     <div className="btn-group" role="group" aria-label="back button">
                         <BackButton />
                         <RunArboristButton copy_list={this.props.copy_list} run={this.copyFiles} />
+                        <DoneButton copy_list={this.props.copy_list} />
                     </div>
                 </div>
 
@@ -83,12 +84,26 @@ class RunArboristButton extends React.PureComponent<IRunArboristButtonProps, {}>
     }
 
     public render() {
-        const showButton = this.props.copy_list.every(x => x.copying === false);
+        const isDone = this.props.copy_list.every(x => x.done && x.done_xml);
+        const showButton = !isDone && this.props.copy_list.every(x => x.copying === false);
         return (
             showButton ?
-                <button className="btn btn-info btn-large" onClick={this.handleClick}>
-                    Run   <i className="fa fa-chevron-right" aria-hidden="true"></i>
+                <button className="btn btn-info" onClick={this.handleClick}>
+                    Sort   <i className="fa fa-magic" aria-hidden="true"></i>
                 </button>
+                : null
+        );
+    }
+}
+
+class DoneButton extends React.PureComponent<{ copy_list: ICopyList[] }, {}> {
+    public render() {
+        const showButton = this.props.copy_list.every(x => x.done && x.done_xml);
+        return (
+            showButton ?
+                <Link className="btn btn-success" to={kRoutes.ROOT} >
+                    Done <i className="fa fa-chevron-right" aria-hidden="true"></i>
+                </Link>
                 : null
         );
     }
@@ -97,7 +112,7 @@ class RunArboristButton extends React.PureComponent<IRunArboristButtonProps, {}>
 class BackButton extends React.PureComponent {
     public render() {
         return (
-            <Link className="btn btn-light m-2" to={kRoutes.DIRECTORIES} >
+            <Link className="btn btn-light" to={kRoutes.DIRECTORIES} >
                 <i className="fa fa-chevron-left" aria-hidden="true"></i>  Back
             </Link>
         );

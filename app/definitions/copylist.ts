@@ -22,7 +22,6 @@ export interface ICopyList {
   xml_filepath: string;
 }
 
-
 export interface ICopyListUpdate {
   copying?: boolean;
   created_date?: string;
