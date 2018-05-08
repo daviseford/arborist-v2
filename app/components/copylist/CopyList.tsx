@@ -8,6 +8,7 @@ import { IBasicSorterEntry } from '../../definitions/sony_xml';
 import { kRoutes } from '../../utils/config';
 import CopyListDisplay from './CopyListDisplay';
 import {
+    createDestinationDirs,
     getBasicSorterEntries_Sony,
     parseBasicSorterEntries,
     processUpdatedXMLArray,
@@ -39,9 +40,10 @@ export default class CopyList extends React.Component<ICopyListPageProps, {}> {
         this.props.dispatch(batchUpdateCopyList(copy_list));
     }
 
-    public copyFiles() {
+    public async copyFiles() {
         // do stuff ... replicate copy file
-        runCopyFile(this.props.copy_list, this.props.destination, this.props.dispatch);
+        createDestinationDirs(this.props.copy_list, this.props.destination);
+        await runCopyFile(this.props.copy_list, this.props.destination, this.props.dispatch);
     }
 
     public render() {

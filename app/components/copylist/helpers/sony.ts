@@ -1,7 +1,8 @@
-import * as fs from 'fs';
+import * as fs from 'fs-extra';
 import * as moment from 'moment';
 import * as path from 'path';
 import * as XMLParser from 'pixl-xml';
+import * as rimraf from 'rimraf';
 import { createDir, getFilesizeInGigabytes_Sync } from '../../../api/FileUtil';
 import { convertFileNametoXML_Sony } from '../../../api/Sony_XML';
 import { IBasicSorterEntry, IParsedSonyXMLObject, ISonyXMLObj, ISorterEntry } from '../../../definitions/sony_xml';
@@ -134,7 +135,7 @@ const getCopyList = (obj: ISorterEntry, scene_index: number, dest: IDestinationS
 const getSceneCopyFilepath = (filepath: string, scene_index: number, dest: IDestinationState): string => {
     const filename = path.basename(filepath);
     const dirname = filepath.split(path.sep)[filepath.split(path.sep).length - 2];
-    return path.join(dest.path, kOutputDirectory, `Scene_${scene_index}`, `${dirname}_${filename}`);
+    return path.join(dest.path, kOutputDirectory, getSceneDirName(scene_index), `${dirname}_${filename}`);
 };
 
 const hasOverlap = (obj1, obj2) => {
@@ -160,16 +161,52 @@ const hasOverlap = (obj1, obj2) => {
 //     return p[p.length - 2];
 // };
 
+export const removeSceneDirectory = (dest: IDestinationState): void => {
+    rimraf.sync(path.join(dest.path, kOutputDirectory));
+    console.log('deleted old dirs');
+};
+
+export const getSceneDirName = (scene_index: number): string => {
+    return `Scene_${scene_index}`;
+};
+
 export const createDestinationDirs = (copy_list: ICopyList[], dest: IDestinationState): void => {
     createDir(dest.path, kOutputDirectory);
     const destDir = path.join(dest.path, kOutputDirectory);
     const scene_count = copy_list[copy_list.length - 1].scene_index || 1;
     for (let i = 1; i < scene_count + 1; i++) {
-        createDir(destDir, `Scene_${i}`);
+        createDir(destDir, getSceneDirName(i));
     }
     console.log(`Created ${scene_count} directories.`);
 };
 
-export const runCopyFile = (copy_list: ICopyList[], dest: IDestinationState, dispatch: Function) => {
-    createDestinationDirs(copy_list, dest);
+export const copySingleCopyListEntry = async (copy_list: ICopyList, dispatch: Function): Promise<void> => {
+    try {
+        // copy XML file (small)
+        await fs.copy(copy_list.xml_filepath, copy_list.dest_xml);
+        // todo dispatch update for done_xml
+        // then copy the MP4
+        await fs.copy(copy_list.filepath, copy_list.dest);
+        // todo dispatch update for done
+        console.log('done');
+    } catch (e) {
+        // todo dispatch error
+        console.error(e);
+        throw e;
+    }
+};
+
+// tslint:disable-next-line:max-line-length
+export const runCopyFile = async (copy_list: ICopyList[], dest: IDestinationState, dispatch: Function): Promise<void> => {
+    try {
+        // asd
+        const filePromises = copy_list.map(x => copySingleCopyListEntry(x, dispatch));
+        await Promise.all(filePromises);
+        console.log('all done!');
+        // todo dispatch overall done
+    } catch (e) {
+        // todo dispatch done w/ errors
+        console.log(e);
+        throw e;
+    }
 };

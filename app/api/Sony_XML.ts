@@ -1,5 +1,5 @@
 import * as async from 'async';
-import * as fs from 'fs';
+import * as fs from 'fs-extra';
 import * as xml2js from 'xml2js';
 import { IBasicSorterEntry, IParsedSonyXMLObject, ISonyXMLObj, ISorterEntry } from '../definitions/sony_xml';
 import { IFileInfo } from '../definitions/state';
