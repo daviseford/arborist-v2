@@ -2,7 +2,6 @@ import * as React from 'react';
 import { Route, Switch } from 'react-router';
 import AboutPage from './containers/AboutPage';
 import App from './containers/App';
-import ArboristMainPage from './containers/ArboristMainPage';
 import CopyListPage from './containers/CopyListPage';
 import DirectoriesPage from './containers/DirectoriesPage';
 import FAQPage from './containers/FAQPage';
@@ -13,7 +12,6 @@ export default () => (
   <App>
     <Switch>
       <Route path={kRoutes.ABOUT} component={AboutPage} />
-      <Route path={kRoutes.ARBORIST} component={ArboristMainPage} />
       <Route path={kRoutes.COPY_LIST} component={CopyListPage} />
       <Route path={kRoutes.DIRECTORIES} component={DirectoriesPage} />
       <Route path={kRoutes.FAQ} component={FAQPage} />
