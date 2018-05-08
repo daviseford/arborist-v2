@@ -16,6 +16,7 @@ export interface ICopyList {
   filesize_gb: number;
   fps: number;
   model_name: string;
+  scene_index: number;
   start_time?: Moment;
   xml_filename: string;
   xml_filepath: string;

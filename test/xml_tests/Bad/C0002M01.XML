@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<NonRealTimeMeta xmlns="urn:schemas-professionalDisc:nonRealTimeMeta:ver.2.00" xmlns:lib="urn:schemas-professionalDisc:lib:ver.2.00" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" lastUpdate="2016-10-02T12:29:57-05:00">
-	<TargetMaterial umidRef="060A2B340101010501010D431300000066DF5285637605C0FCDBB3FFFEEE3F70"/>
-	<Duration value="13575"/>
+<NonRealTimeMeta xmlns="urn:schemas-professionalDisc:nonRealTimeMeta:ver.2.00" xmlns:lib="urn:schemas-professionalDisc:lib:ver.2.00" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" lastUpdate="2015-01-09T21:37:17-04:00">
+	<TargetMaterial umidRef="060A2B340101010501010D4313000000567CA0E6327005D760F189FFFE80CB21"/>
+	<Duration value="12795"/>
 	<LtcChangeTable tcFps="30" halfStep="false">
-		<LtcChange frameCount="0" value="64571901" status="increment"/>
-		<LtcChange frameCount="13574" value="62302701" status="end"/>
+		<LtcChange frameCount="0" value="62553301" status="increment"/>
+		<LtcChange frameCount="12794" value="60024101" status="end"/>
 	</LtcChangeTable>
-	<CreationDate value="2016-10-02T12:29:57-05:00"/>
+	<CreationDate value="2015-01-09T21:37:17-04:00"/>
 	<VideoFormat>
 		<VideoRecPort port="DIRECT"/>
 		<VideoFrame videoCodec="AVC_3840_2160_HP@L51" captureFps="29.97p" formatFps="29.97p"/>

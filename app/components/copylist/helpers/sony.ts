@@ -2,14 +2,13 @@ import * as fs from 'fs';
 import * as moment from 'moment';
 import * as path from 'path';
 import * as XMLParser from 'pixl-xml';
-import { getFilesizeInGigabytes_Sync } from '../../../api/FileUtil';
+import { createDir, getFilesizeInGigabytes_Sync } from '../../../api/FileUtil';
 import { convertFileNametoXML_Sony } from '../../../api/Sony_XML';
-import { ICopyList } from '../../../definitions/copylist';
 import { IBasicSorterEntry, IParsedSonyXMLObject, ISonyXMLObj, ISorterEntry } from '../../../definitions/sony_xml';
-import { IDestinationState, IDirState } from '../../../definitions/state';
+import { IDestinationState, IDirState, IFileInfo } from '../../../definitions/state';
 import { isMP4 } from './../../../api/FileUtil';
-import { IFileInfo } from './../../../definitions/state';
-import { kDirectoryPrimary } from './../../../utils/config';
+import { ICopyList } from './../../../definitions/copylist';
+import { kDirectoryPrimary, kOutputDirectory } from './../../../utils/config';
 
 // todo remove xml2js dependency
 
@@ -124,6 +123,7 @@ const getCopyList = (obj: ISorterEntry, scene_index: number, dest: IDestinationS
             dest_xml: getSceneCopyFilepath(obj.xml_filepath, scene_index, dest),
             done: false,
             done_xml: false,
+            scene_index,
         };
         const entry = { ...obj, ...copy_list_stats };
         return entry;
@@ -134,7 +134,7 @@ const getCopyList = (obj: ISorterEntry, scene_index: number, dest: IDestinationS
 const getSceneCopyFilepath = (filepath: string, scene_index: number, dest: IDestinationState): string => {
     const filename = path.basename(filepath);
     const dirname = filepath.split(path.sep)[filepath.split(path.sep).length - 2];
-    return path.join(dest.path, 'Scenes', `Scene_${scene_index}`, `${dirname}_${filename}`);
+    return path.join(dest.path, kOutputDirectory, `Scene_${scene_index}`, `${dirname}_${filename}`);
 };
 
 const hasOverlap = (obj1, obj2) => {
@@ -153,4 +153,23 @@ const hasOverlap = (obj1, obj2) => {
     }
     return false;
 
+};
+
+// const getDirName = (filepath: string): string => {
+//     const p = filepath.split(path.sep);
+//     return p[p.length - 2];
+// };
+
+export const createDestinationDirs = (copy_list: ICopyList[], dest: IDestinationState): void => {
+    createDir(dest.path, kOutputDirectory);
+    const destDir = path.join(dest.path, kOutputDirectory);
+    const scene_count = copy_list[copy_list.length - 1].scene_index || 1;
+    for (let i = 1; i < scene_count + 1; i++) {
+        createDir(destDir, `Scene_${i}`);
+    }
+    console.log(`Created ${scene_count} directories.`);
+};
+
+export const runCopyFile = (copy_list: ICopyList[], dest: IDestinationState, dispatch: Function) => {
+    createDestinationDirs(copy_list, dest);
 };

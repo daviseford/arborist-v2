@@ -1,6 +1,8 @@
+import * as path from 'path';
 import * as React from 'react';
 import { addDestination } from '../../actions/destination_actions';
 import { IDestinationState } from '../../definitions/state';
+import { kOutputDirectory } from '../../utils/config';
 const { dialog } = require('electron').remote;
 
 interface IDestinationPickerProps {
@@ -34,7 +36,7 @@ export default class DestinationPicker extends React.PureComponent<IDestinationP
                     <div className="col-12 text-center mt-1">
                         <small>
                             Your files will be saved in this directory: <br />
-                            {this.props.destination.path}
+                            {`${this.props.destination.path}${path.sep}${kOutputDirectory}`}
                         </small>
                     </div>
                     : null

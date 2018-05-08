@@ -3,23 +3,23 @@ import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { batchUpdateCopyList } from '../../actions/copy_list_actions';
 import { ICopyListPageProps } from '../../containers/CopyListPage';
+import { ICopyList } from '../../definitions/copylist';
 import { IBasicSorterEntry } from '../../definitions/sony_xml';
 import { kRoutes } from '../../utils/config';
 import CopyListDisplay from './CopyListDisplay';
-import { getBasicSorterEntries_Sony, parseBasicSorterEntries, processUpdatedXMLArray } from './helpers/sony';
+import {
+    getBasicSorterEntries_Sony,
+    parseBasicSorterEntries,
+    processUpdatedXMLArray,
+    runCopyFile,
+} from './helpers/sony';
 
 export default class CopyList extends React.Component<ICopyListPageProps, {}> {
     constructor(pProps) {
         super(pProps);
         this.initializeCopyList = this.initializeCopyList.bind(this);
+        this.copyFiles = this.copyFiles.bind(this);
     }
-
-    // public parseAllXML(xml_array, callback) {
-    //     async.map(xml_array, parseXMLObj, (err, results) => {
-    //       if (err) { return callback(err); }
-    //       callback(null, results);
-    //     });
-    //   }
 
     public componentDidMount() {
         this.initializeCopyList();
@@ -39,6 +39,11 @@ export default class CopyList extends React.Component<ICopyListPageProps, {}> {
         this.props.dispatch(batchUpdateCopyList(copy_list));
     }
 
+    public copyFiles() {
+        // do stuff ... replicate copy file
+        runCopyFile(this.props.copy_list, this.props.destination, this.props.dispatch);
+    }
+
     public render() {
         console.log(this.props);
         return (
@@ -50,6 +55,7 @@ export default class CopyList extends React.Component<ICopyListPageProps, {}> {
                 <div className="row justify-content-center">
                     <div className="btn-group" role="group" aria-label="back button">
                         <BackButton />
+                        <RunArboristButton copy_list={this.props.copy_list} run={this.copyFiles} />
                     </div>
                 </div>
 
@@ -58,23 +64,33 @@ export default class CopyList extends React.Component<ICopyListPageProps, {}> {
     }
 }
 
-// interface INextButtonProps {
-//     directories: IDirState[];
-// }
+interface IRunArboristButtonProps {
+    copy_list: ICopyList[];
+    run: Function;
+}
 
-// class NextButton extends React.PureComponent<INextButtonProps, {}> {
-//     public render() {
-//         const showButton = this.props.directories.every(x => x.files && x.files.length > 0);
-//         console.log(this.props.directories, showButton);
-//         return (
-//             showButton ?
-//                 <Link className="btn btn-success m-2" to={kRoutes.ARBORIST} >
-//                     Next <i className="fa fa-pagelines" aria-hidden="true"></i>
-//                 </Link>
-//                 : null
-//         );
-//     }
-// }
+class RunArboristButton extends React.PureComponent<IRunArboristButtonProps, {}> {
+    constructor(pProps) {
+        super(pProps);
+        this.handleClick = this.handleClick.bind(this);
+    }
+
+    public handleClick(e) {
+        e.preventDefault();
+        this.props.run();
+    }
+
+    public render() {
+        const showButton = this.props.copy_list.every(x => x.copying === false);
+        return (
+            showButton ?
+                <button className="btn btn-info btn-large" onClick={this.handleClick}>
+                    Run   <i className="fa fa-chevron-right" aria-hidden="true"></i>
+                </button>
+                : null
+        );
+    }
+}
 
 class BackButton extends React.PureComponent {
     public render() {

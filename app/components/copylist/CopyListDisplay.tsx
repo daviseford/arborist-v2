@@ -10,16 +10,16 @@ export default class CopyListDisplay extends React.Component<IProps> {
 
   public render() {
     return (
-      <div className="row" hidden={this.props.copy_list.length === 0}>
+      <div className="row mt-4" hidden={this.props.copy_list.length === 0}>
         <div className="col-xs-12">
           <table className="table table-striped table-bordered">
             <thead>
               <tr className="text-center">
-                <td><h5>Source</h5></td>
-                <td></td>
-                <td><h5>Destination</h5></td>
-                <td><h5>Size (GB)</h5></td>
-                <td><h5>Status</h5></td>
+                <td scope="col"><h5>Source</h5></td>
+                <td scope="col"></td>
+                <td scope="col"><h5>Destination</h5></td>
+                <td scope="col"><h5>Size (GB)</h5></td>
+                <td scope="col"><h5>Status</h5></td>
               </tr>
             </thead>
             <tbody>
