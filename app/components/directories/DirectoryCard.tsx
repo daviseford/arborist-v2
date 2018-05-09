@@ -1,7 +1,7 @@
 import * as path from 'path';
 import * as React from 'react';
 import { getMixedFilesSync, getShortDirPath } from '../../api/FileUtil';
-import { getAssociatedXMLFile } from '../../api/Sony_XML';
+import { getAssociatedXMLFile } from '../../components/copylist/helpers/sony';
 import { ICameraState, IDirState } from '../../definitions/state';
 import { kDirectoryPrimary } from '../../utils/config';
 const { dialog } = require('electron').remote;

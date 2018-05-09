@@ -26,6 +26,7 @@ export default class CopyList extends React.Component<ICopyListPageProps, {}> {
         this.initializeCopyList();
     }
 
+    // todo make async throughout
     public initializeCopyList() {
         const basicSorterEntries = this.props.directories.reduce((accum: IBasicSorterEntry[], dir) => {
             const entries = getBasicSorterEntries_Sony(dir);

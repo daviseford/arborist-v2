@@ -5,7 +5,6 @@ import * as XMLParser from 'pixl-xml';
 import * as rimraf from 'rimraf';
 import { updateCopyList } from '../../../actions/copy_list_actions';
 import { createDir, getFilesizeInGigabytes_Sync } from '../../../api/FileUtil';
-import { convertFileNametoXML_Sony } from '../../../api/Sony_XML';
 import { IBasicSorterEntry, IParsedSonyXMLObject, ISonyXMLObj, ISorterEntry } from '../../../definitions/sony_xml';
 import { IDestinationState, IDirState, IFileInfo } from '../../../definitions/state';
 import { isMP4 } from './../../../api/FileUtil';
@@ -39,6 +38,19 @@ export const getBasicSorterEntries_Sony = (dir: IDirState): IBasicSorterEntry[] 
         }
         return a;
     }, []);
+};
+
+export const convertFileNametoXML_Sony = (filename: string): string => {
+    let file = filename;
+    if (file.toUpperCase().includes('.MP4')) {
+        file = file.split('.')[0];
+    }
+    return `${file}M01.XML`;
+};
+
+export const getAssociatedXMLFile = (mp4_filename: string, files: IFileInfo[]): IFileInfo | null => {
+    const match = files.find(x => convertFileNametoXML_Sony(mp4_filename) === x.filename);
+    return match ? match : null;
 };
 
 export const parseBasicSorterEntries = (xml_array: IBasicSorterEntry[]): ISorterEntry[] => {
