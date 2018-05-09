@@ -1,50 +1,32 @@
-
 import * as React from 'react';
 import { Link } from 'react-router-dom';
-import { batchUpdateCopyList } from '../../actions/copy_list_actions';
+import { createDestinationDirs } from '../../api/FileUtil';
 import { ICopyListPageProps } from '../../containers/CopyListPage';
 import { ICopyList } from '../../definitions/copylist';
-import { IBasicSorterEntry } from '../../definitions/sony_xml';
 import { kRoutes } from '../../utils/config';
 import CopyListDisplay from './CopyListDisplay';
 import {
-    createDestinationDirs,
-    getBasicSorterEntries_Sony,
-    parseBasicSorterEntries,
-    processUpdatedXMLArray,
-    runCopyFile,
+    initializeCopyList_Sony,
+    runCopyFile_Sony,
 } from './helpers/sony';
 
 export default class CopyList extends React.Component<ICopyListPageProps, {}> {
     constructor(pProps) {
         super(pProps);
-        this.initializeCopyList = this.initializeCopyList.bind(this);
         this.copyFiles = this.copyFiles.bind(this);
     }
 
     public componentDidMount() {
-        this.initializeCopyList();
-    }
-
-    // todo make async throughout
-    public initializeCopyList() {
-        const basicSorterEntries = this.props.directories.reduce((accum: IBasicSorterEntry[], dir) => {
-            const entries = getBasicSorterEntries_Sony(dir);
-            entries.forEach(e => accum.push(e));
-            return accum;
-        }, []);
-        const sorterEntries = parseBasicSorterEntries(basicSorterEntries);
-        // At this point, we've got the XML objects for the copy list
-        // push them out to state/copylist
-        const copy_list = processUpdatedXMLArray(sorterEntries, this.props.directories, this.props.destination);
-        console.log('copy_list', copy_list);
-        this.props.dispatch(batchUpdateCopyList(copy_list));
+        // todo update with samsung
+        // tslint:disable-next-line:max-line-length
+        // const initializeCopyList = this.props.camera.manufacturer === kCameraManufacturers.SONY.name ? initializeCopyList_Sony : initializeCopyList_Sony;
+        initializeCopyList_Sony(this.props.directories, this.props.destination, this.props.dispatch);
     }
 
     public async copyFiles() {
         // do stuff ... replicate copy file
         createDestinationDirs(this.props.copy_list, this.props.destination);
-        await runCopyFile(this.props.copy_list, this.props.destination, this.props.dispatch);
+        await runCopyFile_Sony(this.props.copy_list, this.props.destination, this.props.dispatch);
     }
 
     public render() {

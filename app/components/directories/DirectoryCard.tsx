@@ -1,7 +1,7 @@
 import * as path from 'path';
 import * as React from 'react';
-import { getMixedFilesSync, getShortDirPath } from '../../api/FileUtil';
-import { getAssociatedXMLFile } from '../../components/copylist/helpers/sony';
+import { getMixedFilesSync, getShortDirPath, isMP4, isXML } from '../../api/FileUtil';
+import { getAssociatedXMLFile_Sony_Sync } from '../../components/copylist/helpers/sony';
 import { ICameraState, IDirState } from '../../definitions/state';
 import { kDirectoryPrimary } from '../../utils/config';
 const { dialog } = require('electron').remote;
@@ -70,8 +70,8 @@ class FileTableTBody extends React.PureComponent<{ files: IDirState['files'] }, 
     public render() {
         const cross = 'fa fa-times text-danger';
         const check = 'fa fa-check text-success';
-        const mp4_files = this.props.files.filter(x => x.filename.toUpperCase().endsWith('.MP4'));
-        const xml_files = this.props.files.filter(x => x.filename.toUpperCase().endsWith('.XML'));
+        const mp4_files = this.props.files.filter(x => isMP4(x.filename));
+        const xml_files = this.props.files.filter(x => isXML(x.filename));
         return (
             <tbody>
                 {mp4_files.length === 0 ?
@@ -81,7 +81,7 @@ class FileTableTBody extends React.PureComponent<{ files: IDirState['files'] }, 
                     </tr>
                     :
                     mp4_files.map((file, i) => {
-                        const xml = getAssociatedXMLFile(file.filename, xml_files);
+                        const xml = getAssociatedXMLFile_Sony_Sync(file.filename, xml_files);
                         return (
                             <tr key={i} className={xml ? '' : 'table-danger'}>
                                 <th scope="row">{file.filename}</th>
