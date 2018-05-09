@@ -1,6 +1,10 @@
-import * as async from 'async';
 import * as fs from 'fs-extra';
 import * as path from 'path';
+import * as rimraf from 'rimraf';
+import * as util from 'util';
+import { ICopyList } from '../definitions/copylist';
+import { IDestinationState } from '../definitions/state';
+import { kOutputDirectory } from '../utils/config';
 
 export const getDirectories_sync = (filepath: string): string[] => {
   return fs.readdirSync(filepath).filter(dir => {
@@ -11,33 +15,8 @@ export const getDirectories_sync = (filepath: string): string[] => {
 export const getMixedFilesSync = (filepath: string): string[] => {
   return fs.readdirSync(filepath).filter(file => {
     const check1 = fs.statSync(path.join(filepath, file)).isFile();
-    const check2 = (file.toUpperCase().endsWith('.MP4') || file.toUpperCase().endsWith('.XML'));
+    const check2 = (isMP4(file) || isXML(file));
     return check1 && check2 && !hasBadChar(file);
-  });
-};
-
-export const getMP4FilesSync = (filepath: string): string[] => {
-  return fs.readdirSync(filepath).filter(file => {
-    return fs.statSync(path.join(filepath, file)).isFile() && file.toUpperCase().includes('.MP4') && !hasBadChar(file);
-  });
-};
-
-export const getMP4Files = (filepath: string, callback: any) => {
-  fs.readdir(filepath, (err, pFiles) => {
-    if (err) { return callback(err); }
-    async.filter(pFiles,
-      (file, cb) => {
-        fs.stat(path.join(filepath, file), (err1: any, stats) => {
-          if (err1) { return cb(err1); }
-          const check = stats.isFile() && file.toUpperCase().includes('.MP4') && !hasBadChar(file);
-          cb(null, check);
-        });
-      },
-      (err2: any, files: any) => {
-        if (err2) { return callback(err2); }
-        callback(null, files);
-      },
-    );
   });
 };
 
@@ -48,16 +27,10 @@ export const createDir = (dirpath: string, new_dir_name: string): void => {
   }
 };
 
-export const getFilesizeInGigabytes_Sync = (filepath: string): { filesize_gb: number } => {
-  const stats = fs.statSync(filepath);
+export const getFilesizeInGigabytes_Async = async (filepath: string): Promise<{ filesize_gb: number }> => {
+  const stat = util.promisify(fs.stat);
+  const stats = await stat(filepath) as { size: number };
   return { filesize_gb: bytes_to_gb(stats.size) };
-};
-
-export const getFilesizeInGigabytes = (filepath: string, callback: (err: any, gb?: number) => number) => {
-  fs.stat(filepath, (err, stats) => {
-    if (err) { return callback(err); }
-    return callback(null, bytes_to_gb(stats.size));
-  });
 };
 
 export const bytes_to_gb = (size_in_bytes: number): number => {
@@ -84,4 +57,28 @@ export const isMP4 = (filename: string): boolean => {
 
 export const isXML = (filename: string): boolean => {
   return !!filename && filename.toUpperCase().endsWith('.XML');
+};
+
+export const getSceneDirName = (scene_index: number): string => {
+  return `Scene_${scene_index}`;
+};
+
+export const removeSceneDirectory = (dest: IDestinationState): void => {
+  rimraf.sync(path.join(dest.path, kOutputDirectory));
+};
+
+export const createDestinationDirs = (copy_list: ICopyList[], dest: IDestinationState): void => {
+  createDir(dest.path, kOutputDirectory);
+  const destDir = path.join(dest.path, kOutputDirectory);
+  const scene_count = copy_list[copy_list.length - 1].scene_index || 1;
+  for (let i = 1; i < scene_count + 1; i++) {
+    createDir(destDir, getSceneDirName(i));
+  }
+  console.log(`Created ${scene_count} directories.`);
+};
+
+export const getSceneCopyFilepath = (filepath: string, scene_index: number, dest: IDestinationState): string => {
+  const filename = path.basename(filepath);
+  const dirname = filepath.split(path.sep)[filepath.split(path.sep).length - 2];
+  return path.join(dest.path, kOutputDirectory, getSceneDirName(scene_index), `${dirname}_${filename}`);
 };
