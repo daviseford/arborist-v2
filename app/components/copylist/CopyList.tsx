@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Link } from 'react-router-dom';
+import { clearCopyList } from '../../actions/copy_list_actions';
 import { createDestinationDirs } from '../../api/FileUtil';
 import { ICopyListPageProps } from '../../containers/CopyListPage';
 import { ICopyList } from '../../definitions/copylist';
@@ -39,7 +40,7 @@ export default class CopyList extends React.Component<ICopyListPageProps, {}> {
 
                 <div className="row justify-content-center">
                     <div className="btn-group" role="group" aria-label="back button">
-                        <BackButton />
+                        <BackButton copy_list={this.props.copy_list} dispatch={this.props.dispatch} />
                         <RunArboristButton copy_list={this.props.copy_list} run={this.copyFiles} />
                         <DoneButton copy_list={this.props.copy_list} />
                     </div>
@@ -84,7 +85,7 @@ class DoneButton extends React.PureComponent<{ copy_list: ICopyList[] }, {}> {
         const showButton = this.props.copy_list.every(x => x.done && x.done_xml);
         return (
             showButton ?
-                <Link className="btn btn-success" to={kRoutes.ROOT} >
+                <Link className="btn btn-success" to={kRoutes.DONE} >
                     Done <i className="fa fa-chevron-right" aria-hidden="true"></i>
                 </Link>
                 : null
@@ -92,10 +93,12 @@ class DoneButton extends React.PureComponent<{ copy_list: ICopyList[] }, {}> {
     }
 }
 
-class BackButton extends React.PureComponent {
+class BackButton extends React.PureComponent<{ dispatch: Function, copy_list: ICopyList[] }, {}> {
     public render() {
         return (
-            <Link className="btn btn-light" to={kRoutes.DIRECTORIES} >
+            <Link className="btn btn-light" to={kRoutes.DIRECTORIES}
+                hidden={this.props.copy_list.some(x => x.copying === true)}
+                onClick={() => this.props.dispatch(clearCopyList())} >
                 <i className="fa fa-chevron-left" aria-hidden="true"></i>  Back
             </Link>
         );

@@ -13,6 +13,7 @@ export const kRoutes = {
     ARBORIST: '/arborist',
     COPY_LIST: '/copy_list',
     DIRECTORIES: '/directories',
+    DONE: '/done',
     FAQ: '/faq',
     ROOT: '/',
     WILDCARD: '*',
