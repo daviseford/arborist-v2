@@ -1,9 +1,8 @@
 import { shell } from 'electron';
 import * as React from 'react';
 import { Link } from 'react-router-dom';
+import { clearCopyList } from '../actions/copy_list_actions';
 import { IDoneProps } from '../containers/DonePage';
-// import { ICopyList } from '../definitions/copylist';
-// import { IDestinationState } from '../definitions/state';
 import { kRoutes } from '../utils/config';
 
 export default class Done extends React.Component<IDoneProps, any> {
@@ -30,7 +29,7 @@ export default class Done extends React.Component<IDoneProps, any> {
                             <ShowButton handleClick={this.handleClick} />
                         </p>
                         <p className="lead text-center">
-                            <NextButton />
+                            <NextButton dispatch={this.props.dispatch} />
                         </p>
 
                     </div>
@@ -50,10 +49,11 @@ class ShowButton extends React.PureComponent<{ handleClick: (e: any) => void }, 
     }
 }
 
-class NextButton extends React.PureComponent {
+class NextButton extends React.PureComponent<{ dispatch: Function }, {}> {
     public render() {
         return (
-            <Link className="btn btn-success m-2" to={kRoutes.ROOT} >
+            <Link className="btn btn-success m-2" to={kRoutes.ROOT}
+                onClick={() => this.props.dispatch(clearCopyList())} >
                 Start Over <i className="fa fa-pagelines" aria-hidden="true"></i>
             </Link>
         );
