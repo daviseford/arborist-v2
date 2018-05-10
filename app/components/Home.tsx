@@ -24,7 +24,8 @@ export default class Home extends React.Component<IHomeProps, {}> {
   }
 
   public handleDirectoryInitialization() {
-    if (this.props.camera.number) {
+    // Only clear directories if we've changed the camera number
+    if (this.props.camera.number && this.props.camera.number !== this.props.directories.length) {
       this.props.dispatch(clearDirectories());
       for (let i = 0; i < this.props.camera.number; i++) {
         const fn = i === 0 ? addPrimaryDirectory : addSecondaryDirectory;

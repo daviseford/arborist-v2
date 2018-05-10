@@ -33,12 +33,12 @@ export default class CopyList extends React.Component<ICopyListPageProps, {}> {
     public render() {
         console.log(this.props);
         return (
-            <div className="container">
+            <div className="container my-5">
                 <div className="row justify-content-center">
                     <CopyListDisplay copy_list={this.props.copy_list} />
                 </div>
 
-                <div className="row justify-content-center">
+                <div className="row justify-content-center mb-2">
                     <div className="btn-group" role="group" aria-label="back button">
                         <BackButton copy_list={this.props.copy_list} dispatch={this.props.dispatch} />
                         <RunArboristButton copy_list={this.props.copy_list} run={this.copyFiles} />
@@ -72,7 +72,7 @@ class RunArboristButton extends React.PureComponent<IRunArboristButtonProps, {}>
         const showButton = !isDone && this.props.copy_list.every(x => x.copying === false);
         return (
             showButton ?
-                <button className="btn btn-info" onClick={this.handleClick}>
+                <button className="btn btn-primary" onClick={this.handleClick}>
                     Sort   <i className="fa fa-magic" aria-hidden="true"></i>
                 </button>
                 : null

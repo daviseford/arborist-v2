@@ -13,7 +13,7 @@ export default class Done extends React.Component<IDoneProps, any> {
 
     public handleClick(e) {
         e.preventDefault();
-        shell.showItemInFolder(this.props.destination.path);
+        shell.showItemInFolder(`${this.props.destination.path}/Scenes/`);
     }
 
     public render() {

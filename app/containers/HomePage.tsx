@@ -6,12 +6,14 @@ import { IApplicationState } from '../reducers';
 
 export interface IHomeProps {
   camera: ICameraState;
+  directories: IApplicationState['directories'];
   dispatch: Function;
 }
 
 const mapStateToProps = (state: IApplicationState): Partial<IHomeProps> => {
   return {
     camera: state.camera,
+    directories: state.directories,
   };
 };
 
