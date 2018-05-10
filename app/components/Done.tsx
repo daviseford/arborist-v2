@@ -1,9 +1,11 @@
 import { shell } from 'electron';
+import * as path from 'path';
 import * as React from 'react';
 import { Link } from 'react-router-dom';
 import { clearCopyList } from '../actions/copy_list_actions';
+import { getSceneDirName } from '../api/FileUtil';
 import { IDoneProps } from '../containers/DonePage';
-import { kRoutes } from '../utils/config';
+import { kOutputDirectory, kRoutes } from '../utils/config';
 
 export default class Done extends React.Component<IDoneProps, any> {
     constructor(pProps) {
@@ -13,7 +15,7 @@ export default class Done extends React.Component<IDoneProps, any> {
 
     public handleClick(e) {
         e.preventDefault();
-        shell.showItemInFolder(`${this.props.destination.path}/Scenes/`);
+        shell.showItemInFolder(path.join(this.props.destination.path, kOutputDirectory, getSceneDirName(1)));
     }
 
     public render() {

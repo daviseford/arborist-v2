@@ -59,9 +59,7 @@ export const isXML = (filename: string): boolean => {
   return !!filename && filename.toUpperCase().endsWith('.XML');
 };
 
-export const getSceneDirName = (scene_index: number): string => {
-  return `Scene_${scene_index}`;
-};
+export const getSceneDirName = (scene_index: number): string => `Scene_${scene_index}`;
 
 export const removeSceneDirectory = (dest: IDestinationState): void => {
   rimraf.sync(path.join(dest.path, kOutputDirectory));
