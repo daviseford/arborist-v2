@@ -35,7 +35,7 @@ export default class Directories extends React.Component<IDirectoriesProps, {}> 
 
                 <DestinationPicker dispatch={this.props.dispatch} destination={this.props.destination} />
 
-                <div className="row justify-content-center">
+                <div className="row justify-content-center mb-3">
                     <div className="btn-group" role="group" aria-label="button group">
                         <BackButton route={kRoutes.ROOT} />
                         <NextButton directories={this.props.directories}
@@ -72,11 +72,10 @@ class NextButton extends React.PureComponent<INextButtonProps, {}> {
     public render() {
         const checkFiles = this.props.directories.every(x => x.files && x.files.length > 0);
         const showButton = !!(checkFiles && this.props.destination.path);
-        console.log(this.props.directories, showButton);
         return (
             showButton ?
                 <Link className={kStyles.BTN_NEXT} to={kRoutes.COPY_LIST} >
-                    Next&nbsp;&nbsp;&nbsp;<i className="fa fa-pagelines" aria-hidden="true"></i>
+                    Next&nbsp;&nbsp;&nbsp;<i className="fa fa-chevron-right" aria-hidden="true"></i>
                 </Link>
                 : null
         );

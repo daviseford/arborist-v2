@@ -80,8 +80,8 @@ class RunArboristButton extends React.PureComponent<IRunArboristButtonProps, {}>
         const showButton = !isDone && this.props.copy_list.every(x => x.copying === false);
         return (
             showButton ?
-                <button className="btn btn-primary btn-pill btn-wide btn-lg my-1 mr-2" onClick={this.handleClick}>
-                    Sort   <i className="fa fa-magic" aria-hidden="true"></i>
+                <button className={kStyles.BTN_NEXT} onClick={this.handleClick}>
+                    Sort&nbsp;&nbsp;&nbsp;<i className="fa fa-magic" aria-hidden="true"></i>
                 </button>
                 : null
         );
@@ -112,7 +112,7 @@ class DoneButton extends React.PureComponent<{ copy_list: ICopyList[] }, {}> {
         return (
             showButton ?
                 <Link className={kStyles.BTN_NEXT} to={kRoutes.DONE} >
-                    Done <i className="fa fa-chevron-right" aria-hidden="true"></i>
+                    Done&nbsp;&nbsp;&nbsp;<i className="fa fa-chevron-right" aria-hidden="true"></i>
                 </Link>
                 : null
         );
@@ -125,7 +125,7 @@ class BackButton extends React.PureComponent<{ dispatch: Function, copy_list: IC
             <Link className={kStyles.BTN_BACK} to={kRoutes.DIRECTORIES}
                 hidden={this.props.copy_list.some(x => x.copying === true)}
                 onClick={() => this.props.dispatch(clearCopyList())} >
-                <i className="fa fa-chevron-left" aria-hidden="true"></i>  Back
+                <i className="fa fa-chevron-left" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Back
             </Link>
         );
     }

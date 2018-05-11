@@ -80,7 +80,7 @@ class NextButton extends React.Component<INextButtonProps, {}> {
     return (
       <div className="row justify-content-center" hidden={!this.props.number || !this.props.manufacturer}>
         <Link className={kStyles.BTN_NEXT} to={kRoutes.DIRECTORIES} onClick={() => this.props.initializeDirectories()}>
-          Next&nbsp;&nbsp;&nbsp;<i className="fa fa-pagelines" aria-hidden="true"></i>
+          Next&nbsp;&nbsp;&nbsp;<i className="fa fa-chevron-right" aria-hidden="true"></i>
         </Link>
       </div>
     );

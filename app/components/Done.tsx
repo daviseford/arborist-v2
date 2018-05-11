@@ -28,7 +28,7 @@ export default class Done extends React.Component<IDoneProps, any> {
                     <div className="col my-auto">
 
                             <h1 className="cover-heading">Thanks :)</h1>
-                            <p className="lead">We're all done here. Your files have been sorted!</p>
+                            <p className="lead">We're all done here. Your files have been sorted.</p>
                             <p className="lead">
                                 <ShowButton handleClick={this.handleClick} />
                             </p>
