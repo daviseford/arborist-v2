@@ -24,7 +24,7 @@ export interface ICopyList {
 }
 
 export interface ICopyListUpdate {
-  index: number;
+  index?: number;
   copying?: boolean;
   created_date?: string;
   dest_xml?: string;
@@ -35,7 +35,7 @@ export interface ICopyListUpdate {
   done_xml?: boolean;
   done?: boolean;
   end_time?: Moment;
-  filepath?: string;
+  filepath: string;
   filename?: string;
   filesize_gb?: number;
   fps?: number;

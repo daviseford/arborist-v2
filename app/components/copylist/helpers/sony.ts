@@ -124,7 +124,7 @@ const getCopyList = (obj: ISorterEntry, scene_index: number, dest: IDestinationS
         dest_xml: getSceneCopyFilepath(obj.xml_filepath, scene_index, dest),
         done: false,
         done_xml: false,
-        index: copy_list.length - 1,
+        index: scene_index - 1,
         scene_index,
     };
     const entry = { ...obj, ...copy_list_stats };
@@ -150,17 +150,17 @@ const hasOverlap = (obj1, obj2) => {
 };
 
 export const copySingleCopyListEntry = async (copy_list: ICopyList, dispatch: Function): Promise<void> => {
-    const index = copy_list.index;
+    const filepath = copy_list.filepath;
     try {
-        dispatch(updateCopyList({ index, copying: true, start_time: moment() }));
+        dispatch(updateCopyList({ filepath, copying: true, start_time: moment() }));
 
         // copy XML file (small)
         await fs.copy(copy_list.xml_filepath, copy_list.dest_xml);
-        dispatch(updateCopyList({ index, done_xml: true }));
+        dispatch(updateCopyList({ filepath, done_xml: true }));
 
         // then copy the MP4
         await fs.copy(copy_list.filepath, copy_list.dest);
-        dispatch(updateCopyList({ index, done: true, copying: false, end_time: moment() }));
+        dispatch(updateCopyList({ filepath, done: true, copying: false, end_time: moment() }));
 
     } catch (e) {
         // todo dispatch error

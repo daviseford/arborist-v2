@@ -11,7 +11,8 @@ const addCopyList = (state: ICopyList[], action: { obj: ICopyList }): ICopyList[
 };
 
 const updateCopyList = (state: ICopyList[], action: { obj: ICopyListUpdate }): ICopyList[] => {
-    const i = action.obj.index;
+    const i = state.findIndex(x => x.filepath === action.obj.filepath);
+    if (i < 0) { throw new Error(`No index`); }
     const newState = [...state];
     newState[i] = { ...newState[i], ...action.obj };
     return newState;
