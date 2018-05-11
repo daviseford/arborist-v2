@@ -45,18 +45,25 @@ export default class Home extends React.Component<IHomeProps, {}> {
     console.log(this.props);
     return (
       <div className="container">
+        <div className="row my-5"></div>
+        <div className="row my-4"></div>
+        <div className="row align-items-center">
+          <div className="col my-auto">
 
-        <Header />
+            <Header />
 
-        <div className="row mt-3">
-          <div className="col-8 offset-3 align-self-center">
-            <NumCameraInput updateCameraNumber={this.handleCameraNumberUpdate} number={this.props.camera.number} />
-            <CameraManufacturerInput updateCameraManufacturer={this.handleCameraManufacturerUpdate} manufacturer={this.props.camera.manufacturer} />
+            <div className="row mt-3">
+              <div className="col-8 offset-3 align-self-center">
+                <NumCameraInput updateCameraNumber={this.handleCameraNumberUpdate} number={this.props.camera.number} />
+                <CameraManufacturerInput updateCameraManufacturer={this.handleCameraManufacturerUpdate} manufacturer={this.props.camera.manufacturer} />
+              </div>
+            </div>
+
+            <NextButton {...this.props.camera} initializeDirectories={this.handleDirectoryInitialization} />
+
           </div>
         </div>
-
-        <NextButton {...this.props.camera} initializeDirectories={this.handleDirectoryInitialization} />
-
+        <div className="row my-5"></div>
       </div>
     );
   }
@@ -115,7 +122,7 @@ class NumCameraInput extends React.Component<INumCameraInputProps, {}> {
     return (
       <div className="form-group row">
         <label htmlFor="cameras" className="col-3 col-form-label text-right">
-          Cameras:
+          # Cameras:
           </label>
         <div className="col-6">
           <div className="input-group">
@@ -190,13 +197,13 @@ class CameraManufacturerInput extends React.Component<IManufacturerProps, {}> {
 class SupportedModels extends React.Component<{ manufacturer: ICameraState['manufacturer']; }, {}> {
   public render() {
     return (
-      <small className="text-muted">
-        {
-          this.props.manufacturer ?
-            `Supported models: ${kCameraManufacturers[this.props.manufacturer].supported_models.join(', ')}`
-            : null
-        }
-      </small>
+      this.props.manufacturer ?
+        <div className="row mt-2">
+          <div className="col-3 small text-right">Supported models:</div>
+          <div className="col-6 small text-left">{kCameraManufacturers[this.props.manufacturer].supported_models.join(', ')}</div>
+        </div>
+        : null
+
     );
   }
 }

@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { updateDirectory } from '../../actions/directory_actions';
 import { IDirectoriesProps } from '../../containers/DirectoriesPage';
 import { IDestinationState, IDirState } from '../../definitions/state';
+import BackButton from '../../ui/BackButton';
 import { kRoutes, kStyles } from '../../utils/config';
 import DestinationPicker from './DestinationPicker';
 import DirectoryCard from './DirectoryCard';
@@ -36,7 +37,7 @@ export default class Directories extends React.Component<IDirectoriesProps, {}> 
 
                 <div className="row justify-content-center">
                     <div className="btn-group" role="group" aria-label="button group">
-                        <BackButton />
+                        <BackButton route={kRoutes.ROOT} />
                         <NextButton directories={this.props.directories}
                             dispatch={this.props.dispatch} destination={this.props.destination} />
                     </div>
@@ -78,16 +79,6 @@ class NextButton extends React.PureComponent<INextButtonProps, {}> {
                     Next&nbsp;&nbsp;&nbsp;<i className="fa fa-pagelines" aria-hidden="true"></i>
                 </Link>
                 : null
-        );
-    }
-}
-
-class BackButton extends React.PureComponent<{}, {}> {
-    public render() {
-        return (
-            <Link className={kStyles.BTN_BACK} to={kRoutes.ROOT} >
-                <i className="fa fa-chevron-left" aria-hidden="true"></i>  Back
-            </Link>
         );
     }
 }

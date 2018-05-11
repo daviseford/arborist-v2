@@ -21,19 +21,21 @@ export default class Done extends React.Component<IDoneProps, any> {
     public render() {
         return (
             <div className="container">
-                <div className="row justify-content-center text-center mt-5 pt-5">
+                <div className="row my-5"></div>
+                <div className="row my-5"></div>
+                <div className="row my-5"></div>
+                <div className="row align-items-center justify-items-center text-center my-5">
+                    <div className="col my-auto">
 
-                    <div className="col">
-
-                        <h1 className="cover-heading">Thanks :)</h1>
-                        <p className="lead">We're all done here. Your files have been sorted!</p>
-                        <p className="lead">
-                            <ShowButton handleClick={this.handleClick} />
-                        </p>
-                        <p>or</p>
-                        <p className="lead text-center">
-                            <NextButton dispatch={this.props.dispatch} />
-                        </p>
+                            <h1 className="cover-heading">Thanks :)</h1>
+                            <p className="lead">We're all done here. Your files have been sorted!</p>
+                            <p className="lead">
+                                <ShowButton handleClick={this.handleClick} />
+                            </p>
+                            <p>or</p>
+                            <p className="lead text-center">
+                                <NextButton dispatch={this.props.dispatch} />
+                            </p>
 
                     </div>
                 </div>

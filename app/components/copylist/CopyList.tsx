@@ -34,21 +34,26 @@ export default class CopyList extends React.Component<ICopyListPageProps, {}> {
         console.log(this.props);
         return (
             <div className="container my-5">
+                <div className="row my-4"></div>
+                <div className="row align-items-center">
+                    <div className="col my-auto">
 
-                <Header copy_list={this.props.copy_list} />
+                        <Header copy_list={this.props.copy_list} />
 
-                <div className="row justify-content-center">
-                    <CopyListDisplay copy_list={this.props.copy_list} />
-                </div>
+                        <div className="row justify-content-center mb-2">
+                            <div className="btn-group" role="group" aria-label="back button">
+                                <BackButton copy_list={this.props.copy_list} dispatch={this.props.dispatch} />
+                                <RunArboristButton copy_list={this.props.copy_list} run={this.copyFiles} />
+                                <DoneButton copy_list={this.props.copy_list} />
+                            </div>
+                        </div>
 
-                <div className="row justify-content-center mb-2">
-                    <div className="btn-group" role="group" aria-label="back button">
-                        <BackButton copy_list={this.props.copy_list} dispatch={this.props.dispatch} />
-                        <RunArboristButton copy_list={this.props.copy_list} run={this.copyFiles} />
-                        <DoneButton copy_list={this.props.copy_list} />
+                        <div className="row justify-content-center">
+                            <CopyListDisplay copy_list={this.props.copy_list} />
+                        </div>
+
                     </div>
                 </div>
-
             </div>
         );
     }
@@ -86,11 +91,11 @@ class RunArboristButton extends React.PureComponent<IRunArboristButtonProps, {}>
 class Header extends React.PureComponent<{ copy_list: ICopyList[] }, {}> {
     public render() {
         const isDone = this.props.copy_list.every(x => x.done && x.done_xml);
-        const isCopying = this.props.copy_list.every(x => x.copying === false);
+        const isCopying = this.props.copy_list.some(x => x.copying);
         const text = isDone ?
             'Nice! That was pretty easy :)' : isCopying ?
-            'This might take a minute, hold tight...' :
-            'Click "Sort" to run Arborist!';
+                'This might take a minute, hold tight...' :
+                'Click "Sort" to run Arborist!';
         return (
             <div className="row justify-content-center mt-5">
                 <div className="col-12 text-center">
