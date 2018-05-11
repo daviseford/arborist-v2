@@ -81,7 +81,7 @@ class FileTableTBody extends React.PureComponent<{ files: IDirState['files'] }, 
             <tbody>
                 {mp4_files.length === 0 ?
                     <tr className="table-danger">
-                        <th scope="row">None</th>
+                        <th>None</th>
                         <td><i className={cross}></i></td>
                     </tr>
                     :
@@ -89,7 +89,7 @@ class FileTableTBody extends React.PureComponent<{ files: IDirState['files'] }, 
                         const xml = getAssociatedXMLFile_Sony_Sync(file.filename, xml_files);
                         return (
                             <tr key={i} className={xml ? '' : 'table-danger'}>
-                                <th scope="row">{file.filename}</th>
+                                <td>{file.filename}</td>
                                 <td><i className={xml ? check : cross}></i></td>
                             </tr>
                         );
