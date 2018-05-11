@@ -21,25 +21,31 @@ export default class DirectoryCard extends React.PureComponent<IDirectoryCardPro
         console.log(this.props);
         const dir_path = this.props.directory.path;
         return (
-            <div className="card col-5 mx-2 mt-2">
-                <div className="card-body">
-                    <h5 className="card-title">
+            <div className="col-5 px-2 pt-2">
+                <div className="card border-success">
+                    <div className="card-header bg-success text-white">
                         {dir_path ? getShortDirPath(dir_path) : `Camera ${this.props.directory.index + 1}`}
                         &nbsp;
-                        <span className="small text-muted">-&nbsp;
+                        <span className="small">-&nbsp;
                         {this.props.directory.type === kDirectoryPrimary ? 'Primary' : 'Secondary'}
                         </span>
-                    </h5>
+                    </div>
+                    <div className="card-body text-center">
+                        {this.props.directory.type === kDirectoryPrimary ? PrimaryDirText() : SecondaryDirText()}
 
-                    {dir_path ? <h6 className="card-subtitle mb-2 text-muted small">{dir_path}</h6> : null}
+                        {dir_path ? <FileTable files={this.props.directory.files} /> : null}
 
-                    {this.props.directory.type === kDirectoryPrimary ? PrimaryDirText() : SecondaryDirText()}
+                        <ChooseDirectory updateDir={this.props.updateDir} directory={this.props.directory} />
 
-                    <ChooseDirectory updateDir={this.props.updateDir} directory={this.props.directory} />
+                    </div>
 
-                    {dir_path ? <FileTable files={this.props.directory.files} /> : null}
+                    {dir_path ?
+                        <div className="card-footer bg-white text-center">
+                            <h6 className="card-subtitle small mt-1">{dir_path}</h6>
+                        </div>
+                        : null}
 
-                </div>
+                </div >
             </div >
         );
     }
@@ -48,13 +54,13 @@ export default class DirectoryCard extends React.PureComponent<IDirectoryCardPro
 class FileTable extends React.PureComponent<{ files: IDirState['files'] }, any> {
     public render() {
         return (
-            <div className="row my-3">
+            <div className="row mt-3">
                 <div className="col">
                     <table className="table">
                         <thead>
                             <tr>
-                                <th scope="col">MP4</th>
-                                <th scope="col">XML</th>
+                                <th scope="col">MP4 Files</th>
+                                <th scope="col">Has XML</th>
                             </tr>
                         </thead>
                         <FileTableTBody files={this.props.files} />
@@ -123,12 +129,13 @@ class ChooseDirectory extends React.Component<IChooseDirectoryProps, {}> {
 
     }
     public render() {
+        const btnColor = this.props.directory.path ? 'btn-outline-dark' : 'btn-outline-success';
         return (
             <div className="row justify-content-center">
                 <div className="col text-center">
-                    <button className={`btn btn-${this.props.directory.path ? 'sm btn-dark' : 'lg btn-light'}`}
+                    <button className={`btn btn-md ${btnColor}`}
                         onClick={this.handleClick} >
-                        {this.props.directory.path ? 'Change Directory' : 'Choose Directory'}
+                        {this.props.directory.path ? 'Change Folder' : 'Choose Folder'}
                     </button>
                 </div>
             </div>
@@ -138,12 +145,12 @@ class ChooseDirectory extends React.Component<IChooseDirectoryProps, {}> {
 
 const SecondaryDirText = () => (
     <p className="card-text">
-        This is a <strong>secondary</strong> camera folder.
+        This is a <strong>secondary</strong> camera.
     </p>
 );
 
 const PrimaryDirText = () => (
     <p className="card-text">
-        This is your <strong>primary</strong> camera folder.
+        This is your <strong>primary</strong> camera.
     </p>
 );

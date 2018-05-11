@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { clearCopyList } from '../actions/copy_list_actions';
 import { getSceneDirName } from '../api/FileUtil';
 import { IDoneProps } from '../containers/DonePage';
-import { kOutputDirectory, kRoutes } from '../utils/config';
+import { kOutputDirectory, kRoutes, kStyles } from '../utils/config';
 
 export default class Done extends React.Component<IDoneProps, any> {
     constructor(pProps) {
@@ -30,6 +30,7 @@ export default class Done extends React.Component<IDoneProps, any> {
                         <p className="lead">
                             <ShowButton handleClick={this.handleClick} />
                         </p>
+                        <p>or</p>
                         <p className="lead text-center">
                             <NextButton dispatch={this.props.dispatch} />
                         </p>
@@ -44,7 +45,7 @@ export default class Done extends React.Component<IDoneProps, any> {
 class ShowButton extends React.PureComponent<{ handleClick: (e: any) => void }, {}> {
     public render() {
         return (
-            <button className="btn btn-lg btn-secondary" onClick={this.props.handleClick}>
+            <button className={kStyles.BTN_BACK} onClick={this.props.handleClick}>
                 Take me to my files!
             </button>
         );
@@ -54,9 +55,9 @@ class ShowButton extends React.PureComponent<{ handleClick: (e: any) => void }, 
 class NextButton extends React.PureComponent<{ dispatch: Function }, {}> {
     public render() {
         return (
-            <Link className="btn btn-success m-2" to={kRoutes.ROOT}
+            <Link className={kStyles.BTN_NEXT} to={kRoutes.ROOT}
                 onClick={() => this.props.dispatch(clearCopyList())} >
-                Start Over <i className="fa fa-pagelines" aria-hidden="true"></i>
+                Start Over&nbsp;&nbsp;&nbsp;<i className="fa fa-pagelines" aria-hidden="true"></i>
             </Link>
         );
     }

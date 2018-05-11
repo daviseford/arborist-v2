@@ -24,10 +24,11 @@ export default class DestinationPicker extends React.PureComponent<IDestinationP
         }
     }
     public render() {
+        const btnColor = this.props.destination.path ? 'btn-outline-dark' : 'btn-outline-success';
         return (
             <div className="row justify-content-center my-3">
                 <div className="col-12 text-center">
-                    <button className={`btn btn-${this.props.destination.path ? 'sm btn-dark' : 'lg btn-light'}`}
+                    <button className={`btn btn-lg ${btnColor}`}
                         onClick={this.handleClick} >
                         {`${this.props.destination.path ? 'Change' : 'Choose'} Destination Folder`}
                     </button>
@@ -36,7 +37,7 @@ export default class DestinationPicker extends React.PureComponent<IDestinationP
                     <div className="col-12 text-center mt-1">
                         <small>
                             Your files will be saved in this directory: <br />
-                            {`${this.props.destination.path}${path.sep}${kOutputDirectory}`}
+                            {path.join(this.props.destination.path, kOutputDirectory)}
                         </small>
                     </div>
                     : null

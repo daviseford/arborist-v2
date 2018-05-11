@@ -69,3 +69,8 @@ export const kCameraManufacturers: IManufacturerConfig = {
         supported_models: ['ILCE-7SM2'],
     },
 };
+
+export const kStyles = {
+    BTN_BACK: 'btn btn-outline-dark btn-pill btn-wide btn-lg my-1 ml-2',
+    BTN_NEXT: 'btn btn-success btn-pill btn-wide btn-lg my-1 mr-2',
+};

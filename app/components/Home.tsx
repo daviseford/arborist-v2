@@ -5,7 +5,14 @@ import { addCameraManufacturer, addCameraNumber } from '../actions/camera_action
 import { addPrimaryDirectory, addSecondaryDirectory, clearDirectories } from '../actions/directory_actions';
 import { IHomeProps } from '../containers/HomePage';
 import { ICameraState } from '../definitions/state';
-import { kAppName, kCameraManufacturers, kMaxCameraNumber, kRoutes, kVersion } from '../utils/config';
+import {
+  kAppName,
+  kCameraManufacturers,
+  kMaxCameraNumber,
+  kRoutes,
+  kStyles,
+  // kVersion
+} from '../utils/config';
 
 export default class Home extends React.Component<IHomeProps, {}> {
   constructor(props) {
@@ -65,8 +72,8 @@ class NextButton extends React.Component<INextButtonProps, {}> {
   public render() {
     return (
       <div className="row justify-content-center" hidden={!this.props.number || !this.props.manufacturer}>
-        <Link className="btn btn-success m-2" to={kRoutes.DIRECTORIES} onClick={() => this.props.initializeDirectories()}>
-          Next <i className="fa fa-pagelines" aria-hidden="true"></i>
+        <Link className={kStyles.BTN_NEXT} to={kRoutes.DIRECTORIES} onClick={() => this.props.initializeDirectories()}>
+          Next&nbsp;&nbsp;&nbsp;<i className="fa fa-pagelines" aria-hidden="true"></i>
         </Link>
       </div>
     );
@@ -78,10 +85,10 @@ class Header extends React.PureComponent {
     return (
       <div className="row mt-5">
         <div className="col-12 text-center">
-          <h4 className="animated slideInLeft">
-            Hey, welcome to <span className="text-success">{kAppName} v{kVersion}</span>
-          </h4>
-          <p>To get started, let's find out what you're working with. </p>
+          <h1 className="">
+            Hey, welcome to <span className="text-success">{kAppName}</span>!
+          </h1>
+          <p className="lead pt-2">To get started, let's find out what you're working with. </p>
         </div>
       </div>
     );

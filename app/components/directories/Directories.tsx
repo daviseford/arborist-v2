@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { updateDirectory } from '../../actions/directory_actions';
 import { IDirectoriesProps } from '../../containers/DirectoriesPage';
 import { IDestinationState, IDirState } from '../../definitions/state';
-import { kRoutes } from '../../utils/config';
+import { kRoutes, kStyles } from '../../utils/config';
 import DestinationPicker from './DestinationPicker';
 import DirectoryCard from './DirectoryCard';
 
@@ -22,6 +22,9 @@ export default class Directories extends React.Component<IDirectoriesProps, {}> 
         console.log(this.props);
         return (
             <div className="container">
+
+                <Header />
+
                 <div className="row justify-content-center">
                     {this.props.directories.map((x, i) => {
                         return <DirectoryCard updateDir={this.updateDir}
@@ -44,6 +47,20 @@ export default class Directories extends React.Component<IDirectoriesProps, {}> 
     }
 }
 
+class Header extends React.PureComponent {
+    public render() {
+        return (
+            <div className="row justify-content-center mt-5">
+                <div className="col-12 text-center">
+                    <p className="lead">
+                        Where are your files located?
+                    </p>
+                </div>
+            </div>
+        );
+    }
+}
+
 interface INextButtonProps {
     directories: IDirState[];
     destination: IDestinationState;
@@ -57,8 +74,8 @@ class NextButton extends React.PureComponent<INextButtonProps, {}> {
         console.log(this.props.directories, showButton);
         return (
             showButton ?
-                <Link className="btn btn-success m-2" to={kRoutes.COPY_LIST} >
-                    Next <i className="fa fa-pagelines" aria-hidden="true"></i>
+                <Link className={kStyles.BTN_NEXT} to={kRoutes.COPY_LIST} >
+                    Next&nbsp;&nbsp;&nbsp;<i className="fa fa-pagelines" aria-hidden="true"></i>
                 </Link>
                 : null
         );
@@ -68,7 +85,7 @@ class NextButton extends React.PureComponent<INextButtonProps, {}> {
 class BackButton extends React.PureComponent<{}, {}> {
     public render() {
         return (
-            <Link className="btn btn-light m-2" to={kRoutes.ROOT} >
+            <Link className={kStyles.BTN_BACK} to={kRoutes.ROOT} >
                 <i className="fa fa-chevron-left" aria-hidden="true"></i>  Back
             </Link>
         );
