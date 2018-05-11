@@ -5,14 +5,13 @@ const addCopyList = (state: ICopyList[], action: { obj: ICopyList }): ICopyList[
     const i = state.findIndex(x => x.filepath === action.obj.filepath);
     if (i < 0) {   // this is the desired path
         return [...state, action.obj];
-    } else {
+    } else {    // this saves us from adding duplicates
         return updateCopyList(state, action);
     }
 };
 
 const updateCopyList = (state: ICopyList[], action: { obj: ICopyListUpdate }): ICopyList[] => {
-    const i = state.findIndex(x => x.filepath === action.obj.filepath);
-    if (i < 0) { throw new Error(`Couldn't find ${JSON.stringify(action.obj)}`); }
+    const i = action.obj.index;
     const newState = [...state];
     newState[i] = { ...newState[i], ...action.obj };
     return newState;

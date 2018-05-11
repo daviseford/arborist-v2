@@ -18,7 +18,6 @@ export default class DirectoryCard extends React.PureComponent<IDirectoryCardPro
     }
 
     public render() {
-        console.log(this.props);
         const dir_path = this.props.directory.path;
         return (
             <div className="col-5 px-2 pt-2">

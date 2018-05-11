@@ -72,7 +72,7 @@ export const createDestinationDirs = (copy_list: ICopyList[], dest: IDestination
   for (let i = 1; i < scene_count + 1; i++) {
     createDir(destDir, getSceneDirName(i));
   }
-  console.log(`Created ${scene_count} directories.`);
+  // console.log(`Created ${scene_count} directories.`);
 };
 
 export const getSceneCopyFilepath = (filepath: string, scene_index: number, dest: IDestinationState): string => {

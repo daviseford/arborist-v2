@@ -20,7 +20,6 @@ export default class Directories extends React.Component<IDirectoriesProps, {}> 
     }
 
     public render() {
-        console.log(this.props);
         return (
             <div className="container">
 

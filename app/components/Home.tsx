@@ -42,7 +42,6 @@ export default class Home extends React.Component<IHomeProps, {}> {
   }
 
   public render() {
-    console.log(this.props);
     return (
       <div className="container">
         <div className="row my-5"></div>

@@ -31,7 +31,6 @@ export default class CopyList extends React.Component<ICopyListPageProps, {}> {
     }
 
     public render() {
-        console.log(this.props);
         return (
             <div className="container my-5">
                 <div className="row my-4"></div>

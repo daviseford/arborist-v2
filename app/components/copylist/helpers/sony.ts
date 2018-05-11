@@ -66,7 +66,6 @@ export const getXMLFileDetails_Sony = async (entry: IBasicSorterEntry): Promise<
         };
         return parsedXMLObj;
     } catch (e) {
-        console.log(e);
         throw e;
     }
 };
@@ -125,6 +124,7 @@ const getCopyList = (obj: ISorterEntry, scene_index: number, dest: IDestinationS
         dest_xml: getSceneCopyFilepath(obj.xml_filepath, scene_index, dest),
         done: false,
         done_xml: false,
+        index: copy_list.length - 1,
         scene_index,
     };
     const entry = { ...obj, ...copy_list_stats };
@@ -150,17 +150,17 @@ const hasOverlap = (obj1, obj2) => {
 };
 
 export const copySingleCopyListEntry = async (copy_list: ICopyList, dispatch: Function): Promise<void> => {
-    const filepath = copy_list.filepath;
+    const index = copy_list.index;
     try {
-        dispatch(updateCopyList({ filepath, copying: true, start_time: moment() }));
+        dispatch(updateCopyList({ index, copying: true, start_time: moment() }));
 
         // copy XML file (small)
         await fs.copy(copy_list.xml_filepath, copy_list.dest_xml);
-        dispatch(updateCopyList({ filepath, done_xml: true }));
+        dispatch(updateCopyList({ index, done_xml: true }));
 
         // then copy the MP4
         await fs.copy(copy_list.filepath, copy_list.dest);
-        dispatch(updateCopyList({ filepath, done: true, copying: false, end_time: moment() }));
+        dispatch(updateCopyList({ index, done: true, copying: false, end_time: moment() }));
 
     } catch (e) {
         // todo dispatch error
@@ -173,7 +173,7 @@ export const copySingleCopyListEntry = async (copy_list: ICopyList, dispatch: Fu
 export const runCopyFile_Sony = async (copy_list: ICopyList[], dest: IDestinationState, dispatch: Function): Promise<void> => {
     try {
         await queue(copy_list, 4, dispatch);
-        console.log('all done!');
+        console.log('All done!');
         // todo dispatch overall done
     } catch (e) {
         // todo dispatch done w/ errors
