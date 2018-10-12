@@ -15,6 +15,11 @@ export const updateCopyList = (obj: ICopyListUpdate) => ({
   type: CopyListActions.UPDATE_COPYLIST,
 });
 
+export const updateProgress = (obj: ICopyListUpdate) => ({
+  obj,
+  type: CopyListActions.UPDATE_PROGRESS,
+});
+
 export const clearCopyList = () => ({
   type: CopyListActions.CLEAR_COPYLIST,
 });
@@ -24,6 +29,7 @@ export const CopyListActions = {
   BATCH_UPDATE_COPYLIST: 'BATCH_UPDATE_COPYLIST',
   CLEAR_COPYLIST: 'CLEAR_COPYLIST',
   UPDATE_COPYLIST: 'UPDATE_COPYLIST',
+  UPDATE_PROGRESS: 'UPDATE_PROGRESS',
 };
 
 // export const setVisibilityFilter = filter => ({
