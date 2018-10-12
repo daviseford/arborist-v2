@@ -11,17 +11,21 @@ import {
     runCopyFile_Sony,
 } from './helpers/sony';
 
-export default class CopyList extends React.Component<ICopyListPageProps, {}> {
+export default class CopyList extends React.Component<ICopyListPageProps, { copyListReady: boolean }> {
     constructor(pProps) {
         super(pProps);
+        this.state = {
+            copyListReady: false,
+        };
         this.copyFiles = this.copyFiles.bind(this);
     }
 
-    public componentDidMount() {
+    public async componentDidMount() {
         // todo update with samsung
         // tslint:disable-next-line:max-line-length
         // const initializeCopyList = this.props.camera.manufacturer === kCameraManufacturers.SONY.name ? initializeCopyList_Sony : initializeCopyList_Sony;
-        initializeCopyList_Sony(this.props.directories, this.props.destination, this.props.dispatch);
+        await initializeCopyList_Sony(this.props.directories, this.props.destination, this.props.dispatch);
+        this.setState({ copyListReady: true });
     }
 
     public async copyFiles() {
@@ -37,9 +41,9 @@ export default class CopyList extends React.Component<ICopyListPageProps, {}> {
                 <div className="row align-items-center">
                     <div className="col my-auto">
 
-                        <Header copy_list={this.props.copy_list} />
+                        <Header copy_list={this.props.copy_list} ready={this.state.copyListReady} />
 
-                        <div className="row justify-content-center mb-2">
+                        <div className="row justify-content-center mb-2" hidden={!this.state.copyListReady}>
                             <div className="btn-group" role="group" aria-label="back button">
                                 <BackButton copy_list={this.props.copy_list} dispatch={this.props.dispatch} />
                                 <RunArboristButton copy_list={this.props.copy_list} run={this.copyFiles} />
@@ -87,16 +91,16 @@ class RunArboristButton extends React.PureComponent<IRunArboristButtonProps, {}>
     }
 }
 
-class Header extends React.PureComponent<{ copy_list: ICopyList[] }, {}> {
+class Header extends React.PureComponent<{ copy_list: ICopyList[], ready: boolean; }, {}> {
     public render() {
         const isDone = this.props.copy_list.every(x => x.done && x.done_xml);
         const isCopying = this.props.copy_list.some(x => x.copying);
-        const text = isDone ?
-            'Nice! That was pretty easy :)' : isCopying ?
-                'This might take a minute, hold tight...' :
-                'Click "Sort" to run Arborist!';
+        const text = !this.props.ready ? 'Scanning your video files...'
+            : isDone ? 'Nice! That was pretty easy :)'
+                : isCopying ? 'This might take a minute, hold tight...'
+                : 'Click "Sort" to run Arborist!';
         return (
-            <div className="row justify-content-center mt-5">
+            <div className="row justify-content-center mt-5" hidden={!this.props.ready}>
                 <div className="col-12 text-center">
                     <p className="lead">{text}</p>
                 </div>
