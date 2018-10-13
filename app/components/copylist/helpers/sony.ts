@@ -165,7 +165,6 @@ export const copySingleCopyListEntry = async (copy_list: ICopyList, dispatch: Fu
     } catch (e) {
         // todo dispatch error
         console.error(e);
-        throw e;
     }
 };
 

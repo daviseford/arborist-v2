@@ -177,7 +177,7 @@
     "clean-text-utils": "^1.1.14",
     "electron-debug": "^1.1.0",
     "font-awesome": "^4.7.0",
-    "fs-extra": "^6.0.0",
+    "fs-extra": "^7.0.0",
     "history": "^4.6.1",
     "jquery": "^1.12.4",
     "lodash": "^4.17.10",

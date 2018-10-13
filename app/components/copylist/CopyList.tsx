@@ -98,9 +98,9 @@ class Header extends React.PureComponent<{ copy_list: ICopyList[], ready: boolea
         const text = !this.props.ready ? 'Scanning your video files...'
             : isDone ? 'Nice! That was pretty easy :)'
                 : isCopying ? 'This might take a minute, hold tight...'
-                : 'Click "Sort" to run Arborist!';
+                    : 'Click "Sort" to run Arborist!';
         return (
-            <div className="row justify-content-center mt-5" hidden={!this.props.ready}>
+            <div className="row justify-content-center mt-5">
                 <div className="col-12 text-center">
                     <p className="lead">{text}</p>
                 </div>

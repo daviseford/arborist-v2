@@ -62,7 +62,11 @@ export const isXML = (filename: string): boolean => {
 export const getSceneDirName = (scene_index: number): string => `Scene_${scene_index}`;
 
 export const removeSceneDirectory = (dest: IDestinationState): void => {
-  rimraf.sync(path.join(dest.path, kOutputDirectory));
+  try {
+    rimraf.sync(path.join(dest.path, kOutputDirectory));
+  } catch (err) {
+    console.error(err);
+  }
 };
 
 export const createDestinationDirs = (copy_list: ICopyList[], dest: IDestinationState): void => {
