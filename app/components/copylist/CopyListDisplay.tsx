@@ -36,7 +36,7 @@ export default class CopyListDisplay extends React.Component<IProps> {
 
 class CopyRow extends React.Component<{ copy_obj: ICopyList }> {
 
-  public getFilepath(filepath) {
+  public getFilepath(filepath: string): string {
     return filepath.split(path.sep).slice(filepath.split(path.sep).length - 2).join(path.sep);
   }
 

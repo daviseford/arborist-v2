@@ -4,13 +4,15 @@ import * as moment from 'moment';
 import * as path from 'path';
 import * as XMLParser from 'pixl-xml';
 import * as util from 'util';
-import { addCopyList, updateCopyList } from '../../../actions/copy_list_actions';
+import { batchUpdateCopyList, updateCopyList } from '../../../actions/copy_list_actions';
 import { getFilesizeInGigabytes_Async, getSceneCopyFilepath, isMP4 } from '../../../api/FileUtil';
 import { IBasicSorterEntry, IParsedSonyXMLObject, ISonyXMLObj, ISorterEntry } from '../../../definitions/sony_xml';
 import { IDestinationState, IDirState, IFileInfo } from '../../../definitions/state';
 import { ICopyList } from './../../../definitions/copylist';
 import { kDirectoryPrimary } from './../../../utils/config';
 
+const pLimit = require('p-limit');
+const readFile = util.promisify(fs.readFile);
 interface IGetAssociatedSonyXML { xml_filepath: string; xml_filename: string; }
 
 export const getAssociatedXML_Sony = async (filename: string, dir: string): Promise<IGetAssociatedSonyXML> => {
@@ -54,9 +56,7 @@ export const parseBasicSorterEntries_Sony = async (xml_array: IBasicSorterEntry[
 
 export const getXMLFileDetails_Sony = async (entry: IBasicSorterEntry): Promise<ISorterEntry> => {
     try {
-        const readFile = util.promisify(fs.readFile);
         const f = await readFile(entry.xml_filepath);
-        // const f = fs.readFileSync(entry.xml_filepath, 'utf8');
         const jsonObj = XMLParser.parse(f);
         const filesize = await getFilesizeInGigabytes_Async(entry.filepath);
         const parsedXMLObj = {
@@ -87,37 +87,35 @@ const parseXmlJson_Sony = (xml_object: ISonyXMLObj): IParsedSonyXMLObject => {
     };
 };
 
-// This function responsible for adding our initial copy_lists to state
 // tslint:disable-next-line:max-line-length
-export const addSorterEntriesToCopyList = (entries: ISorterEntry[], dirs: IDirState[], dest: IDestinationState, dispatch: Function): void => {
+export const addSorterEntriesToCopyList = (entries: ISorterEntry[], dirs: IDirState[], dest: IDestinationState, dispatch: Function): any => {
     const t_dir = dirs.filter(x => x.type === kDirectoryPrimary)[0].path;
     const target_dir_xml_array = entries.filter(x => x.dir === t_dir);
     const other_dirs_xml_array = entries.filter(x => x.dir !== t_dir);
-    const copy_list: ICopyList[] = [];
-    target_dir_xml_array.forEach((obj1, index) => {
+    const copy_list_res = _.flatten(target_dir_xml_array.map((obj1, index) => {
         const scene_index = index + 1;
-        other_dirs_xml_array.forEach(obj2 => {
-            addItemsToCopyList(obj1, obj2, scene_index, dest, copy_list, dispatch);
-        });
-    });
+        return _.flatten(other_dirs_xml_array.map(obj2 => {
+            return addItemsToCopyList(obj1, obj2, scene_index, dest);
+        }));
+    }));
+    return _.uniqBy(copy_list_res, x => x.dest);
 };
 
 // tslint:disable-next-line:max-line-length
-export const addItemsToCopyList = (obj1: ISorterEntry, obj2: ISorterEntry, scene_index: number, dest: IDestinationState, copy_list: ICopyList[], dispatch: Function): ICopyList[] => {
+export const addItemsToCopyList = (obj1: ISorterEntry, obj2: ISorterEntry, scene_index: number, dest: IDestinationState): ICopyList[] => {
     if (obj1.dir === obj2.dir) { return []; }
     const res: ICopyList[] = [];
-    const copy1 = getCopyList(obj1, scene_index, dest, copy_list);
-    // Always add the target directory's file to a Scene
-    if (copy1) { dispatch(addCopyList(copy1)); }
+    const copy1 = getCopyList(obj1, scene_index, dest);
+    res.push(copy1);    // Always add the target directory's file to a Scene
     if (hasOverlap(obj1, obj2)) {
-        const copy2 = getCopyList(obj2, scene_index, dest, copy_list);
-        if (copy2) { dispatch(addCopyList(copy2)); }
+        const copy2 = getCopyList(obj2, scene_index, dest);
+        res.push(copy2);
     }
     return res;
 };
 
 // tslint:disable-next-line:max-line-length
-const getCopyList = (obj: ISorterEntry, scene_index: number, dest: IDestinationState, copy_list: ICopyList[]): ICopyList => {
+const getCopyList = (obj: ISorterEntry, scene_index: number, dest: IDestinationState): ICopyList => {
     const copy_list_stats = {
         copying: false,
         dest: getSceneCopyFilepath(obj.filepath, scene_index, dest),
@@ -171,9 +169,14 @@ export const copySingleCopyListEntry = async (copy_list: ICopyList, dispatch: Fu
 // tslint:disable-next-line:max-line-length
 export const runCopyFile_Sony = async (copy_list: ICopyList[], dest: IDestinationState, dispatch: Function): Promise<void> => {
     try {
-        await queue(copy_list, 4, dispatch);
-        console.log('All done!');
-        // todo dispatch overall done
+        const limit = pLimit(4);
+        const requests = copy_list.map(x => {
+            return limit(async () => {
+                await copySingleCopyListEntry(x, dispatch);
+            });
+        });
+        await Promise.all(requests);
+        console.log('All done!');   // todo dispatch overall done
     } catch (e) {
         // todo dispatch done w/ errors
         console.log(e);
@@ -181,34 +184,8 @@ export const runCopyFile_Sony = async (copy_list: ICopyList[], dest: IDestinatio
     }
 };
 
-const queue = async (copy_list: ICopyList[], max_concurrent: number = 3, dispatch: Function): Promise<void> => {
-    try {
-        const amount = copy_list.length > max_concurrent ? max_concurrent : copy_list.length;
-        const queued = copy_list.slice(0, amount);
-
-        if (queued.length > 0) {
-            await run(queued, dispatch); // Run concurrently
-            const next = copy_list.slice(amount, copy_list.length);
-            return next.length > 0 ? queue(next, max_concurrent, dispatch) : undefined;
-        }
-
-    } catch (e) {
-        console.error('Error in queue', e);
-        throw e;
-    }
-};
-
-const run = async (opts: ICopyList[], dispatch: Function): Promise<void> => {
-    try {
-        await Promise.all(opts.map(x => copySingleCopyListEntry(x, dispatch)));
-    } catch (e) {
-        console.error(e);
-        throw e;
-    }
-};
-
 // tslint:disable-next-line:max-line-length
-export const initializeCopyList_Sony = async (dirs: IDirState[], dest: IDestinationState, dispatch: Function): Promise<void> => {
+export const initializeCopyList_Sony = async (dirs: IDirState[], dest: IDestinationState, dispatch: Function): Promise<any> => {
     const arr_of_basic_entries = await Promise.all(dirs.map(async (dir) => {
         const entries = await getBasicSorterEntries_Sony(dir);
         return entries;
@@ -217,5 +194,6 @@ export const initializeCopyList_Sony = async (dirs: IDirState[], dest: IDestinat
     const basicSorterEntries = _.flatten(arr_of_basic_entries) as IBasicSorterEntry[];
     const sorterEntries = await parseBasicSorterEntries_Sony(basicSorterEntries);
     // At this point, we've got the XML objects for the copy list
-    addSorterEntriesToCopyList(sorterEntries, dirs, dest, dispatch);
+    const copy_list = addSorterEntriesToCopyList(sorterEntries, dirs, dest, dispatch);
+    dispatch(batchUpdateCopyList(copy_list));
 };

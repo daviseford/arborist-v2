@@ -6,6 +6,8 @@ import { ICopyList } from '../definitions/copylist';
 import { IDestinationState } from '../definitions/state';
 import { kOutputDirectory } from '../utils/config';
 
+const stat = util.promisify(fs.stat);
+
 export const getDirectories_sync = (filepath: string): string[] => {
   return fs.readdirSync(filepath).filter(dir => {
     return fs.statSync(path.join(filepath, dir)).isDirectory();
@@ -28,7 +30,6 @@ export const createDir = (dirpath: string, new_dir_name: string): void => {
 };
 
 export const getFilesizeInGigabytes_Async = async (filepath: string): Promise<{ filesize_gb: number }> => {
-  const stat = util.promisify(fs.stat);
   const stats = await stat(filepath) as { size: number };
   return { filesize_gb: bytes_to_gb(stats.size) };
 };

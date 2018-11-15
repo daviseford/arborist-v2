@@ -1,7 +1,7 @@
 {
   "name": "arborist-v2",
   "productName": "Arborist v2 - Electron, React, Typescript, Webpack",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Electron application based on TypeScript, React, React Router, Webpack, React Hot Loader for rapid application development",
   "main": "main.js",
   "scripts": {
@@ -172,9 +172,10 @@
     "webpack-merge": "^4.1.1"
   },
   "dependencies": {
+    "@types/p-limit": "^2.0.0",
     "animate.css": "^3.6.1",
     "bootstrap": "^4.1.1",
-    "clean-text-utils": "^1.1.14",
+    "clean-text-utils": "^1.1.17",
     "electron-debug": "^1.1.0",
     "font-awesome": "^4.7.0",
     "fs-extra": "^7.0.0",
@@ -182,6 +183,7 @@
     "jquery": "^1.12.4",
     "lodash": "^4.17.10",
     "moment": "^2.22.1",
+    "p-limit": "^2.0.0",
     "pixl-xml": "^1.0.13",
     "popper.js": "^1.14.3",
     "prop-types": "^15.6.1",
