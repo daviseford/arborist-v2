@@ -1,11 +1,12 @@
-import { createStore, applyMiddleware, compose } from 'redux';
-import thunk from 'redux-thunk';
 import { createHashHistory } from 'history';
-import { routerMiddleware, push } from 'react-router-redux';
+import { push, routerMiddleware } from 'react-router-redux';
+import { applyMiddleware, compose, createStore } from 'redux';
 import { createLogger } from 'redux-logger';
+import thunk from 'redux-thunk';
 import rootReducer from '../reducers';
-
-import * as counterActions from '../actions/counter';
+import { CameraActions } from './../actions/camera_actions';
+import { CopyListActions } from './../actions/copy_list_actions';
+import { DirectoryActions } from './../actions/directory_actions';
 
 declare const window: Window & {
   __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?(a: any): void;
@@ -14,17 +15,19 @@ declare const window: Window & {
 declare const module: NodeModule & {
   hot?: {
     accept(...args: any[]): any;
-  }
+  },
 };
 
-const actionCreators = Object.assign({}, 
-  counterActions,
-  {push}
+const actionCreators = Object.assign({},
+  DirectoryActions,
+  CopyListActions,
+  CameraActions,
+  { push },
 );
 
-const logger = (<any>createLogger)({
+const logger = (createLogger as any)({
+  collapsed: true,
   level: 'info',
-  collapsed: true
 });
 
 const history = createHashHistory();
@@ -35,12 +38,12 @@ const router = routerMiddleware(history);
 const composeEnhancers: typeof compose = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?
   window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({
     // Options: http://zalmoxisus.github.io/redux-devtools-extension/API/Arguments.html
-    actionCreators
+    actionCreators,
   }) as any :
   compose;
 /* eslint-enable no-underscore-dangle */
 const enhancer = composeEnhancers(
-  applyMiddleware(thunk, router, logger)
+  applyMiddleware(thunk, router, logger),
 );
 
 export = {
@@ -50,10 +53,10 @@ export = {
 
     if (module.hot) {
       module.hot.accept('../reducers', () =>
-        store.replaceReducer(require('../reducers')) // eslint-disable-line global-require
+        store.replaceReducer(require('../reducers')), // eslint-disable-line global-require
       );
     }
 
     return store;
-  }
+  },
 };

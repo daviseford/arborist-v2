@@ -105,7 +105,7 @@ app.on('ready', () =>
           }]
         }, {
           label: 'View',
-          submenu: (process.env.NODE_ENV === 'development') ? [{
+          submenu: (true) ? [{
             label: 'Reload',
             accelerator: 'Command+R',
             click() {
@@ -183,7 +183,7 @@ app.on('ready', () =>
           }]
         }, {
           label: '&View',
-          submenu: (process.env.NODE_ENV === 'development') ? [{
+          submenu: (true) ? [{
             label: '&Reload',
             accelerator: 'Ctrl+R',
             click() {

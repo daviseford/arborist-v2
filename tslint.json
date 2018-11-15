@@ -6,16 +6,17 @@
     "jsRules": {},
     "rules": {
         "arrow-parens": false,
-        "only-arrow-functions": true,
-        "no-var-requires": false,
-        "variable-name": false,
-        "no-console": false,
+        "ban-types": false,
         "max-classes-per-file": false,
+        "no-console": false,
+        "no-var-requires": false,
+        "only-arrow-functions": true,
         "quotemark": [
             true,
             "single",
             "jsx-double"
-        ]
+        ],
+        "variable-name": false
     },
     "rulesDirectory": []
 }

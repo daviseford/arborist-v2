@@ -1,7 +1,7 @@
 {
   "name": "arborist-v2",
   "productName": "arborist-v2",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Electron application based on TypeScript, React, React Router, Webpack, React Hot Loader.",
   "main": "./main.js",
   "author": {

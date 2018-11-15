@@ -1,13 +1,20 @@
 import * as React from 'react';
-import { RouteComponentProps } from 'react-router';
+import { connect } from 'react-redux';
 import Home from '../components/Home';
+import { ICameraState } from '../definitions/state';
+import { IApplicationState } from '../reducers';
 
-export class HomePage extends React.Component<RouteComponentProps<any>, void> {
-  public render() {
-    return (
-      <Home />
-    );
-  }
+export interface IHomeProps {
+  camera: ICameraState;
+  directories: IApplicationState['directories'];
+  dispatch: Function;
 }
 
-export default (HomePage as any as React.StatelessComponent<RouteComponentProps<any>>);
+const mapStateToProps = (state: IApplicationState): Partial<IHomeProps> => {
+  return {
+    camera: state.camera,
+    directories: state.directories,
+  };
+};
+
+export default (connect(mapStateToProps)(Home) as any as React.StatelessComponent<IHomeProps>);

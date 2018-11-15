@@ -1,3 +1,6 @@
+import { IManufacturerConfig, IPeopleConfig } from '../definitions/config';
+import { TPrimaryDirectory, TSecondaryDirectory } from '../definitions/directory';
+import { TStatusType } from '../definitions/status_types';
 
 export const kAppName = 'Arborist';
 export const kCompanyName = 'Bonsai';
@@ -8,11 +11,15 @@ export const kVersion = require('./../package.json').version;
 export const kRoutes = {
     ABOUT: '/about',
     ARBORIST: '/arborist',
+    COPY_LIST: '/copy_list',
+    DIRECTORIES: '/directories',
+    DONE: '/done',
     FAQ: '/faq',
     ROOT: '/',
+    WILDCARD: '*',
 };
 
-export const kPeople = {
+export const kPeople: IPeopleConfig = {
     BRAUM: {
         first_name: 'Braum',
         full_name: 'Braum Katz',
@@ -31,4 +38,39 @@ export const kPeople = {
         last_name: 'Ford',
         title: 'Developer',
     },
+};
+
+export const kStatusTypes: { [P in TStatusType]: TStatusType } = {
+    analysis: 'analysis',
+    copy_file_done: 'copy_file_done',
+    copy_file_start: 'copy_file_start',
+    copy_files_done: 'copy_files_done',
+    copy_files_start: 'copy_files_start',
+    copy_list_update: 'copy_list_update',
+    error: 'error',
+    general: 'general',
+    xml_copy_done: 'xml_copy_done',
+    xml_copy_start: 'xml_copy_start',
+};
+
+export const kDirectoryPrimary: TPrimaryDirectory = 'dir-primary';
+export const kDirectorySeconday: TSecondaryDirectory = 'dir-secondary';
+export const kDefaultCameraNumber = 4;
+export const kMaxCameraNumber = 10;
+export const kOutputDirectory = 'Scenes';
+
+export const kCameraManufacturers: IManufacturerConfig = {
+    SAMSUNG_MOCK: {
+        name: 'Samsung (Mock)',
+        supported_models: ['FAKE_MODEL1', 'XX-23-14', 'FAKE_M2.0'],
+    },
+    SONY: {
+        name: 'Sony',
+        supported_models: ['ILCE-7SM2'],
+    },
+};
+
+export const kStyles = {
+    BTN_BACK: 'btn btn-outline-dark btn-pill btn-wide btn-lg my-1 ml-2',
+    BTN_NEXT: 'btn btn-success btn-pill btn-wide btn-lg my-1 mr-2',
 };

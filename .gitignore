@@ -43,3 +43,6 @@ main.js
 main.js.map
 
 .idea
+
+test/xml_tests/Scenes
+vids/

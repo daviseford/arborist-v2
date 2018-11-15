@@ -8,6 +8,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const merge = require('webpack-merge');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const baseConfig = require('./webpack.config.base');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 module.exports = merge(baseConfig, {
   devtool: 'cheap-module-source-map',
@@ -108,7 +109,7 @@ module.exports = merge(baseConfig, {
       'process.env.NODE_ENV': JSON.stringify('production')
     }),
 
-    new webpack.optimize.UglifyJsPlugin(),
+    new UglifyJsPlugin(),
 
     new ExtractTextPlugin('style.css'),
 
