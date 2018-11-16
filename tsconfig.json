@@ -38,6 +38,7 @@
     "node_modules/@types/**/*.d.ts"
   ],
   "exclude": [
-    "dist"
+    "dist",
+    "node_modules/@popmotion/*"
   ]
 }

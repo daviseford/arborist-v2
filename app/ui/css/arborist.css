@@ -1,3 +1,8 @@
+.lumberjackPhone {
+    height: 250px;
+    width: 250px;
+    background-image: url("./../../../resources/img/lumberjack_1.gif");
+}
 
 .braumFace {
     height: 250px;

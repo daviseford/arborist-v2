@@ -1,5 +1,6 @@
 // tslint:disable:max-line-length
 import * as React from 'react';
+import SplitText from 'react-pose-text';
 import { Link } from 'react-router-dom';
 import { addCameraManufacturer, addCameraNumber } from '../actions/camera_actions';
 import { addPrimaryDirectory, addSecondaryDirectory, clearDirectories } from '../actions/directory_actions';
@@ -79,12 +80,23 @@ class NextButton extends React.Component<INextButtonProps, {}> {
     return (
       <div className="row justify-content-center" hidden={!this.props.number || !this.props.manufacturer}>
         <Link className={kStyles.BTN_NEXT} to={kRoutes.DIRECTORIES} onClick={() => this.props.initializeDirectories()}>
-          Next&nbsp;&nbsp;&nbsp;<i className="fa fa-chevron-right" aria-hidden="true"></i>
+          Next&nbsp;&nbsp;&nbsp; <i className="fa fa-chevron-right" aria-hidden="true"></i>
         </Link>
       </div>
     );
   }
 }
+
+// https://popmotion.io/pose/api/react-pose-text/
+const charPosesArboristHeader = {
+  enter: { delay: 1000, opacity: 1, y: 0 },
+  exit: { opacity: 0, y: 20 },
+};
+
+const charPosesGetStarted = {
+  enter: { delay: 3000, opacity: 1 },
+  exit: { opacity: 0 },
+};
 
 class Header extends React.PureComponent {
   public render() {
@@ -92,9 +104,20 @@ class Header extends React.PureComponent {
       <div className="row mt-5">
         <div className="col-12 text-center">
           <h1 className="">
-            Hey, welcome to <span className="text-success">{kAppName}</span>!
+            <SplitText initialPose="exit" pose="enter" charPoses={charPosesArboristHeader}>
+              Hey, welcome to&nbsp;
+            </SplitText>
+            <span className="text-success">
+              <SplitText initialPose="exit" pose="enter" charPoses={charPosesArboristHeader}>
+                {kAppName}
+              </SplitText>
+            </span>
           </h1>
-          <p className="lead pt-2">To get started, let's find out what you're working with. </p>
+          <span className="lead pt-2 text-center">
+            <SplitText initialPose="exit" pose="enter" charPoses={charPosesGetStarted}>
+              To get started, let's find out what you're working with.
+            </SplitText>
+          </span>
         </div>
       </div>
     );
