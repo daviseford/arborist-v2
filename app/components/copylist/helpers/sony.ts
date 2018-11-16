@@ -88,7 +88,8 @@ const parseXmlJson_Sony = (xml_object: ISonyXMLObj): IParsedSonyXMLObject => {
 };
 
 // tslint:disable-next-line:max-line-length
-export const addSorterEntriesToCopyList = (entries: ISorterEntry[], dirs: IDirState[], dest: IDestinationState, dispatch: Function): any => {
+export const addSorterEntriesToCopyList = (entries: ISorterEntry[], dirs: IDirState[], dest: IDestinationState): ICopyList[] => {
+    if (dirs.filter(x => x.type === kDirectoryPrimary).length === 0) { return []; }
     const t_dir = dirs.filter(x => x.type === kDirectoryPrimary)[0].path;
     const target_dir_xml_array = entries.filter(x => x.dir === t_dir);
     const other_dirs_xml_array = entries.filter(x => x.dir !== t_dir);
@@ -176,9 +177,9 @@ export const runCopyFile_Sony = async (copy_list: ICopyList[], dest: IDestinatio
             });
         });
         await Promise.all(requests);
-        console.log('All done!');   // todo dispatch overall done
+        console.log('All done!');   // TODO: dispatch overall done
     } catch (e) {
-        // todo dispatch done w/ errors
+        // TODO: dispatch done w/ errors
         console.log(e);
         throw e;
     }
@@ -194,6 +195,6 @@ export const initializeCopyList_Sony = async (dirs: IDirState[], dest: IDestinat
     const basicSorterEntries = _.flatten(arr_of_basic_entries) as IBasicSorterEntry[];
     const sorterEntries = await parseBasicSorterEntries_Sony(basicSorterEntries);
     // At this point, we've got the XML objects for the copy list
-    const copy_list = addSorterEntriesToCopyList(sorterEntries, dirs, dest, dispatch);
+    const copy_list = addSorterEntriesToCopyList(sorterEntries, dirs, dest);
     dispatch(batchUpdateCopyList(copy_list));
 };

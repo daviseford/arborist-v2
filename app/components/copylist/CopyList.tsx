@@ -55,16 +55,6 @@ export default class CopyList extends React.Component<ICopyListPageProps, { copy
                             <CopyListDisplay copy_list={this.props.copy_list} />
                         </div>
 
-                        <div className="row justify-content-center mb-5">
-                            <div className="col text-center">
-                                {/* TODO: Add a fun icon here or something */}
-                                {/* <img
-                                    className="center-block"
-                                    src={'./../resources/img/lumberjack_1.gif'}
-                                /> */}
-                            </div>
-                        </div>
-
                     </div>
                 </div>
             </div>
