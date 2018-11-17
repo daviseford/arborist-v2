@@ -54,7 +54,7 @@ export const kStatusTypes: { [P in TStatusType]: TStatusType } = {
 };
 
 export const kDirectoryPrimary: TPrimaryDirectory = 'dir-primary';
-export const kDirectorySeconday: TSecondaryDirectory = 'dir-secondary';
+export const kDirectorySecondary: TSecondaryDirectory = 'dir-secondary';
 export const kDefaultCameraNumber = 4;
 export const kMaxCameraNumber = 10;
 export const kOutputDirectory = 'Scenes';

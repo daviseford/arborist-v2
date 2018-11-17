@@ -188,6 +188,7 @@
     "popper.js": "^1.14.3",
     "prop-types": "^15.6.1",
     "react": "^16.0.0",
+    "react-archer": "^0.3.0",
     "react-dom": "^16.0.0",
     "react-pose": "^4.0.1",
     "react-pose-text": "^3.1.0",

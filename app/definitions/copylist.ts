@@ -1,4 +1,5 @@
 import { Moment } from 'moment';
+import { TPrimaryDirectory, TSecondaryDirectory } from './directory';
 
 export interface ICopyList {
   index: number;
@@ -19,6 +20,7 @@ export interface ICopyList {
   model_name: string;
   scene_index: number;
   start_time?: Moment;
+  type?: TPrimaryDirectory | TSecondaryDirectory;
   xml_filename: string;
   xml_filepath: string;
 }
@@ -42,6 +44,7 @@ export interface ICopyListUpdate {
   model_name?: string;
   scene_index?: number;
   start_time?: Moment;
+  type?: TPrimaryDirectory | TSecondaryDirectory;
   xml_filename?: string;
   xml_filepath?: string;
 }

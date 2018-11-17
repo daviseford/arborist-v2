@@ -44,7 +44,8 @@ const hasBadChar = (name: string): boolean => ['.', '_', '~'].some(x => x === na
 
 export const getDirNameFromFilepath = (filepath: string): string => {
   const p = filepath.split(path.sep);
-  return p[p.length - 1];
+  if (p.length - 2 < 0) { return p[0]; } // Watch out for short dirs
+  return p[p.length - 2];
 };
 
 export const getShortDirPath = (filepath: string): string => {

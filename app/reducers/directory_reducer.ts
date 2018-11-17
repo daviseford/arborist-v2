@@ -1,4 +1,4 @@
-import { kDirectoryPrimary, kDirectorySeconday } from '../utils/config';
+import { kDirectoryPrimary, kDirectorySecondary } from '../utils/config';
 import { DirectoryActions } from './../actions/directory_actions';
 import { IDirState } from './../definitions/state';
 
@@ -15,7 +15,7 @@ const directoryReducer = (state: IDirState[] = [], action) => {
             const secondary_filter = state.filter(x => x.index !== action.index);
             return [
                 ...secondary_filter,
-                { type: kDirectorySeconday, index: action.index },
+                { type: kDirectorySecondary, index: action.index },
             ];
         case DirectoryActions.UPDATE_DIRECTORY:
             const dir_index = state.findIndex(x => x.index === action.directory.index);

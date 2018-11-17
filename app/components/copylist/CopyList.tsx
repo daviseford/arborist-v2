@@ -5,6 +5,7 @@ import { createDestinationDirs } from '../../api/FileUtil';
 import { ICopyListPageProps } from '../../containers/CopyListPage';
 import { ICopyList } from '../../definitions/copylist';
 import { kRoutes, kStyles } from '../../utils/config';
+import ArcherDiagram from './Archer';
 import CopyListDisplay from './CopyListDisplay';
 import {
     initializeCopyList_Sony,
@@ -53,6 +54,12 @@ export default class CopyList extends React.Component<ICopyListPageProps, { copy
 
                         <div className="row justify-content-center">
                             <CopyListDisplay copy_list={this.props.copy_list} />
+                        </div>
+
+                        <div className="row">
+                            <div className="col">
+                                <ArcherDiagram copy_list={this.props.copy_list} />
+                            </div>
                         </div>
 
                     </div>
