@@ -6,21 +6,6 @@ import { getDirNameFromFilepath } from '../../api/FileUtil';
 import { ICopyList } from '../../definitions/copylist';
 import { kDirectoryPrimary, kDirectorySecondary } from '../../utils/config';
 
-// tslint:disable:object-literal-sort-keys
-// const data = {
-//     name: 'Parent',
-//     children: [{
-//         name: 'Child One',
-//         children: [{
-//             name: 'Child Three One',
-//         }, {
-//             name: 'Child Four One',
-//         }],
-//     }, {
-//         name: 'Child Two',
-//     }],
-// };
-
 interface ITreeGraphProps {
     copy_list: ICopyList[];
 }
@@ -35,22 +20,39 @@ interface ITreeGraphCopyListEntry {
     xml_dir_name: string;
 }
 
+interface ITreeGraphState {
+    data: { [key: string]: any };
+}
+
 // const ElementNames = {
 //     ROOT: 'root',
 // };
 
-export default class TreeGraph extends React.Component<ITreeGraphProps, {}> {
+export default class TreeGraph extends React.Component<ITreeGraphProps, ITreeGraphState> {
     constructor(props: ITreeGraphProps) {
         super(props);
 
         this.state = {
+            data: { name: 'Scenes', children: [] },
         };
         this.parseCopyListEntry = this.parseCopyListEntry.bind(this);
+        this.getTargetDirName = this.getTargetDirName.bind(this);
+        this.getDest = this.getDest.bind(this);
+        this.prepareCopyList = this.prepareCopyList.bind(this);
+        this.buildD3Data = this.buildD3Data.bind(this);
     }
 
-    // public componentDidMount() {
+    public componentDidMount() {
+        if (this.props.copy_list) {
+            this.setState({ data: this.buildD3Data() });
+        }
+    }
 
-    // }
+    public componentDidUpdate(prevProps) {
+        if (this.props.copy_list.length !== prevProps.copy_list.length) {
+            this.setState({ data: this.buildD3Data() });
+        }
+    }
 
     public getTargetDirName(copy_list: ICopyList[]): string {
         try {
@@ -95,19 +97,18 @@ export default class TreeGraph extends React.Component<ITreeGraphProps, {}> {
     public buildD3Data(): any {
         // const copy_list = this.props.copy_list;
         const res: any = { name: 'Scenes', children: [] };
-        const copy_obj = this.prepareCopyList(copy_list_stock);
-        if (copy_obj.copy_list.length === 0) { return {}; }
-        const target_dir_name: string = this.getTargetDirName(copy_list_stock);
+        const cp_obj = this.prepareCopyList(this.props.copy_list);
+        if (cp_obj.copy_list.length === 0) { return {}; }
+        const target_dir_name: string = this.getTargetDirName(this.props.copy_list);
         // tslint:disable-next-line:max-line-length
-        const other_dir_names: string[] = _.uniq(copy_obj.copy_list.map(x => x.dir_name)).filter(x => x !== target_dir_name);
+        const other_dir_names: string[] = _.uniq(cp_obj.copy_list.map(x => x.dir_name)).filter(x => x !== target_dir_name);
 
         // Build the source files
         const folders = [target_dir_name, ...other_dir_names].map((name: string) => {
             const dir_child: { [key: string]: any } = {
+                children: cp_obj.copy_list
+                    .filter(x => x.dir_name === name).map(file => ({ name: file.dest_file_name })),
                 name,
-                children: copy_obj.copy_list.filter(x => x.dir_name === name || x.dest_dir_name === name).map(file => {
-                    return { name: file.dest_file_name };
-                }),
             };
             if (name === target_dir_name) {
                 dir_child.gProps = { className: 'red-node' };
@@ -119,113 +120,18 @@ export default class TreeGraph extends React.Component<ITreeGraphProps, {}> {
     }
 
     public render() {
-        // const copy_list = this.props.copy_list;
-        const copy_data = this.buildD3Data();
-        console.log(copy_data);
         return (
             <div>
                 <Tree
-                    data={copy_data}
+                    data={this.state.data}
                     height={400}
                     width={400}
                     animated={true}
-                    svgProps={{
-                        className: 'custom',
-                    }}
+                // svgProps={{
+                //     // className: 'custom',
+                // }}
                 />
             </div>
         );
     }
 }
-
-const copy_list_stock: ICopyList[] = [
-    {
-        copying: false,
-        created_date: '2016-10-02T12:18:27',
-        dest: '/Users/davisford/Documents/arborist-v2/vids/Scenes/Scene_1/A_C0001.MP4',
-        dest_xml: '/Users/davisford/Documents/arborist-v2/vids/Scenes/Scene_1/A_C0001M01.XML',
-        device_manufacturer: 'Sony',
-        dir: '/Users/davisford/Documents/arborist-v2/vids/A',
-        done: false,
-        done_xml: false,
-        duration_mins: 5.67,
-        filename: 'C0001.MP4',
-        filepath: '/Users/davisford/Documents/arborist-v2/vids/A/C0001.MP4',
-        filesize_gb: 3.99253254,
-        fps: 30,
-        index: 0,
-        model_name: 'ILCE-7SM2',
-        scene_index: 1,
-        type: 'dir-primary',
-        xml_filename: 'C0001M01.XML',
-        xml_filepath: '/Users/davisford/Documents/arborist-v2/vids/A/C0001M01.XML',
-    },
-    {
-        copying: false,
-        created_date: '2016-10-02T12:17:22',
-        dest: '/Users/davisford/Documents/arborist-v2/vids/Scenes/Scene_1/D_C0001.MP4',
-        dest_xml: '/Users/davisford/Documents/arborist-v2/vids/Scenes/Scene_1/D_C0001M01.XML',
-
-        device_manufacturer: 'Sony',
-        dir: '/Users/davisford/Documents/arborist-v2/vids/D',
-
-        done: false,
-        done_xml: false,
-        duration_mins: 6.53,
-        filename: 'C0001.MP4',
-        filepath: '/Users/davisford/Documents/arborist-v2/vids/D/C0001.MP4',
-        filesize_gb: 4.535319882,
-        fps: 30,
-        index: 0,
-        model_name: 'ILCE-7SM2',
-        scene_index: 1,
-        type: 'dir-secondary',
-        xml_filename: 'C0001M01.XML',
-        xml_filepath: '/Users/davisford/Documents/arborist-v2/vids/D/C0001M01.XML',
-    },
-    {
-        copying: false,
-        created_date: '2016-10-02T12:30:46',
-        dest: '/Users/davisford/Documents/arborist-v2/vids/Scenes/Scene_2/A_C0002.MP4',
-        dest_xml: '/Users/davisford/Documents/arborist-v2/vids/Scenes/Scene_2/A_C0002M01.XML',
-
-        device_manufacturer: 'Sony',
-        dir: '/Users/davisford/Documents/arborist-v2/vids/A',
-
-        done: false,
-        done_xml: false,
-        duration_mins: 6.69,
-        filename: 'C0002.MP4',
-        filepath: '/Users/davisford/Documents/arborist-v2/vids/A/C0002.MP4',
-        filesize_gb: 4.74330734,
-        fps: 30,
-        index: 1,
-        model_name: 'ILCE-7SM2',
-        scene_index: 2,
-        type: 'dir-primary',
-        xml_filename: 'C0002M01.XML',
-        xml_filepath: '/Users/davisford/Documents/arborist-v2/vids/A/C0002M01.XML',
-    },
-    {
-        copying: false,
-        created_date: '2016-10-02T12:29:57',
-        dest: '/Users/davisford/Documents/arborist-v2/vids/Scenes/Scene_2/D_C0002.MP4',
-        dest_xml: '/Users/davisford/Documents/arborist-v2/vids/Scenes/Scene_2/D_C0002M01.XML',
-        device_manufacturer: 'Sony',
-        dir: '/Users/davisford/Documents/arborist-v2/vids/D',
-
-        done: false,
-        done_xml: false,
-        duration_mins: 7.54,
-        filename: 'C0002.MP4',
-        filepath: '/Users/davisford/Documents/arborist-v2/vids/D/C0002.MP4',
-        filesize_gb: 5.33235996,
-        fps: 30,
-        index: 1,
-        model_name: 'ILCE-7SM2',
-        scene_index: 2,
-        type: 'dir-secondary',
-        xml_filename: 'C0002M01.XML',
-        xml_filepath: '/Users/davisford/Documents/arborist-v2/vids/D/C0002M01.XML',
-    },
-];
