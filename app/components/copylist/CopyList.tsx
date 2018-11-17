@@ -5,12 +5,12 @@ import { createDestinationDirs } from '../../api/FileUtil';
 import { ICopyListPageProps } from '../../containers/CopyListPage';
 import { ICopyList } from '../../definitions/copylist';
 import { kRoutes, kStyles } from '../../utils/config';
-import ArcherDiagram from './Archer';
 import CopyListDisplay from './CopyListDisplay';
 import {
     initializeCopyList_Sony,
     runCopyFile_Sony,
 } from './helpers/sony';
+import TreeGraph from './TreeGraph';
 
 export default class CopyList extends React.Component<ICopyListPageProps, { copyListReady: boolean }> {
     constructor(pProps) {
@@ -58,7 +58,8 @@ export default class CopyList extends React.Component<ICopyListPageProps, { copy
 
                         <div className="row">
                             <div className="col">
-                                <ArcherDiagram copy_list={this.props.copy_list} />
+                                {/* <ArcherDiagram copy_list={this.props.copy_list} /> */}
+                                <TreeGraph copy_list={this.props.copy_list} />
                             </div>
                         </div>
 
