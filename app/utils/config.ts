@@ -60,10 +60,10 @@ export const kMaxCameraNumber = 10;
 export const kOutputDirectory = 'Scenes';
 
 export const kCameraManufacturers: IManufacturerConfig = {
-    SAMSUNG_MOCK: {
-        name: 'Samsung (Mock)',
-        supported_models: ['FAKE_MODEL1', 'XX-23-14', 'FAKE_M2.0'],
-    },
+    // SAMSUNG_MOCK: {
+    //     name: 'Samsung (Mock)',
+    //     supported_models: ['FAKE_MODEL1', 'XX-23-14', 'FAKE_M2.0'],
+    // },
     SONY: {
         name: 'Sony',
         supported_models: ['ILCE-7SM2'],
