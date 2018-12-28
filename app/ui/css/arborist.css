@@ -15,6 +15,11 @@ div.custom-container {
 	background-color: #242424;
 }
 
+.node circle {
+	fill: #00FF00;
+	stroke: black;
+}
+
 svg.custom .node circle {
 	fill: #F3F3FF;
 	stroke: #2593B8;
